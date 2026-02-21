@@ -1,3 +1,5 @@
+import { RoleSelection } from "../features/Register/RoleSelection/index.tsx";
+
 export function RegisterPage() {
-    return <div>Hello World</div>
+  return <RoleSelection />;
 }
