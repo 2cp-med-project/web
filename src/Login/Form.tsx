@@ -6,12 +6,19 @@ import { LoginFormSchema } from "../zod/login/schema.ts";
 import type { LoginFormData } from "../zod/login/type.ts";
 
 export function LoginForm() {
-  const { control, handleSubmit } = useForm<LoginFormData>({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    clearErrors,
+  } = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       phone_number: "",
       password: "",
     },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const onSubmit = handleSubmit(
@@ -31,39 +38,61 @@ export function LoginForm() {
           Connectez-vous pour accéder à votre espace de gestion de santé.
         </h2>
       </Box>
-      <Box className="mt-8 w-full space-y-4">
+      <Box className="mt-12 w-full space-y-4">
         <Box className="space-y-2">
           <label className="space-y-1">
-            <p className="text-sm">Téléphone</p>
+            <p className="font-inter text-sm">Téléphone</p>
             <Controller
               name="phone_number"
               control={control}
-              render={() => (
-                <TextField.Root
-                  className="p-2 focus:ring-foreground"
-                  placeholder="Entrez votre numéro du téléphone"
-                  size="3"
-                >
-                  <TextField.Slot>
-                    <Phone className="text-foreground" size={16} />
-                  </TextField.Slot>
-                </TextField.Root>
+              render={({ field }) => (
+                <div>
+                  <TextField.Root
+                    {...field}
+                    className="p-2 focus:ring-foreground"
+                    placeholder="Entrez votre numéro du téléphone"
+                    size="3"
+                    color={!!errors.phone_number ? "red" : "green"}
+                    onBlur={() => {
+                      field.onBlur();
+                      clearErrors();
+                    }}
+                  >
+                    <TextField.Slot>
+                      <Phone className="text-foreground" size={16} />
+                    </TextField.Slot>
+                  </TextField.Root>
+                  <p className="text-sm text-red-500 min-h-5">
+                    {errors.phone_number?.message ?? "\u00A0"}
+                  </p>
+                </div>
               )}
             />
           </label>
         </Box>
         <Box className="space-y-2">
-          <label className="space-y-1">
-            <p className="text-sm">Mot de passe</p>
+          <label>
+            <p className="font-inter text-sm">Mot de passe</p>
             <Controller
               name="password"
               control={control}
-              render={() => (
-                <TextField.Root
-                  placeholder="••••••••••••"
-                  type="password"
-                  size="3"
-                ></TextField.Root>
+              render={({ field }) => (
+                <div className="space-y-1">
+                  <TextField.Root
+                    {...field}
+                    placeholder="••••••••••••"
+                    type="password"
+                    size="3"
+                    color={!!errors.password ? "red" : "green"}
+                    onBlur={() => {
+                      field.onBlur();
+                      clearErrors();
+                    }}
+                  ></TextField.Root>
+                  <p className="text-sm text-red-500 min-h-5">
+                    {errors.password?.message ?? "\u00A0"}
+                  </p>
+                </div>
               )}
             />
           </label>
@@ -71,7 +100,7 @@ export function LoginForm() {
       </Box>
       <button
         type="submit"
-        className="cursor-pointer group mt-8 bg-foreground text-white w-full flex items-center justify-center py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
+        className="cursor-pointer group mt-4 bg-foreground text-white w-full flex items-center justify-center py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
       >
         <p className="text-base">Se connecter</p>
         <ArrowRight

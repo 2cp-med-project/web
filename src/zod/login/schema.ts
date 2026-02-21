@@ -4,13 +4,16 @@ import { dzPhoneRegex } from "../../constants/regex.ts";
 export const LoginFormSchema = z.object({
   phone_number: z
     .string()
-    .nonempty({ message: "Phone number is required." })
+    .nonempty({ message: "Le numéro de téléphone est obligatoire." })
     .regex(dzPhoneRegex, {
-      error:
-        "Please enter a valid Algerian phone number (e.g. 0551234567 or +213551234567).",
+      message:
+        "Veuillez entrer un numéro de téléphone algérien valide (ex : 0551234567 ou +213551234567).",
     }),
 
-  password: z.string().nonempty({ error: "Password is required." }).min(8, {
-    error: "Password must be at least 8 characters long.",
-  }),
+  password: z
+    .string()
+    .nonempty({ message: "Le mot de passe est obligatoire." })
+    .min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères.",
+    }),
 });
