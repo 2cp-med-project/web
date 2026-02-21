@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, TextField } from "@radix-ui/themes";
 import { ArrowRight, Phone } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import { LoginFormSchema } from "../zod/login/schema.ts";
-import type { LoginFormData } from "../zod/login/type.ts";
+import { LoginFormSchema, type LoginFormData } from "./schema.ts";
 
 export function LoginForm() {
   const {

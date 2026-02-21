@@ -17,3 +17,5 @@ export const LoginFormSchema = z.object({
       message: "Le mot de passe doit contenir au moins 8 caractères.",
     }),
 });
+
+export type LoginFormData = z.infer<typeof LoginFormSchema>;

@@ -1,7 +1,7 @@
 import { Card } from "@radix-ui/themes";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "../components/shared/logo.tsx";
-import { LoginForm } from "../Login/Form.tsx";
+import { LoginForm } from "../features/Login/Form.tsx";
 
 export function LoginPage() {
   return (
