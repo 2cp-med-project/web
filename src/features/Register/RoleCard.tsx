@@ -1,14 +1,21 @@
 import { Card } from "@radix-ui/themes";
+import { Link } from "@tanstack/react-router";
 import { type LucideIcon } from "lucide-react";
+import { ROLE } from "../../constants/index.ts";
+import type { Role } from "../../types/index.ts";
 
 type RoleCardProps = {
   icon: LucideIcon;
   name: string;
   desc: string;
+  role: Role;
 };
 
 export function RoleCard(props: RoleCardProps) {
   const Icon = props.icon;
+  const to =
+    props.role === ROLE.DOCTOR ? "/register/doctor" : "/register/patient";
+
   return (
     <Card
       style={{
@@ -25,13 +32,13 @@ export function RoleCard(props: RoleCardProps) {
           <p className="text-2xl font-medium">{props.name}</p>
           <p className="text-sm text-muted">{props.desc}</p>
         </div>
-        <button
-          type="button"
+        <Link
+          to={to}
           className="gap-2 cursor-pointer group mt-4 bg-linear-to-r from-foreground/45 to-foreground/80 text-white w-full flex items-center justify-center py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
         >
           <Icon size={30} strokeWidth={1} />
           <p>{props.name}</p>
-        </button>
+        </Link>
       </div>
     </Card>
   );
