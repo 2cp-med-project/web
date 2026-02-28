@@ -14,7 +14,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-full max-w-55 bg-[#1B9271] h-full rounded-r-2xl">
-      <div className="px-6 py-4 flex items-center gap-2">
+      <div className="px-4 py-4 flex items-center gap-2">
         <Logo color="white" size={50} />
         <h1 className="text-white text-2xl font-medium">Healio</h1>
       </div>

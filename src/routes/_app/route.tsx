@@ -1,4 +1,4 @@
-import { Avatar } from "@radix-ui/themes";
+import { Avatar, Popover } from "@radix-ui/themes";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
 import { Sidebar } from "../../components/Sidebar.tsx";
@@ -19,7 +19,7 @@ function RouteComponent() {
               <li>
                 <button
                   type="button"
-                  className="group p-2 hover:bg-gray-300 rounded-xl transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-black/40"
+                  className="cursor-pointer group p-2 hover:bg-gray-300 rounded-xl transition-colors duration-100 focus:outline-none focus:ring-1 focus:ring-black/10"
                 >
                   <Bell
                     className="text-black/30 group-hover:text-black/60 transition-colors duration-100"
@@ -29,7 +29,13 @@ function RouteComponent() {
               </li>
 
               <li>
-                <Avatar src="nothing" fallback="A" />
+                <Popover.Root>
+                  <Popover.Trigger>
+                    <button className="cursor-pointer">
+                      <Avatar src="nothing" fallback="A" />
+                    </button>
+                  </Popover.Trigger>
+                </Popover.Root>
               </li>
             </ul>
           </nav>
