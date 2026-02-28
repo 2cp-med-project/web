@@ -10,8 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppPlanningRouteImport } from './routes/_app/planning'
+import { Route as AppPatientsRouteImport } from './routes/_app/patients'
+import { Route as AppChatRouteImport } from './routes/_app/chat'
 import { Route as AuthRegisterIndexRouteImport } from './routes/_auth/register/index'
 import { Route as AuthRegisterPatientRouteImport } from './routes/_auth/register/patient'
 import { Route as AuthRegisterDoctorRouteImport } from './routes/_auth/register/doctor'
@@ -20,15 +25,39 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppPlanningRoute = AppPlanningRouteImport.update({
+  id: '/planning',
+  path: '/planning',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppPatientsRoute = AppPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
   id: '/register/',
@@ -47,14 +76,22 @@ const AuthRegisterDoctorRoute = AuthRegisterDoctorRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
+  '/chat': typeof AppChatRoute
+  '/patients': typeof AppPatientsRoute
+  '/planning': typeof AppPlanningRoute
+  '/settings': typeof AppSettingsRoute
   '/login': typeof AuthLoginRoute
   '/register/doctor': typeof AuthRegisterDoctorRoute
   '/register/patient': typeof AuthRegisterPatientRoute
   '/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof AppIndexRoute
+  '/chat': typeof AppChatRoute
+  '/patients': typeof AppPatientsRoute
+  '/planning': typeof AppPlanningRoute
+  '/settings': typeof AppSettingsRoute
   '/login': typeof AuthLoginRoute
   '/register/doctor': typeof AuthRegisterDoctorRoute
   '/register/patient': typeof AuthRegisterPatientRoute
@@ -62,9 +99,14 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_app': typeof AppRouteRouteWithChildren
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/_app/chat': typeof AppChatRoute
+  '/_app/patients': typeof AppPatientsRoute
+  '/_app/planning': typeof AppPlanningRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_auth/login': typeof AuthLoginRoute
+  '/_app/': typeof AppIndexRoute
   '/_auth/register/doctor': typeof AuthRegisterDoctorRoute
   '/_auth/register/patient': typeof AuthRegisterPatientRoute
   '/_auth/register/': typeof AuthRegisterIndexRoute
@@ -73,24 +115,42 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/chat'
+    | '/patients'
+    | '/planning'
+    | '/settings'
     | '/login'
     | '/register/doctor'
     | '/register/patient'
     | '/register/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register/doctor' | '/register/patient' | '/register'
+  to:
+    | '/'
+    | '/chat'
+    | '/patients'
+    | '/planning'
+    | '/settings'
+    | '/login'
+    | '/register/doctor'
+    | '/register/patient'
+    | '/register'
   id:
     | '__root__'
-    | '/'
+    | '/_app'
     | '/_auth'
+    | '/_app/chat'
+    | '/_app/patients'
+    | '/_app/planning'
+    | '/_app/settings'
     | '/_auth/login'
+    | '/_app/'
     | '/_auth/register/doctor'
     | '/_auth/register/patient'
     | '/_auth/register/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
 
@@ -103,12 +163,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/_auth/login': {
       id: '/_auth/login'
@@ -116,6 +183,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/planning': {
+      id: '/_app/planning'
+      path: '/planning'
+      fullPath: '/planning'
+      preLoaderRoute: typeof AppPlanningRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/patients': {
+      id: '/_app/patients'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof AppPatientsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/chat': {
+      id: '/_app/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/_auth/register/': {
       id: '/_auth/register/'
@@ -141,6 +236,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppRouteRouteChildren {
+  AppChatRoute: typeof AppChatRoute
+  AppPatientsRoute: typeof AppPatientsRoute
+  AppPlanningRoute: typeof AppPlanningRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppChatRoute: AppChatRoute,
+  AppPatientsRoute: AppPatientsRoute,
+  AppPlanningRoute: AppPlanningRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterDoctorRoute: typeof AuthRegisterDoctorRoute
@@ -160,7 +275,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport

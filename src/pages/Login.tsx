@@ -9,7 +9,7 @@ export function LoginPage() {
       {/* Left section */}
       <div className="flex-4 space-y-8 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center gap-4">
-          <Logo w={160} h={160} />
+          <Logo size={160} />
           <p className="text-foreground text-3xl mr-6">Healio</p>
         </div>
         <p className="text-lg font-light capitalize text-foreground font-inter">

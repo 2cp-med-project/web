@@ -37,7 +37,7 @@ export function RegisterPatientPage() {
   return (
     <div className="space-y-8 px-4 py-6 flex flex-col w-full max-w-7xl mx-auto h-full">
       <div className="flex flex-col items-center justify-center gap-2">
-        <Logo w={120} h={120} />
+        <Logo size={120} />
         <p className="text-foreground text-2xl mr-6">Healio</p>
       </div>
       <div className="flex items-center justify-between">

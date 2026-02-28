@@ -9,7 +9,7 @@ export function RegisterPage() {
       {/* Top Section */}
       <div className="flex-2 space-y-2 flex flex-col items-center justify-start pt-4">
         <div className="flex flex-col items-center justify-center gap-4">
-          <Logo w={120} h={120} />
+          <Logo size={120} />
           <p className="text-foreground text-2xl mr-6">Healio</p>
         </div>
         <p className="text-lg font-light capitalize text-foreground font-inter">

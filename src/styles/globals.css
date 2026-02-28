@@ -12,6 +12,12 @@
   --color-foreground: #1faf87;
   --color-muted: #6b7280;
 
+  /* FIXME: change the color here to make it fit the foreground color as a background */
+  --color-muted-light: #e5e7eb;
+
+  --color-nav-link-hover: #c3ffee;
+  --color-main-content-background: #f3faf8;
+
   /* shadows */
   --shadow-1: var(--shadow-1);
   --shadow-2: var(--shadow-2);
