@@ -1,5 +1,5 @@
 import { Flex, Grid } from "@radix-ui/themes";
-import { overviewCards } from "../constants/ui.ts";
+import { DashboardUI } from "../constants/ui/index.ts";
 import { OverviewCard } from "../features/Dashboard/index.ts";
 
 export function DashboardPage() {
@@ -14,7 +14,7 @@ export function DashboardPage() {
         </p>
       </Flex>
       <Grid columns="4" gap={"2"} className="mt-4">
-        {overviewCards.map((item) => (
+        {DashboardUI.overviewCards.map((item) => (
           <OverviewCard {...item} />
         ))}
       </Grid>
