@@ -1,9 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { PlanningContextProvider } from "@/features/Planning";
+import { PlanningPage } from "@/pages";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_protected/planning')({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
-  return <div>Hello "/_app/schedule"!</div>
-}
+export const Route = createFileRoute("/_protected/planning")({
+  component: () => (
+    <PlanningContextProvider>
+      <PlanningPage />
+    </PlanningContextProvider>
+  ),
+});

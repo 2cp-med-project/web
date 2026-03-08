@@ -15,3 +15,15 @@ export type Message = {
   receiverId: string;
   content: string;
 };
+
+export type RawAppointment = {
+  id: string;
+  patientId: string;
+  start: Date;
+  end: Date;
+  reason: string | null;
+};
+
+export type PopulatedAppointment = Omit<RawAppointment, "patientId"> & {
+  patient: Patient;
+};

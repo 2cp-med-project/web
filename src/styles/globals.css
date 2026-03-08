@@ -10,6 +10,8 @@
 
   /* colors */
   --color-foreground: #1faf87;
+  --color-background-dark: #e9f7f3;
+  --color-background-light: #f3faf8;
   --color-muted: #6b7280;
 
   /* FIXME: change the color here to make it fit the foreground color as a background */
@@ -41,4 +43,9 @@ body {
 
 button {
   cursor: pointer;
+}
+
+.sx-react-calendar-wrapper {
+  width: 100%;
+  height: 100%;
 }
