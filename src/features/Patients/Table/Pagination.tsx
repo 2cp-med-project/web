@@ -1,6 +1,6 @@
+import { cn } from "@/lib/utils.ts";
 import { Flex } from "@radix-ui/themes";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "../../../utils/cn.ts";
 import { usePatientsTableContext } from "../context.tsx";
 
 export function PatientsTablePagination() {

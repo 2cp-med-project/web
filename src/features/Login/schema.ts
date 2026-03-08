@@ -1,15 +1,7 @@
 import z from "zod";
-import { dzPhoneRegex } from "../../constants/regex.ts";
 
 export const LoginFormSchema = z.object({
-  phone_number: z
-    .string()
-    .nonempty({ message: "Le numéro de téléphone est obligatoire." })
-    .regex(dzPhoneRegex, {
-      message:
-        "Veuillez entrer un numéro de téléphone algérien valide (ex : 0551234567 ou +213551234567).",
-    }),
-
+  email: z.string().trim().email({ message: "Adresse e-mail invalide." }),
   password: z
     .string()
     .nonempty({ message: "Le mot de passe est obligatoire." })

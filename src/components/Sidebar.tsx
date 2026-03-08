@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils.ts";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { NAVIGATION_MENU } from "../constants/navigation.ts";
-import { cn } from "../utils/cn.ts";
 import { Logo } from "./shared/Logo.tsx";
 
 export function Sidebar() {

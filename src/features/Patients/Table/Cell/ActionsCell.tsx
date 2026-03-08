@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils.ts";
 import { Flex, Table, Tooltip } from "@radix-ui/themes";
 import { Eye, Link } from "lucide-react";
 import type { Patient } from "../../../../types/entities.ts";
-import { cn } from "../../../../utils/cn.ts";
 
 type ActionsCellProps = Pick<Patient, "id">;
 

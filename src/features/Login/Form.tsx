@@ -1,10 +1,16 @@
+import { useAuthContext } from "@/context/auth.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, TextField } from "@radix-ui/themes";
-import { ArrowRight, Phone } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowRight, Loader2, Phone } from "lucide-react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormSchema, type LoginFormData } from "./schema.ts";
 
 export function LoginForm() {
+  const navigate = useNavigate();
+  const { login, user, isAuthenticating } = useAuthContext();
+
   const {
     control,
     formState: { errors },
@@ -13,7 +19,7 @@ export function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
-      phone_number: "",
+      email: "",
       password: "",
     },
     mode: "onChange",
@@ -21,13 +27,20 @@ export function LoginForm() {
   });
 
   const onSubmit = handleSubmit(
-    (_) => {
-      // make the api call here.
+    (data) => {
+      login(data.email, data.password);
     },
     (errors) => {
       console.log(errors);
     },
   );
+
+  useEffect(() => {
+    if (user === null) return;
+    navigate({
+      to: "/",
+    });
+  }, [user]);
 
   return (
     <form onSubmit={onSubmit} className="px-4 py-2">
@@ -40,18 +53,18 @@ export function LoginForm() {
       <Box className="mt-12 w-full space-y-4">
         <Box className="space-y-2">
           <label className="space-y-1">
-            <p className="font-inter text-sm">Téléphone</p>
+            <p className="font-inter text-sm">Email</p>
             <Controller
-              name="phone_number"
+              name="email"
               control={control}
               render={({ field }) => (
                 <div>
                   <TextField.Root
                     {...field}
                     className="p-2 focus:ring-foreground"
-                    placeholder="Entrez votre numéro du téléphone"
+                    placeholder="Entrez votre email"
                     size="3"
-                    color={!!errors.phone_number ? "red" : "green"}
+                    color={!!errors.email ? "red" : "green"}
                     onBlur={() => {
                       field.onBlur();
                       clearErrors();
@@ -62,7 +75,7 @@ export function LoginForm() {
                     </TextField.Slot>
                   </TextField.Root>
                   <p className="text-sm text-red-500 min-h-5">
-                    {errors.phone_number?.message ?? "\u00A0"}
+                    {errors.email?.message ?? "\u00A0"}
                   </p>
                 </div>
               )}
@@ -100,7 +113,9 @@ export function LoginForm() {
       <button
         type="submit"
         className="cursor-pointer group mt-4 bg-foreground text-white w-full flex items-center justify-center py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
+        disabled={isAuthenticating}
       >
+        {isAuthenticating && <Loader2 className="animate-spin mr-2" />}
         <p className="text-base">Se connecter</p>
         <ArrowRight
           size={18}

@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils.ts";
 import { useEffect, useState } from "react";
-import { cn } from "../../../utils/cn.ts";
 
 const CODE_LENGTH = 4;
 

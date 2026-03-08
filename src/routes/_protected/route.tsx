@@ -1,10 +1,22 @@
+import { AuthContextProvider } from "@/context";
 import { Avatar, Popover } from "@radix-ui/themes";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
 import { Sidebar } from "../../components/Sidebar.tsx";
 
-export const Route = createFileRoute("/_app")({
-  component: RouteComponent,
+export const Route = createFileRoute("/_protected")({
+  beforeLoad: ({ context }) => {
+    if (context.auth.user === null && !context.auth.isAuthenticating) {
+      throw redirect({
+        to: "/login",
+      });
+    }
+  },
+  component: () => (
+    <AuthContextProvider>
+      <RouteComponent />
+    </AuthContextProvider>
+  ),
 });
 
 function RouteComponent() {

@@ -1,3 +1,4 @@
+import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.tsx";
 import {
   createContext,
   useContext,
@@ -23,6 +24,7 @@ export type PatientsTableContext = {
 export const patientsTableContext = createContext<
   PatientsTableContext | undefined
 >(undefined);
+patientsTableContext.displayName = "PatientsTableContext";
 
 type PatientsTableContextProviderProps = PropsWithChildren & {};
 
@@ -82,9 +84,7 @@ export function PatientsTableContextProvider({
 export const usePatientsTableContext = () => {
   const context = useContext(patientsTableContext);
   if (context === undefined) {
-    throw new Error(
-      "Cannot use patients table context (usePatientsTableContext) outside its provider (PatientsTableContext)",
-    );
+    throw new HookUsageOutOfProviderError(patientsTableContext);
   }
   return context;
 };

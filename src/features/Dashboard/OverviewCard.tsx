@@ -1,6 +1,6 @@
+import { cn } from "@/lib/utils.ts";
 import { Card } from "@radix-ui/themes";
 import type { LucideIcon } from "lucide-react";
-import { cn } from "../../utils/cn.ts";
 
 type OverviewCardProps = {
   label: string;

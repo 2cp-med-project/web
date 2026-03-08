@@ -1,10 +1,9 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { routeTree } from "./routeTree.gen.ts";
+import { AppRouter } from "./app.tsx";
+import { AuthContextProvider } from "./context";
+import { router } from "./router.tsx";
 import "./styles/globals.css";
-
-const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -14,6 +13,8 @@ declare module "@tanstack/react-router" {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <AppRouter />
+    </AuthContextProvider>
   </StrictMode>,
 );
