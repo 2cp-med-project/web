@@ -2,10 +2,13 @@ import { cn } from "@/lib/utils.ts";
 import { Flex, Table, Tooltip } from "@radix-ui/themes";
 import { Eye, Link } from "lucide-react";
 import type { Patient } from "../../../../types/entities.ts";
+import { usePatientsContext } from "../../context.tsx";
 
 type ActionsCellProps = Pick<Patient, "id">;
 
-export function PatientsTableActionsCell({}: ActionsCellProps) {
+export function PatientsTableActionsCell({ id }: ActionsCellProps) {
+  const { view } = usePatientsContext();
+
   const baseClasses = cn(
     "group cursor-pointer",
     "p-2 rounded-lg",
@@ -16,11 +19,13 @@ export function PatientsTableActionsCell({}: ActionsCellProps) {
     "active:scale-95",
   );
 
+  const onView = () => view(id);
+
   return (
     <Table.Cell>
       <Flex gap="2">
         <Tooltip content="Voir le profil de ce patient">
-          <button className={baseClasses}>
+          <button className={baseClasses} onClick={onView}>
             <Eye className="w-4 h-4 transition-transform group-hover:scale-110" />
           </button>
         </Tooltip>

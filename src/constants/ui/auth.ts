@@ -6,4 +6,5 @@ export const user: User & { password: string } = {
   email: "djocoding@gmail.com",
   avatar: null,
   password: "djocoding",
+  phoneNumber: "0698690027"
 };

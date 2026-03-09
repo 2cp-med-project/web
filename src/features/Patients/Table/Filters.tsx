@@ -1,9 +1,9 @@
 import { Card } from "@radix-ui/themes";
 import { Searchbar } from "../../../components/Searchbar.tsx";
-import { usePatientsTableContext } from "../context.tsx";
+import { usePatientsContext } from "../context.tsx";
 
 export function PatientsTableFilters() {
-  const { search, onSearchChange } = usePatientsTableContext();
+  const { search, onSearchChange } = usePatientsContext();
 
   return (
     <Card className="mt-6">

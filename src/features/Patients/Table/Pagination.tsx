@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils.ts";
 import { Flex } from "@radix-ui/themes";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { usePatientsTableContext } from "../context.tsx";
+import { usePatientsContext } from "../context.tsx";
 
 export function PatientsTablePagination() {
   const { count, onNextPage, onPrevPage, page, pageSize } =
-    usePatientsTableContext();
+    usePatientsContext();
 
   const totalPages = Math.ceil(count / pageSize);
   const from = pageSize * (page - 1) + 1;

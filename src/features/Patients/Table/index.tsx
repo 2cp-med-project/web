@@ -1,10 +1,10 @@
 import { Table } from "@radix-ui/themes";
 import { SearchX } from "lucide-react";
-import { usePatientsTableContext } from "../context.tsx";
+import { usePatientsContext } from "../context.tsx";
 import { PatientsTableRow } from "./Row.tsx";
 
 export function PatientsTable() {
-  const { patients } = usePatientsTableContext();
+  const { patients } = usePatientsContext();
 
   return (
     <Table.Root variant="surface">
