@@ -1,6 +1,6 @@
 import { ChatUI } from "@/constants/ui/index.ts";
 import { useAuthContext } from "@/context/auth.tsx";
-import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.tsx";
+import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import type { Message, User } from "@/types/entities.ts";
 import {
   createContext,

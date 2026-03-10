@@ -1,5 +1,5 @@
 import { PatientsUI, PlanningUI } from "@/constants/ui/index.ts";
-import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.tsx";
+import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import type { PopulatedAppointment } from "@/types/entities.ts";
 import {
   createContext,

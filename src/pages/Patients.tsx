@@ -5,11 +5,9 @@ import {
   PatientsTableFilters,
   PatientsTablePagination,
   PatientViewer,
-  usePatientsContext,
 } from "../features/Patients";
 
 export function PatientsPage() {
-  const { onViewPatient, clearView } = usePatientsContext();
   return (
     <React.Fragment>
       <section className="px-2">
@@ -27,17 +25,7 @@ export function PatientsPage() {
           <PatientsTablePagination />
         </div>
       </section>
-
-      {!!onViewPatient && (
-        <PatientViewer
-          open={onViewPatient !== null}
-          onOpenChange={(open) => {
-            if (open) return null;
-            clearView();
-          }}
-          patient={onViewPatient}
-        />
-      )}
+      <PatientViewer />
     </React.Fragment>
   );
 }
