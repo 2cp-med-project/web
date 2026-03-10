@@ -1,6 +1,6 @@
 import { Table } from "@radix-ui/themes";
-import type { Patient } from "../../../types/entities.ts";
-import { PatientsTableCell } from "./Cell/index.ts";
+import type { Patient } from "../../../../types/entities.ts";
+import { PatientsTableCell } from "../Cell/index.ts";
 
 type PatientsTableRowProps = Patient & {};
 
@@ -19,3 +19,5 @@ export function PatientsTableRow({ ...patient }: PatientsTableRowProps) {
     </Table.Row>
   );
 }
+
+export { PatientsTableRowSkeleton } from "./Skeleton.tsx";

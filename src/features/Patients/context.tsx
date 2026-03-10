@@ -1,5 +1,7 @@
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import { usePatients } from "@/hooks/index.ts";
+import type { Page } from "@/types/pagination.ts";
+import type { QueryObserverResult } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   createContext,
@@ -12,6 +14,9 @@ import type { Patient } from "../../types/entities.ts";
 
 export type PatientsContext = {
   patients: Patient[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
   page: number;
   pageSize: number;
   count: number;
@@ -23,6 +28,7 @@ export type PatientsContext = {
   onSearchChange: (search: string) => void;
   view: (patientId: string) => void;
   clearView: () => void;
+  refetch: () => Promise<QueryObserverResult<Page<Patient>, Error>>;
 };
 
 export const patientsContext = createContext<PatientsContext | undefined>(
@@ -46,7 +52,7 @@ export function PatientsContextProvider({
 
   const [onViewPatientId, setOnViewPatientId] = useState<string | null>(null);
 
-  const { data, refetch } = fetchPage({
+  const { data, refetch, isLoading, isError, error } = fetchPage({
     page,
     pageSize: PATIENTS_PAGE_SIZE,
     search,
@@ -85,12 +91,16 @@ export function PatientsContextProvider({
         count,
         totalPages,
         search,
+        isLoading,
+        isError,
+        error,
         onViewPatientId,
         onNextPage,
         onPrevPage,
         onSearchChange: setSearch,
         view,
         clearView,
+        refetch,
       }}
     >
       {children}
