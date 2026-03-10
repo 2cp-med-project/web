@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as ProtectedSettingsRouteImport } from './routes/_protected/settings'
@@ -21,6 +22,10 @@ import { Route as PublicAuthRegisterIndexRouteImport } from './routes/_public/_a
 import { Route as PublicAuthRegisterPatientRouteImport } from './routes/_public/_auth/register/patient'
 import { Route as PublicAuthRegisterDoctorRouteImport } from './routes/_public/_auth/register/doctor'
 
+const PublicRouteRoute = PublicRouteRouteImport.update({
+  id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
   id: '/_protected',
   getParentRoute: () => rootRouteImport,
@@ -51,8 +56,8 @@ const ProtectedChatRoute = ProtectedChatRouteImport.update({
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 const PublicAuthRouteRoute = PublicAuthRouteRouteImport.update({
-  id: '/_public/_auth',
-  getParentRoute: () => rootRouteImport,
+  id: '/_auth',
+  getParentRoute: () => PublicRouteRoute,
 } as any)
 const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   id: '/login',
@@ -102,6 +107,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected': typeof ProtectedRouteRouteWithChildren
+  '/_public': typeof PublicRouteRouteWithChildren
   '/_public/_auth': typeof PublicAuthRouteRouteWithChildren
   '/_protected/chat': typeof ProtectedChatRoute
   '/_protected/patients': typeof ProtectedPatientsRoute
@@ -139,6 +145,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_protected'
+    | '/_public'
     | '/_public/_auth'
     | '/_protected/chat'
     | '/_protected/patients'
@@ -153,11 +160,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
-  PublicAuthRouteRoute: typeof PublicAuthRouteRouteWithChildren
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected': {
       id: '/_protected'
       path: ''
@@ -205,7 +219,7 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof PublicAuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PublicRouteRoute
     }
     '/_public/_auth/login': {
       id: '/_public/_auth/login'
@@ -276,9 +290,21 @@ const PublicAuthRouteRouteWithChildren = PublicAuthRouteRoute._addFileChildren(
   PublicAuthRouteRouteChildren,
 )
 
+interface PublicRouteRouteChildren {
+  PublicAuthRouteRoute: typeof PublicAuthRouteRouteWithChildren
+}
+
+const PublicRouteRouteChildren: PublicRouteRouteChildren = {
+  PublicAuthRouteRoute: PublicAuthRouteRouteWithChildren,
+}
+
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
+  PublicRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
-  PublicAuthRouteRoute: PublicAuthRouteRouteWithChildren,
+  PublicRouteRoute: PublicRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

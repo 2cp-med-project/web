@@ -6,6 +6,10 @@ export type User = {
   email: string;
   phoneNumber: string;
   avatar: string | null;
+  address: string | null;
+  nationalId: string;
+  age: number;
+  gender: Gender;
 };
 
 export type Patient = User & {
@@ -14,10 +18,6 @@ export type Patient = User & {
 };
 
 export type PatientDetails = Patient & {
-  age: number;
-  gender: Gender;
-  nationalId: string;
-  address: string;
   bloodType: BloodType;
   allergies: string[];
   chronicConditions: string[];
@@ -39,4 +39,8 @@ export type RawAppointment = {
 
 export type PopulatedAppointment = Omit<RawAppointment, "patientId"> & {
   patient: Patient;
+};
+
+export type Profile = User & {
+  bio: string;
 };

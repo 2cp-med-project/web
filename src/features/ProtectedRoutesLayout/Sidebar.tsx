@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils.ts";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { NAVIGATION_MENU } from "../constants/navigation.ts";
-import { Logo } from "./shared/Logo.tsx";
+import { Logo } from "../../components/shared/Logo.tsx";
+import { NAVIGATION_MENU } from "../../constants/navigation.ts";
 
 export function Sidebar() {
   const [active, setActive] = useState<string | null>(null);
