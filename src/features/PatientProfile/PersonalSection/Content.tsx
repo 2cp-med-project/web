@@ -1,0 +1,32 @@
+import type { Patient } from "@/types/entities.ts";
+import { getInitials } from "@/utils/index.ts";
+import { Avatar } from "@radix-ui/themes";
+
+type PatientPersonalSectionContentProps = {
+  patient: Patient;
+};
+
+export function PatientPersonalSectionContent(
+  props: PatientPersonalSectionContentProps,
+) {
+  return (
+    <div className="border border-black/20 rounded-lg bg-white py-8 shadow-sm">
+      <div className="space-y-1 flex flex-col items-center justify-center">
+        <div className="p-1 rounded-full w-fit border-foreground border">
+          <Avatar
+            size={"9"}
+            src={props.patient.avatar ?? undefined}
+            fallback={getInitials(props.patient.fullname)}
+            radius="full"
+          />
+        </div>
+        <p className="font-medium text-xl">{props.patient.fullname}</p>
+      </div>
+
+      <div className="text-center mt-8">
+        <p className="text-muted text-base">{props.patient.phoneNumber}</p>
+        <p className="text-muted text-base">{props.patient.email}</p>
+      </div>
+    </div>
+  );
+}

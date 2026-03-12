@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { AuthUI } from "./constants/ui/index.ts";
@@ -7,6 +8,7 @@ import { router } from "./router.tsx";
 
 export const AppRouter = () => {
   const auth = useAuthContext();
+  const queryClient = useQueryClient();
 
   const { login } = useAuth();
   const loginMutation = login();
@@ -27,6 +29,7 @@ export const AppRouter = () => {
       router={router}
       context={{
         auth,
+        qc: queryClient,
       }}
     />
   );
