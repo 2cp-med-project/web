@@ -6,6 +6,10 @@ export type NavigationItem = {
   to: string;
 };
 
+export type NestedNavigationItem = NavigationItem & {
+  regex: RegExp;
+};
+
 export type NavigationSection = {
   label: string;
   items: NavigationItem[];

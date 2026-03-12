@@ -10,4 +10,5 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       <TanStackRouterDevtools />
     </Theme>
   ),
+  notFoundComponent: () => <div>Global 404</div>,
 });

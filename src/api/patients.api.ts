@@ -9,21 +9,10 @@ export const fetchPage = (pagination: PaginationAttributes) => {
       const start = (pagination.page - 1) * pagination.pageSize;
       const end = start + pagination.pageSize;
 
-      if (!pagination.search) {
-        const patients = PatientsUI.patients.slice(start, end);
-        const nextPage =
-          end - start === patients.length ? null : pagination.page + 1;
-        const count = patients.length;
-
-        return res({
-          data: patients,
-          nextPage,
-          count,
-        });
-      }
-
       const filteredPatients = PatientsUI.patients.filter((p) =>
-        p.fullname.toLowerCase().includes(pagination.search.toLowerCase()),
+        p.fullname
+          .toLowerCase()
+          .includes(pagination.search.trim().toLowerCase()),
       );
 
       const patients = filteredPatients.slice(start, end);

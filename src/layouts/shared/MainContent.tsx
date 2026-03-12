@@ -1,6 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
-import { ProfilePopover } from "./ProfilePopover/index.tsx";
+import { ProfilePopover } from "../AppLayout/ProfilePopover/index.tsx";
 
 export function MainContent() {
   return (
