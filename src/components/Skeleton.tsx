@@ -4,6 +4,8 @@ type SkeletonProps = {
   className?: string;
 };
 
-export function Skeleton({ className }: SkeletonProps) {
-  return <div className={cn("bg-gray-200 animate-pulse", className)}></div>;
+export function Skeleton({ className = "w-5 h-5" }: SkeletonProps) {
+  return (
+    <div className={cn("rounded bg-gray-200 animate-pulse", className)}></div>
+  );
 }

@@ -37,6 +37,6 @@ export const fetchOne = (id: string) => {
       const patient = PatientsUI.patientsWithDetails.find((p) => p.id === id);
       if (patient === undefined) return rej(new PatientNotFoundError(id));
       return res(patient);
-    }, 200),
+    }, 1000),
   );
 };

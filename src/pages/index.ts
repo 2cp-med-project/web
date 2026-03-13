@@ -6,3 +6,4 @@ export { PatientsPage } from "./Patients.tsx";
 export { PlanningPage } from "./Planning.tsx";
 export { RegisterPage } from "./Register.tsx";
 export { RegisterPatientPage } from "./RegisterPatient.tsx";
+export { PatientReportPage } from "./PatientReport.tsx";
