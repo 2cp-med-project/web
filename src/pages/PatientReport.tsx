@@ -23,7 +23,7 @@ const STEPS = [
 
 export function PatientReportPage() {
   const { patientId } = Route.useParams();
-  const [current, setCurrent] = useState(0);
+  const [current, _] = useState(0);
 
   return (
     <section className="px-2 w-full h-full">
