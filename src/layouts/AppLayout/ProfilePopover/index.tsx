@@ -10,7 +10,7 @@ export function ProfilePopover() {
   const { fetchMe } = useProfile();
   const { profile, isLoading, isError, refetch } = fetchMe();
 
-  if (isLoading) return <ProfilePopoverSkeleton />;
-  if (isError || !profile) return <ProfilePopoverError onRetry={refetch} />;
+  if (isError) return <ProfilePopoverError onRetry={refetch} />;
+  if (isLoading || !profile) return <ProfilePopoverSkeleton />;
   return <ProfilePopoverContent profile={profile} onLogout={logout} />;
 }

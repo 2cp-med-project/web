@@ -18,3 +18,37 @@ export const BLOOD_TYPE = {
   O_POS: "O+",
   O_NEG: "O-",
 } as const;
+
+export const CONSULTATION_TYPE = {
+  NEW_VISIT: "Nouvelle consultation",
+  FOLLOW_UP: "Suivi",
+  EMERGENCY: "Urgence",
+  ROUTINE_CHECK: "Vérification de routine",
+} as const;
+
+export const GRAVITY = {
+  MILD: "Légère",
+  MODERATE: "Modérée",
+  SEVERE: "Sévère",
+} as const;
+
+export const GENERAL_PATIENT_STATE = {
+  CRITICAL: "Critique",
+  STABLE: "Stable",
+  FAIR: "Moyen",
+} as const;
+
+export const EXAM = {
+  GENERAL: "Général",
+  CARDIOVASCULAR: "Cardiovasculaire",
+  RESPIRATORY: "Respiratoire",
+  NEUROLOGICAL: "Neurologique",
+  MUSCULOSKELETAL: "Musculosquelettique",
+} as const;
+
+export const ADDITIONAL_ACTIONS = {
+  LAB_TESTS: "Tests de laboratoire",
+  MEDICAL_IMAGING: "Imagerie médicale",
+  MEDICAL_REFERRAL: "Référence médicale",
+  MONITORING: "Surveillance",
+} as const;

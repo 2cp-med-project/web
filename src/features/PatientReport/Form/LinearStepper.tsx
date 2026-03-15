@@ -1,12 +1,10 @@
 import { cn } from "@/lib/utils.ts";
 import { useEffect, useRef, useState } from "react";
+import { usePatientReportFormContext } from "./context.tsx";
 
-type StepperProps = {
-  steps: { label: string }[];
-  current: number;
-};
+export function LinearStepper() {
+  const { step: current, steps } = usePatientReportFormContext();
 
-export function Stepper({ steps, current }: StepperProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [stepWidth, setStepWidth] = useState(0);
 
@@ -24,14 +22,14 @@ export function Stepper({ steps, current }: StepperProps) {
       <div
         style={{
           width: `${stepWidth - 2}px`,
-          transform: `translateX(${current * (stepWidth - 2)}px)`,
+          transform: `translateX(${(current - 1) * (stepWidth - 2)}px)`,
           transition: "transform 0.3s ease",
         }}
         className={cn("absolute h-[calc(100%-8px)] bg-foreground rounded-xl")}
       ></div>
 
       {steps.map((step, index) => {
-        const isCurrent = current === index;
+        const isCurrent = current - 1 === index;
         return (
           <div
             key={index}
