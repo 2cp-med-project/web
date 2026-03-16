@@ -21,8 +21,8 @@ export function PatientViewer() {
   if (!open) return null;
 
   const renderContent = () => {
-    if (isError) return <PatientViewerSkeleton />;
-    if (isLoading || !patient) return <PatientViewerError onRetry={refetch} />;
+    if (isError) return <PatientViewerError onRetry={refetch} />;
+    if (isLoading || !patient) return <PatientViewerSkeleton />;
     return (
       <PatientViewerContent
         patient={patient}
