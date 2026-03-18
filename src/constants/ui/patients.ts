@@ -47,3 +47,21 @@ export const patientsWithDetails: PatientDetails[] = patients.map((p, i) => ({
   ...p,
   ...patientDetailsData[i],
 }));
+
+export const patientReportFormSteps = [
+  {
+    label: "Consultation",
+  },
+  {
+    label: "Symptômes",
+  },
+  {
+    label: "Signes Vitaux",
+  },
+  {
+    label: "Évaluation",
+  },
+  {
+    label: "Traitement",
+  },
+];

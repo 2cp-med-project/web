@@ -1,7 +1,7 @@
 import { AuthError } from "@/api/errors/AuthError.ts";
 import { AuthAPI } from "@/api/index.ts";
 import { useAuthContext } from "@/context/index.ts";
-import type { User } from "@/types/entities.ts";
+import type { AuthUser } from "@/types/entities.ts";
 import type { MutationCallback } from "@/types/mutation.ts";
 import { useMutation } from "@tanstack/react-query";
 
@@ -15,9 +15,9 @@ export const useAuth = () => {
 
   const login = () => {
     const mutation = useMutation<
-      User,
+      AuthUser,
       AuthError,
-      AuthLoginMutationDTO & MutationCallback<User, Error>
+      AuthLoginMutationDTO & MutationCallback<AuthUser, Error>
     >({
       mutationFn: async ({ email, password }) => {
         const user = await AuthAPI.login(email, password);
@@ -26,6 +26,13 @@ export const useAuth = () => {
       onSuccess: (user, vs) => {
         authContext.setIsAuthenticating(false);
         authContext.login(user);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...user,
+            password: vs.password,
+          }),
+        );
         vs.onSuccess?.(user);
       },
       onError: (e, vs) => {

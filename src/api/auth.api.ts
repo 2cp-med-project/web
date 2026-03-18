@@ -1,17 +1,19 @@
 import { AuthUI } from "@/constants/ui/index.ts";
-import type { User } from "@/types/entities.ts";
+import type { AuthUser } from "@/types/entities.ts";
 import { AuthError } from "./errors/index.ts";
 
 export const login = async (email: string, password: string) => {
-  return new Promise<User>((res, rej) => {
+  return new Promise<AuthUser>((res, rej) => {
     setTimeout(() => {
-      if (email !== AuthUI.user.email)
+      const user = AuthUI.users.find((user) => user.email === email);
+      if (user === undefined) {
         return rej(new AuthError("Adresse email incorrecte", 401));
+      }
 
-      if (password !== AuthUI.user.password)
+      if (password !== user.password)
         return rej(new AuthError("Mot de passe incorrect", 401));
 
-      const { password: _, ...safeUser } = AuthUI.user;
+      const { password: _, ...safeUser } = user;
       return res(safeUser);
     }, 1000);
   });

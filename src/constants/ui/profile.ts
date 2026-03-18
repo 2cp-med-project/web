@@ -1,7 +1,13 @@
 import type { Profile } from "@/types/entities.ts";
-import { user } from "./auth.ts";
+import { users } from "./auth.ts";
 
-export const profile: Profile = {
-  ...user,
-  bio: "Full-Stack SWE",
-};
+export const profiles: Profile[] = [
+  {
+    ...users[0],
+    bio: "Docteur Géneralist",
+  },
+  {
+    ...users[1],
+    bio: "Patient malade",
+  },
+];

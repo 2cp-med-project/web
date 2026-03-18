@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { AuthUI } from "./constants/ui/index.ts";
 import { useAuthContext } from "./context/auth.tsx";
 import { useAuth } from "./hooks/useAuth.ts";
 import { router } from "./router.tsx";
+import type { AuthUser } from "./types/entities.ts";
 
 export const AppRouter = () => {
   const auth = useAuthContext();
@@ -15,9 +15,16 @@ export const AppRouter = () => {
 
   // try initial login here.
   useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user === null) return;
+
+    const json = JSON.parse(user) as AuthUser & {
+      password: string;
+    };
+
     loginMutation.mutateAsync({
-      email: AuthUI.user.email,
-      password: AuthUI.user.password,
+      email: json.email,
+      password: json.password,
       onSuccess: () => {
         // toast here : welcome back.
       },

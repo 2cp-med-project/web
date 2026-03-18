@@ -12,23 +12,25 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as PublicAuthRouteRouteImport } from './routes/_public/_auth/route'
-import { Route as ProtectedPatientsRouteRouteImport } from './routes/_protected/patients/route'
-import { Route as ProtectedAppRouteRouteImport } from './routes/_protected/_app/route'
+import { Route as ProtectedDoctorRouteRouteImport } from './routes/_protected/_doctor/route'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/_auth/login'
-import { Route as ProtectedAppSettingsRouteImport } from './routes/_protected/_app/settings'
-import { Route as ProtectedAppPlanningRouteImport } from './routes/_protected/_app/planning'
-import { Route as ProtectedAppPatientsRouteImport } from './routes/_protected/_app/patients'
-import { Route as ProtectedAppChatRouteImport } from './routes/_protected/_app/chat'
-import { Route as ProtectedPatientsPatientIdRouteRouteImport } from './routes/_protected/patients/$patientId/route'
+import { Route as ProtectedSharedAppRouteRouteImport } from './routes/_protected/_shared/_app/route'
+import { Route as ProtectedDoctorPatientsRouteRouteImport } from './routes/_protected/_doctor/patients/route'
+import { Route as ProtectedDoctorAppRouteRouteImport } from './routes/_protected/_doctor/_app/route'
 import { Route as PublicAuthRegisterIndexRouteImport } from './routes/_public/_auth/register/index'
-import { Route as ProtectedPatientsPatientIdIndexRouteImport } from './routes/_protected/patients/$patientId/index'
-import { Route as ProtectedAppDashboardIndexRouteImport } from './routes/_protected/_app/_dashboard/index'
 import { Route as PublicAuthRegisterPatientRouteImport } from './routes/_public/_auth/register/patient'
 import { Route as PublicAuthRegisterDoctorRouteImport } from './routes/_public/_auth/register/doctor'
-import { Route as ProtectedPatientsPatientIdReportRouteImport } from './routes/_protected/patients/$patientId/report'
-import { Route as ProtectedPatientsPatientIdProfileRouteImport } from './routes/_protected/patients/$patientId/profile'
-import { Route as ProtectedPatientsPatientIdFileRouteImport } from './routes/_protected/patients/$patientId/file'
-import { Route as ProtectedPatientsPatientIdDraftsRouteImport } from './routes/_protected/patients/$patientId/drafts'
+import { Route as ProtectedDoctorAppSettingsRouteImport } from './routes/_protected/_doctor/_app/settings'
+import { Route as ProtectedDoctorAppPlanningRouteImport } from './routes/_protected/_doctor/_app/planning'
+import { Route as ProtectedDoctorAppPatientsRouteImport } from './routes/_protected/_doctor/_app/patients'
+import { Route as ProtectedDoctorAppChatRouteImport } from './routes/_protected/_doctor/_app/chat'
+import { Route as ProtectedDoctorPatientsPatientIdRouteRouteImport } from './routes/_protected/_doctor/patients/$patientId/route'
+import { Route as ProtectedSharedAppDashboardIndexRouteImport } from './routes/_protected/_shared/_app/_dashboard/index'
+import { Route as ProtectedDoctorPatientsPatientIdIndexRouteImport } from './routes/_protected/_doctor/patients/$patientId/index'
+import { Route as ProtectedDoctorPatientsPatientIdReportRouteImport } from './routes/_protected/_doctor/patients/$patientId/report'
+import { Route as ProtectedDoctorPatientsPatientIdProfileRouteImport } from './routes/_protected/_doctor/patients/$patientId/profile'
+import { Route as ProtectedDoctorPatientsPatientIdFileRouteImport } from './routes/_protected/_doctor/patients/$patientId/file'
+import { Route as ProtectedDoctorPatientsPatientIdDraftsRouteImport } from './routes/_protected/_doctor/patients/$patientId/drafts'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
@@ -42,13 +44,8 @@ const PublicAuthRouteRoute = PublicAuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => PublicRouteRoute,
 } as any)
-const ProtectedPatientsRouteRoute = ProtectedPatientsRouteRouteImport.update({
-  id: '/patients',
-  path: '/patients',
-  getParentRoute: () => ProtectedRouteRoute,
-} as any)
-const ProtectedAppRouteRoute = ProtectedAppRouteRouteImport.update({
-  id: '/_app',
+const ProtectedDoctorRouteRoute = ProtectedDoctorRouteRouteImport.update({
+  id: '/_doctor',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
@@ -56,49 +53,25 @@ const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PublicAuthRouteRoute,
 } as any)
-const ProtectedAppSettingsRoute = ProtectedAppSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => ProtectedAppRouteRoute,
+const ProtectedSharedAppRouteRoute = ProtectedSharedAppRouteRouteImport.update({
+  id: '/_shared/_app',
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
-const ProtectedAppPlanningRoute = ProtectedAppPlanningRouteImport.update({
-  id: '/planning',
-  path: '/planning',
-  getParentRoute: () => ProtectedAppRouteRoute,
-} as any)
-const ProtectedAppPatientsRoute = ProtectedAppPatientsRouteImport.update({
-  id: '/patients',
-  path: '/patients',
-  getParentRoute: () => ProtectedAppRouteRoute,
-} as any)
-const ProtectedAppChatRoute = ProtectedAppChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => ProtectedAppRouteRoute,
-} as any)
-const ProtectedPatientsPatientIdRouteRoute =
-  ProtectedPatientsPatientIdRouteRouteImport.update({
-    id: '/$patientId',
-    path: '/$patientId',
-    getParentRoute: () => ProtectedPatientsRouteRoute,
+const ProtectedDoctorPatientsRouteRoute =
+  ProtectedDoctorPatientsRouteRouteImport.update({
+    id: '/patients',
+    path: '/patients',
+    getParentRoute: () => ProtectedDoctorRouteRoute,
   } as any)
+const ProtectedDoctorAppRouteRoute = ProtectedDoctorAppRouteRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => ProtectedDoctorRouteRoute,
+} as any)
 const PublicAuthRegisterIndexRoute = PublicAuthRegisterIndexRouteImport.update({
   id: '/register/',
   path: '/register/',
   getParentRoute: () => PublicAuthRouteRoute,
 } as any)
-const ProtectedPatientsPatientIdIndexRoute =
-  ProtectedPatientsPatientIdIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedPatientsPatientIdRouteRoute,
-  } as any)
-const ProtectedAppDashboardIndexRoute =
-  ProtectedAppDashboardIndexRouteImport.update({
-    id: '/_dashboard/',
-    path: '/',
-    getParentRoute: () => ProtectedAppRouteRoute,
-  } as any)
 const PublicAuthRegisterPatientRoute =
   PublicAuthRegisterPatientRouteImport.update({
     id: '/register/patient',
@@ -111,143 +84,188 @@ const PublicAuthRegisterDoctorRoute =
     path: '/register/doctor',
     getParentRoute: () => PublicAuthRouteRoute,
   } as any)
-const ProtectedPatientsPatientIdReportRoute =
-  ProtectedPatientsPatientIdReportRouteImport.update({
+const ProtectedDoctorAppSettingsRoute =
+  ProtectedDoctorAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => ProtectedDoctorAppRouteRoute,
+  } as any)
+const ProtectedDoctorAppPlanningRoute =
+  ProtectedDoctorAppPlanningRouteImport.update({
+    id: '/planning',
+    path: '/planning',
+    getParentRoute: () => ProtectedDoctorAppRouteRoute,
+  } as any)
+const ProtectedDoctorAppPatientsRoute =
+  ProtectedDoctorAppPatientsRouteImport.update({
+    id: '/patients',
+    path: '/patients',
+    getParentRoute: () => ProtectedDoctorAppRouteRoute,
+  } as any)
+const ProtectedDoctorAppChatRoute = ProtectedDoctorAppChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => ProtectedDoctorAppRouteRoute,
+} as any)
+const ProtectedDoctorPatientsPatientIdRouteRoute =
+  ProtectedDoctorPatientsPatientIdRouteRouteImport.update({
+    id: '/$patientId',
+    path: '/$patientId',
+    getParentRoute: () => ProtectedDoctorPatientsRouteRoute,
+  } as any)
+const ProtectedSharedAppDashboardIndexRoute =
+  ProtectedSharedAppDashboardIndexRouteImport.update({
+    id: '/_dashboard/',
+    path: '/',
+    getParentRoute: () => ProtectedSharedAppRouteRoute,
+  } as any)
+const ProtectedDoctorPatientsPatientIdIndexRoute =
+  ProtectedDoctorPatientsPatientIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedDoctorPatientsPatientIdRouteRoute,
+  } as any)
+const ProtectedDoctorPatientsPatientIdReportRoute =
+  ProtectedDoctorPatientsPatientIdReportRouteImport.update({
     id: '/report',
     path: '/report',
-    getParentRoute: () => ProtectedPatientsPatientIdRouteRoute,
+    getParentRoute: () => ProtectedDoctorPatientsPatientIdRouteRoute,
   } as any)
-const ProtectedPatientsPatientIdProfileRoute =
-  ProtectedPatientsPatientIdProfileRouteImport.update({
+const ProtectedDoctorPatientsPatientIdProfileRoute =
+  ProtectedDoctorPatientsPatientIdProfileRouteImport.update({
     id: '/profile',
     path: '/profile',
-    getParentRoute: () => ProtectedPatientsPatientIdRouteRoute,
+    getParentRoute: () => ProtectedDoctorPatientsPatientIdRouteRoute,
   } as any)
-const ProtectedPatientsPatientIdFileRoute =
-  ProtectedPatientsPatientIdFileRouteImport.update({
+const ProtectedDoctorPatientsPatientIdFileRoute =
+  ProtectedDoctorPatientsPatientIdFileRouteImport.update({
     id: '/file',
     path: '/file',
-    getParentRoute: () => ProtectedPatientsPatientIdRouteRoute,
+    getParentRoute: () => ProtectedDoctorPatientsPatientIdRouteRoute,
   } as any)
-const ProtectedPatientsPatientIdDraftsRoute =
-  ProtectedPatientsPatientIdDraftsRouteImport.update({
+const ProtectedDoctorPatientsPatientIdDraftsRoute =
+  ProtectedDoctorPatientsPatientIdDraftsRouteImport.update({
     id: '/drafts',
     path: '/drafts',
-    getParentRoute: () => ProtectedPatientsPatientIdRouteRoute,
+    getParentRoute: () => ProtectedDoctorPatientsPatientIdRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof ProtectedAppDashboardIndexRoute
-  '/patients': typeof ProtectedAppPatientsRoute
-  '/patients/$patientId': typeof ProtectedPatientsPatientIdRouteRouteWithChildren
-  '/chat': typeof ProtectedAppChatRoute
-  '/planning': typeof ProtectedAppPlanningRoute
-  '/settings': typeof ProtectedAppSettingsRoute
+  '/': typeof ProtectedSharedAppDashboardIndexRoute
+  '/patients': typeof ProtectedDoctorAppPatientsRoute
   '/login': typeof PublicAuthLoginRoute
-  '/patients/$patientId/drafts': typeof ProtectedPatientsPatientIdDraftsRoute
-  '/patients/$patientId/file': typeof ProtectedPatientsPatientIdFileRoute
-  '/patients/$patientId/profile': typeof ProtectedPatientsPatientIdProfileRoute
-  '/patients/$patientId/report': typeof ProtectedPatientsPatientIdReportRoute
+  '/patients/$patientId': typeof ProtectedDoctorPatientsPatientIdRouteRouteWithChildren
+  '/chat': typeof ProtectedDoctorAppChatRoute
+  '/planning': typeof ProtectedDoctorAppPlanningRoute
+  '/settings': typeof ProtectedDoctorAppSettingsRoute
   '/register/doctor': typeof PublicAuthRegisterDoctorRoute
   '/register/patient': typeof PublicAuthRegisterPatientRoute
-  '/patients/$patientId/': typeof ProtectedPatientsPatientIdIndexRoute
   '/register/': typeof PublicAuthRegisterIndexRoute
+  '/patients/$patientId/drafts': typeof ProtectedDoctorPatientsPatientIdDraftsRoute
+  '/patients/$patientId/file': typeof ProtectedDoctorPatientsPatientIdFileRoute
+  '/patients/$patientId/profile': typeof ProtectedDoctorPatientsPatientIdProfileRoute
+  '/patients/$patientId/report': typeof ProtectedDoctorPatientsPatientIdReportRoute
+  '/patients/$patientId/': typeof ProtectedDoctorPatientsPatientIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof ProtectedAppDashboardIndexRoute
-  '/patients': typeof ProtectedAppPatientsRoute
-  '/chat': typeof ProtectedAppChatRoute
-  '/planning': typeof ProtectedAppPlanningRoute
-  '/settings': typeof ProtectedAppSettingsRoute
+  '/': typeof ProtectedSharedAppDashboardIndexRoute
+  '/patients': typeof ProtectedDoctorAppPatientsRoute
   '/login': typeof PublicAuthLoginRoute
-  '/patients/$patientId/drafts': typeof ProtectedPatientsPatientIdDraftsRoute
-  '/patients/$patientId/file': typeof ProtectedPatientsPatientIdFileRoute
-  '/patients/$patientId/profile': typeof ProtectedPatientsPatientIdProfileRoute
-  '/patients/$patientId/report': typeof ProtectedPatientsPatientIdReportRoute
+  '/chat': typeof ProtectedDoctorAppChatRoute
+  '/planning': typeof ProtectedDoctorAppPlanningRoute
+  '/settings': typeof ProtectedDoctorAppSettingsRoute
   '/register/doctor': typeof PublicAuthRegisterDoctorRoute
   '/register/patient': typeof PublicAuthRegisterPatientRoute
-  '/patients/$patientId': typeof ProtectedPatientsPatientIdIndexRoute
   '/register': typeof PublicAuthRegisterIndexRoute
+  '/patients/$patientId/drafts': typeof ProtectedDoctorPatientsPatientIdDraftsRoute
+  '/patients/$patientId/file': typeof ProtectedDoctorPatientsPatientIdFileRoute
+  '/patients/$patientId/profile': typeof ProtectedDoctorPatientsPatientIdProfileRoute
+  '/patients/$patientId/report': typeof ProtectedDoctorPatientsPatientIdReportRoute
+  '/patients/$patientId': typeof ProtectedDoctorPatientsPatientIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/_public': typeof PublicRouteRouteWithChildren
-  '/_protected/_app': typeof ProtectedAppRouteRouteWithChildren
-  '/_protected/patients': typeof ProtectedPatientsRouteRouteWithChildren
+  '/_protected/_doctor': typeof ProtectedDoctorRouteRouteWithChildren
   '/_public/_auth': typeof PublicAuthRouteRouteWithChildren
-  '/_protected/patients/$patientId': typeof ProtectedPatientsPatientIdRouteRouteWithChildren
-  '/_protected/_app/chat': typeof ProtectedAppChatRoute
-  '/_protected/_app/patients': typeof ProtectedAppPatientsRoute
-  '/_protected/_app/planning': typeof ProtectedAppPlanningRoute
-  '/_protected/_app/settings': typeof ProtectedAppSettingsRoute
+  '/_protected/_doctor/_app': typeof ProtectedDoctorAppRouteRouteWithChildren
+  '/_protected/_doctor/patients': typeof ProtectedDoctorPatientsRouteRouteWithChildren
+  '/_protected/_shared/_app': typeof ProtectedSharedAppRouteRouteWithChildren
   '/_public/_auth/login': typeof PublicAuthLoginRoute
-  '/_protected/patients/$patientId/drafts': typeof ProtectedPatientsPatientIdDraftsRoute
-  '/_protected/patients/$patientId/file': typeof ProtectedPatientsPatientIdFileRoute
-  '/_protected/patients/$patientId/profile': typeof ProtectedPatientsPatientIdProfileRoute
-  '/_protected/patients/$patientId/report': typeof ProtectedPatientsPatientIdReportRoute
+  '/_protected/_doctor/patients/$patientId': typeof ProtectedDoctorPatientsPatientIdRouteRouteWithChildren
+  '/_protected/_doctor/_app/chat': typeof ProtectedDoctorAppChatRoute
+  '/_protected/_doctor/_app/patients': typeof ProtectedDoctorAppPatientsRoute
+  '/_protected/_doctor/_app/planning': typeof ProtectedDoctorAppPlanningRoute
+  '/_protected/_doctor/_app/settings': typeof ProtectedDoctorAppSettingsRoute
   '/_public/_auth/register/doctor': typeof PublicAuthRegisterDoctorRoute
   '/_public/_auth/register/patient': typeof PublicAuthRegisterPatientRoute
-  '/_protected/_app/_dashboard/': typeof ProtectedAppDashboardIndexRoute
-  '/_protected/patients/$patientId/': typeof ProtectedPatientsPatientIdIndexRoute
   '/_public/_auth/register/': typeof PublicAuthRegisterIndexRoute
+  '/_protected/_doctor/patients/$patientId/drafts': typeof ProtectedDoctorPatientsPatientIdDraftsRoute
+  '/_protected/_doctor/patients/$patientId/file': typeof ProtectedDoctorPatientsPatientIdFileRoute
+  '/_protected/_doctor/patients/$patientId/profile': typeof ProtectedDoctorPatientsPatientIdProfileRoute
+  '/_protected/_doctor/patients/$patientId/report': typeof ProtectedDoctorPatientsPatientIdReportRoute
+  '/_protected/_doctor/patients/$patientId/': typeof ProtectedDoctorPatientsPatientIdIndexRoute
+  '/_protected/_shared/_app/_dashboard/': typeof ProtectedSharedAppDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/patients'
+    | '/login'
     | '/patients/$patientId'
     | '/chat'
     | '/planning'
     | '/settings'
-    | '/login'
+    | '/register/doctor'
+    | '/register/patient'
+    | '/register/'
     | '/patients/$patientId/drafts'
     | '/patients/$patientId/file'
     | '/patients/$patientId/profile'
     | '/patients/$patientId/report'
-    | '/register/doctor'
-    | '/register/patient'
     | '/patients/$patientId/'
-    | '/register/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/patients'
+    | '/login'
     | '/chat'
     | '/planning'
     | '/settings'
-    | '/login'
+    | '/register/doctor'
+    | '/register/patient'
+    | '/register'
     | '/patients/$patientId/drafts'
     | '/patients/$patientId/file'
     | '/patients/$patientId/profile'
     | '/patients/$patientId/report'
-    | '/register/doctor'
-    | '/register/patient'
     | '/patients/$patientId'
-    | '/register'
   id:
     | '__root__'
     | '/_protected'
     | '/_public'
-    | '/_protected/_app'
-    | '/_protected/patients'
+    | '/_protected/_doctor'
     | '/_public/_auth'
-    | '/_protected/patients/$patientId'
-    | '/_protected/_app/chat'
-    | '/_protected/_app/patients'
-    | '/_protected/_app/planning'
-    | '/_protected/_app/settings'
+    | '/_protected/_doctor/_app'
+    | '/_protected/_doctor/patients'
+    | '/_protected/_shared/_app'
     | '/_public/_auth/login'
-    | '/_protected/patients/$patientId/drafts'
-    | '/_protected/patients/$patientId/file'
-    | '/_protected/patients/$patientId/profile'
-    | '/_protected/patients/$patientId/report'
+    | '/_protected/_doctor/patients/$patientId'
+    | '/_protected/_doctor/_app/chat'
+    | '/_protected/_doctor/_app/patients'
+    | '/_protected/_doctor/_app/planning'
+    | '/_protected/_doctor/_app/settings'
     | '/_public/_auth/register/doctor'
     | '/_public/_auth/register/patient'
-    | '/_protected/_app/_dashboard/'
-    | '/_protected/patients/$patientId/'
     | '/_public/_auth/register/'
+    | '/_protected/_doctor/patients/$patientId/drafts'
+    | '/_protected/_doctor/patients/$patientId/file'
+    | '/_protected/_doctor/patients/$patientId/profile'
+    | '/_protected/_doctor/patients/$patientId/report'
+    | '/_protected/_doctor/patients/$patientId/'
+    | '/_protected/_shared/_app/_dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -278,18 +296,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthRouteRouteImport
       parentRoute: typeof PublicRouteRoute
     }
-    '/_protected/patients': {
-      id: '/_protected/patients'
-      path: '/patients'
-      fullPath: '/patients'
-      preLoaderRoute: typeof ProtectedPatientsRouteRouteImport
-      parentRoute: typeof ProtectedRouteRoute
-    }
-    '/_protected/_app': {
-      id: '/_protected/_app'
+    '/_protected/_doctor': {
+      id: '/_protected/_doctor'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof ProtectedAppRouteRouteImport
+      preLoaderRoute: typeof ProtectedDoctorRouteRouteImport
       parentRoute: typeof ProtectedRouteRoute
     }
     '/_public/_auth/login': {
@@ -299,40 +310,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicAuthRouteRoute
     }
-    '/_protected/_app/settings': {
-      id: '/_protected/_app/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof ProtectedAppSettingsRouteImport
-      parentRoute: typeof ProtectedAppRouteRoute
+    '/_protected/_shared/_app': {
+      id: '/_protected/_shared/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedSharedAppRouteRouteImport
+      parentRoute: typeof ProtectedRouteRoute
     }
-    '/_protected/_app/planning': {
-      id: '/_protected/_app/planning'
-      path: '/planning'
-      fullPath: '/planning'
-      preLoaderRoute: typeof ProtectedAppPlanningRouteImport
-      parentRoute: typeof ProtectedAppRouteRoute
-    }
-    '/_protected/_app/patients': {
-      id: '/_protected/_app/patients'
+    '/_protected/_doctor/patients': {
+      id: '/_protected/_doctor/patients'
       path: '/patients'
       fullPath: '/patients'
-      preLoaderRoute: typeof ProtectedAppPatientsRouteImport
-      parentRoute: typeof ProtectedAppRouteRoute
+      preLoaderRoute: typeof ProtectedDoctorPatientsRouteRouteImport
+      parentRoute: typeof ProtectedDoctorRouteRoute
     }
-    '/_protected/_app/chat': {
-      id: '/_protected/_app/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ProtectedAppChatRouteImport
-      parentRoute: typeof ProtectedAppRouteRoute
-    }
-    '/_protected/patients/$patientId': {
-      id: '/_protected/patients/$patientId'
-      path: '/$patientId'
-      fullPath: '/patients/$patientId'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdRouteRouteImport
-      parentRoute: typeof ProtectedPatientsRouteRoute
+    '/_protected/_doctor/_app': {
+      id: '/_protected/_doctor/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedDoctorAppRouteRouteImport
+      parentRoute: typeof ProtectedDoctorRouteRoute
     }
     '/_public/_auth/register/': {
       id: '/_public/_auth/register/'
@@ -340,20 +337,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/register/'
       preLoaderRoute: typeof PublicAuthRegisterIndexRouteImport
       parentRoute: typeof PublicAuthRouteRoute
-    }
-    '/_protected/patients/$patientId/': {
-      id: '/_protected/patients/$patientId/'
-      path: '/'
-      fullPath: '/patients/$patientId/'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdIndexRouteImport
-      parentRoute: typeof ProtectedPatientsPatientIdRouteRoute
-    }
-    '/_protected/_app/_dashboard/': {
-      id: '/_protected/_app/_dashboard/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof ProtectedAppDashboardIndexRouteImport
-      parentRoute: typeof ProtectedAppRouteRoute
     }
     '/_public/_auth/register/patient': {
       id: '/_public/_auth/register/patient'
@@ -369,104 +352,185 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthRegisterDoctorRouteImport
       parentRoute: typeof PublicAuthRouteRoute
     }
-    '/_protected/patients/$patientId/report': {
-      id: '/_protected/patients/$patientId/report'
+    '/_protected/_doctor/_app/settings': {
+      id: '/_protected/_doctor/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedDoctorAppSettingsRouteImport
+      parentRoute: typeof ProtectedDoctorAppRouteRoute
+    }
+    '/_protected/_doctor/_app/planning': {
+      id: '/_protected/_doctor/_app/planning'
+      path: '/planning'
+      fullPath: '/planning'
+      preLoaderRoute: typeof ProtectedDoctorAppPlanningRouteImport
+      parentRoute: typeof ProtectedDoctorAppRouteRoute
+    }
+    '/_protected/_doctor/_app/patients': {
+      id: '/_protected/_doctor/_app/patients'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof ProtectedDoctorAppPatientsRouteImport
+      parentRoute: typeof ProtectedDoctorAppRouteRoute
+    }
+    '/_protected/_doctor/_app/chat': {
+      id: '/_protected/_doctor/_app/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ProtectedDoctorAppChatRouteImport
+      parentRoute: typeof ProtectedDoctorAppRouteRoute
+    }
+    '/_protected/_doctor/patients/$patientId': {
+      id: '/_protected/_doctor/patients/$patientId'
+      path: '/$patientId'
+      fullPath: '/patients/$patientId'
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdRouteRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsRouteRoute
+    }
+    '/_protected/_shared/_app/_dashboard/': {
+      id: '/_protected/_shared/_app/_dashboard/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedSharedAppDashboardIndexRouteImport
+      parentRoute: typeof ProtectedSharedAppRouteRoute
+    }
+    '/_protected/_doctor/patients/$patientId/': {
+      id: '/_protected/_doctor/patients/$patientId/'
+      path: '/'
+      fullPath: '/patients/$patientId/'
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdIndexRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsPatientIdRouteRoute
+    }
+    '/_protected/_doctor/patients/$patientId/report': {
+      id: '/_protected/_doctor/patients/$patientId/report'
       path: '/report'
       fullPath: '/patients/$patientId/report'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdReportRouteImport
-      parentRoute: typeof ProtectedPatientsPatientIdRouteRoute
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdReportRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsPatientIdRouteRoute
     }
-    '/_protected/patients/$patientId/profile': {
-      id: '/_protected/patients/$patientId/profile'
+    '/_protected/_doctor/patients/$patientId/profile': {
+      id: '/_protected/_doctor/patients/$patientId/profile'
       path: '/profile'
       fullPath: '/patients/$patientId/profile'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdProfileRouteImport
-      parentRoute: typeof ProtectedPatientsPatientIdRouteRoute
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdProfileRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsPatientIdRouteRoute
     }
-    '/_protected/patients/$patientId/file': {
-      id: '/_protected/patients/$patientId/file'
+    '/_protected/_doctor/patients/$patientId/file': {
+      id: '/_protected/_doctor/patients/$patientId/file'
       path: '/file'
       fullPath: '/patients/$patientId/file'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdFileRouteImport
-      parentRoute: typeof ProtectedPatientsPatientIdRouteRoute
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdFileRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsPatientIdRouteRoute
     }
-    '/_protected/patients/$patientId/drafts': {
-      id: '/_protected/patients/$patientId/drafts'
+    '/_protected/_doctor/patients/$patientId/drafts': {
+      id: '/_protected/_doctor/patients/$patientId/drafts'
       path: '/drafts'
       fullPath: '/patients/$patientId/drafts'
-      preLoaderRoute: typeof ProtectedPatientsPatientIdDraftsRouteImport
-      parentRoute: typeof ProtectedPatientsPatientIdRouteRoute
+      preLoaderRoute: typeof ProtectedDoctorPatientsPatientIdDraftsRouteImport
+      parentRoute: typeof ProtectedDoctorPatientsPatientIdRouteRoute
     }
   }
 }
 
-interface ProtectedAppRouteRouteChildren {
-  ProtectedAppChatRoute: typeof ProtectedAppChatRoute
-  ProtectedAppPatientsRoute: typeof ProtectedAppPatientsRoute
-  ProtectedAppPlanningRoute: typeof ProtectedAppPlanningRoute
-  ProtectedAppSettingsRoute: typeof ProtectedAppSettingsRoute
-  ProtectedAppDashboardIndexRoute: typeof ProtectedAppDashboardIndexRoute
+interface ProtectedDoctorAppRouteRouteChildren {
+  ProtectedDoctorAppChatRoute: typeof ProtectedDoctorAppChatRoute
+  ProtectedDoctorAppPatientsRoute: typeof ProtectedDoctorAppPatientsRoute
+  ProtectedDoctorAppPlanningRoute: typeof ProtectedDoctorAppPlanningRoute
+  ProtectedDoctorAppSettingsRoute: typeof ProtectedDoctorAppSettingsRoute
 }
 
-const ProtectedAppRouteRouteChildren: ProtectedAppRouteRouteChildren = {
-  ProtectedAppChatRoute: ProtectedAppChatRoute,
-  ProtectedAppPatientsRoute: ProtectedAppPatientsRoute,
-  ProtectedAppPlanningRoute: ProtectedAppPlanningRoute,
-  ProtectedAppSettingsRoute: ProtectedAppSettingsRoute,
-  ProtectedAppDashboardIndexRoute: ProtectedAppDashboardIndexRoute,
-}
-
-const ProtectedAppRouteRouteWithChildren =
-  ProtectedAppRouteRoute._addFileChildren(ProtectedAppRouteRouteChildren)
-
-interface ProtectedPatientsPatientIdRouteRouteChildren {
-  ProtectedPatientsPatientIdDraftsRoute: typeof ProtectedPatientsPatientIdDraftsRoute
-  ProtectedPatientsPatientIdFileRoute: typeof ProtectedPatientsPatientIdFileRoute
-  ProtectedPatientsPatientIdProfileRoute: typeof ProtectedPatientsPatientIdProfileRoute
-  ProtectedPatientsPatientIdReportRoute: typeof ProtectedPatientsPatientIdReportRoute
-  ProtectedPatientsPatientIdIndexRoute: typeof ProtectedPatientsPatientIdIndexRoute
-}
-
-const ProtectedPatientsPatientIdRouteRouteChildren: ProtectedPatientsPatientIdRouteRouteChildren =
+const ProtectedDoctorAppRouteRouteChildren: ProtectedDoctorAppRouteRouteChildren =
   {
-    ProtectedPatientsPatientIdDraftsRoute:
-      ProtectedPatientsPatientIdDraftsRoute,
-    ProtectedPatientsPatientIdFileRoute: ProtectedPatientsPatientIdFileRoute,
-    ProtectedPatientsPatientIdProfileRoute:
-      ProtectedPatientsPatientIdProfileRoute,
-    ProtectedPatientsPatientIdReportRoute:
-      ProtectedPatientsPatientIdReportRoute,
-    ProtectedPatientsPatientIdIndexRoute: ProtectedPatientsPatientIdIndexRoute,
+    ProtectedDoctorAppChatRoute: ProtectedDoctorAppChatRoute,
+    ProtectedDoctorAppPatientsRoute: ProtectedDoctorAppPatientsRoute,
+    ProtectedDoctorAppPlanningRoute: ProtectedDoctorAppPlanningRoute,
+    ProtectedDoctorAppSettingsRoute: ProtectedDoctorAppSettingsRoute,
   }
 
-const ProtectedPatientsPatientIdRouteRouteWithChildren =
-  ProtectedPatientsPatientIdRouteRoute._addFileChildren(
-    ProtectedPatientsPatientIdRouteRouteChildren,
+const ProtectedDoctorAppRouteRouteWithChildren =
+  ProtectedDoctorAppRouteRoute._addFileChildren(
+    ProtectedDoctorAppRouteRouteChildren,
   )
 
-interface ProtectedPatientsRouteRouteChildren {
-  ProtectedPatientsPatientIdRouteRoute: typeof ProtectedPatientsPatientIdRouteRouteWithChildren
+interface ProtectedDoctorPatientsPatientIdRouteRouteChildren {
+  ProtectedDoctorPatientsPatientIdDraftsRoute: typeof ProtectedDoctorPatientsPatientIdDraftsRoute
+  ProtectedDoctorPatientsPatientIdFileRoute: typeof ProtectedDoctorPatientsPatientIdFileRoute
+  ProtectedDoctorPatientsPatientIdProfileRoute: typeof ProtectedDoctorPatientsPatientIdProfileRoute
+  ProtectedDoctorPatientsPatientIdReportRoute: typeof ProtectedDoctorPatientsPatientIdReportRoute
+  ProtectedDoctorPatientsPatientIdIndexRoute: typeof ProtectedDoctorPatientsPatientIdIndexRoute
 }
 
-const ProtectedPatientsRouteRouteChildren: ProtectedPatientsRouteRouteChildren =
+const ProtectedDoctorPatientsPatientIdRouteRouteChildren: ProtectedDoctorPatientsPatientIdRouteRouteChildren =
   {
-    ProtectedPatientsPatientIdRouteRoute:
-      ProtectedPatientsPatientIdRouteRouteWithChildren,
+    ProtectedDoctorPatientsPatientIdDraftsRoute:
+      ProtectedDoctorPatientsPatientIdDraftsRoute,
+    ProtectedDoctorPatientsPatientIdFileRoute:
+      ProtectedDoctorPatientsPatientIdFileRoute,
+    ProtectedDoctorPatientsPatientIdProfileRoute:
+      ProtectedDoctorPatientsPatientIdProfileRoute,
+    ProtectedDoctorPatientsPatientIdReportRoute:
+      ProtectedDoctorPatientsPatientIdReportRoute,
+    ProtectedDoctorPatientsPatientIdIndexRoute:
+      ProtectedDoctorPatientsPatientIdIndexRoute,
   }
 
-const ProtectedPatientsRouteRouteWithChildren =
-  ProtectedPatientsRouteRoute._addFileChildren(
-    ProtectedPatientsRouteRouteChildren,
+const ProtectedDoctorPatientsPatientIdRouteRouteWithChildren =
+  ProtectedDoctorPatientsPatientIdRouteRoute._addFileChildren(
+    ProtectedDoctorPatientsPatientIdRouteRouteChildren,
+  )
+
+interface ProtectedDoctorPatientsRouteRouteChildren {
+  ProtectedDoctorPatientsPatientIdRouteRoute: typeof ProtectedDoctorPatientsPatientIdRouteRouteWithChildren
+}
+
+const ProtectedDoctorPatientsRouteRouteChildren: ProtectedDoctorPatientsRouteRouteChildren =
+  {
+    ProtectedDoctorPatientsPatientIdRouteRoute:
+      ProtectedDoctorPatientsPatientIdRouteRouteWithChildren,
+  }
+
+const ProtectedDoctorPatientsRouteRouteWithChildren =
+  ProtectedDoctorPatientsRouteRoute._addFileChildren(
+    ProtectedDoctorPatientsRouteRouteChildren,
+  )
+
+interface ProtectedDoctorRouteRouteChildren {
+  ProtectedDoctorAppRouteRoute: typeof ProtectedDoctorAppRouteRouteWithChildren
+  ProtectedDoctorPatientsRouteRoute: typeof ProtectedDoctorPatientsRouteRouteWithChildren
+}
+
+const ProtectedDoctorRouteRouteChildren: ProtectedDoctorRouteRouteChildren = {
+  ProtectedDoctorAppRouteRoute: ProtectedDoctorAppRouteRouteWithChildren,
+  ProtectedDoctorPatientsRouteRoute:
+    ProtectedDoctorPatientsRouteRouteWithChildren,
+}
+
+const ProtectedDoctorRouteRouteWithChildren =
+  ProtectedDoctorRouteRoute._addFileChildren(ProtectedDoctorRouteRouteChildren)
+
+interface ProtectedSharedAppRouteRouteChildren {
+  ProtectedSharedAppDashboardIndexRoute: typeof ProtectedSharedAppDashboardIndexRoute
+}
+
+const ProtectedSharedAppRouteRouteChildren: ProtectedSharedAppRouteRouteChildren =
+  {
+    ProtectedSharedAppDashboardIndexRoute:
+      ProtectedSharedAppDashboardIndexRoute,
+  }
+
+const ProtectedSharedAppRouteRouteWithChildren =
+  ProtectedSharedAppRouteRoute._addFileChildren(
+    ProtectedSharedAppRouteRouteChildren,
   )
 
 interface ProtectedRouteRouteChildren {
-  ProtectedAppRouteRoute: typeof ProtectedAppRouteRouteWithChildren
-  ProtectedPatientsRouteRoute: typeof ProtectedPatientsRouteRouteWithChildren
+  ProtectedDoctorRouteRoute: typeof ProtectedDoctorRouteRouteWithChildren
+  ProtectedSharedAppRouteRoute: typeof ProtectedSharedAppRouteRouteWithChildren
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
-  ProtectedAppRouteRoute: ProtectedAppRouteRouteWithChildren,
-  ProtectedPatientsRouteRoute: ProtectedPatientsRouteRouteWithChildren,
+  ProtectedDoctorRouteRoute: ProtectedDoctorRouteRouteWithChildren,
+  ProtectedSharedAppRouteRoute: ProtectedSharedAppRouteRouteWithChildren,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(

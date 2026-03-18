@@ -1,7 +1,7 @@
-import type { User } from "@/types/entities.ts";
+import type { BaseUser } from "@/types/entities.ts";
 import { GENDER } from "../index.ts";
 
-export const contacts: User[] = [
+export const contacts: BaseUser[] = [
   {
     id: "1",
     fullname: "Alice Johnson",

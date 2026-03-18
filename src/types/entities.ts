@@ -1,6 +1,6 @@
-import type { BloodType, Gender } from "./index.ts";
+import type { BloodType, Gender, Role } from "./index.ts";
 
-export type User = {
+export type BaseUser = {
   id: string;
   fullname: string;
   email: string;
@@ -12,7 +12,11 @@ export type User = {
   gender: Gender;
 };
 
-export type Patient = User & {
+export type AuthUser = BaseUser & {
+  role: Role;
+};
+
+export type Patient = BaseUser & {
   lastVisit: Date;
   status: "active" | "inactive";
 };
@@ -41,6 +45,6 @@ export type PopulatedAppointment = Omit<RawAppointment, "patientId"> & {
   patient: Patient;
 };
 
-export type Profile = User & {
+export type Profile = AuthUser & {
   bio: string;
 };

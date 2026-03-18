@@ -1,5 +1,5 @@
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
-import type { User } from "@/types/entities.ts";
+import type { AuthUser } from "@/types/entities.ts";
 import {
   createContext,
   useContext,
@@ -8,9 +8,9 @@ import {
 } from "react";
 
 export type AuthContext = {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticating: boolean;
-  login: (user: User) => void;
+  login: (user: AuthUser) => void;
   logout: () => void;
   setIsAuthenticating: (state: boolean) => void;
 };
@@ -21,14 +21,15 @@ authContext.displayName = "AuthContext";
 type AuthContextProviderProps = PropsWithChildren & {};
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const login = async (user: User) => {
+  const login = async (user: AuthUser) => {
     setUser(user);
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
     setUser(null);
   };
 

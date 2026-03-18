@@ -36,7 +36,7 @@ function CustomStepIcon(props: StepIconProps) {
   );
 }
 
-export default function VerticalLinearStepper({
+export function VerticalLinearStepper({
   current,
   steps,
 }: VerticalLinearStepperProps) {

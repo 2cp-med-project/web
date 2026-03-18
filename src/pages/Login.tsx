@@ -1,7 +1,7 @@
+import { LoginForm } from "@/features/DoctorPanel/Login/Form.tsx";
 import { Card } from "@radix-ui/themes";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "../components/shared/Logo.tsx";
-import { LoginForm } from "../features/Login/Form.tsx";
 
 export function LoginPage() {
   return (
