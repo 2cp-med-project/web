@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { AlertCircle, Calendar, MessageSquare, Send } from "lucide-react";
+import { AlertCircle, Calendar, MessageSquare } from "lucide-react";
 
 export interface OverviewCard {
   icon: LucideIcon;
@@ -23,13 +23,6 @@ export const overviewCards: OverviewCard[] = [
     label: "Demandes en attente",
     value: 8,
     desc: "Requêtes à traiter",
-  },
-  {
-    icon: Send,
-    iconColor: "text-teal-500",
-    label: "Messages envoyés",
-    value: 5,
-    desc: "Messages envoyés aujourd'hui",
   },
   {
     icon: MessageSquare,
