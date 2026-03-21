@@ -14,3 +14,7 @@ export type NavigationSection = {
   label: string;
   items: NavigationItem[];
 };
+
+export type SettingsNavigationItem = NavigationItem & {
+  desc: string;
+};
