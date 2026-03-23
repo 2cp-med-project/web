@@ -1,34 +1,43 @@
+import type { DashboardData } from "@/types/dashboard.ts";
 import type { LucideIcon } from "lucide-react";
 import { AlertCircle, Calendar, MessageSquare } from "lucide-react";
 
-export interface OverviewCard {
+export type OverviewCard = {
   icon: LucideIcon;
   iconColor: string;
   label: string;
-  value: number;
   desc: string;
-}
+};
+
+export type ValuedOverivewCard = OverviewCard & {
+  value: number;
+};
 
 export const overviewCards: OverviewCard[] = [
   {
     icon: Calendar,
     iconColor: "text-green-500",
     label: "Rendez-vous Aujourd'hui",
-    value: 16,
     desc: "Rendez-vous prévus aujourd'hui",
   },
   {
     icon: AlertCircle,
     iconColor: "text-red-500",
     label: "Demandes en attente",
-    value: 8,
     desc: "Requêtes à traiter",
   },
   {
     icon: MessageSquare,
     iconColor: "text-blue-500",
     label: "Messages reçus",
-    value: 3,
     desc: "Messages reçus aujourd'hui",
   },
 ];
+
+export const dashboardData: DashboardData = {
+  todayAppointmentCount: 10,
+  pendingRequestsCount: 2,
+  totalMessagesCount: 4,
+  recentlyOpenedPatients: [],
+  nextAppointments: [],
+};

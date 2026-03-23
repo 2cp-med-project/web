@@ -1,16 +1,10 @@
+import type { ValuedOverivewCard } from "@/constants/ui/dashboard.ts";
 import { cn } from "@/lib/utils.ts";
 import { Card } from "@radix-ui/themes";
-import type { LucideIcon } from "lucide-react";
 
-type OverviewCardProps = {
-  label: string;
-  icon: LucideIcon;
-  iconColor: string;
-  desc: string;
-  value: number;
-};
+type OverviewCardContentProps = ValuedOverivewCard & {};
 
-export function OverviewCard(props: OverviewCardProps) {
+export function OverviewCardContent(props: OverviewCardContentProps) {
   const Icon = props.icon;
 
   return (

@@ -2,6 +2,7 @@ import { ProfileUI } from "@/constants/ui/index.ts";
 import type { Profile } from "@/types/entities.ts";
 import { UserNotFoundError } from "./errors/UserNotFoundError.ts";
 
+// GET /profile
 export const fetch = (id: string) => {
   return new Promise<Profile>((resolve, reject) => {
     setTimeout(() => {

@@ -1,14 +1,12 @@
-import type { Patient } from "@/types/entities.ts";
 import { Table } from "@radix-ui/themes";
 import { SearchX } from "lucide-react";
+import { useDashboardContext } from "../context.tsx";
 import { PatientsTableError } from "./Error.tsx";
 import { PatientsTableRow, PatientsTableRowSkeleton } from "./Row/index.tsx";
 
 export function PatientsTable() {
-  const isLoading = false;
-  const isError = false;
-  const patients = [] as Patient[];
-  const refetch = () => {};
+  const { isLoading, isError, refetch, recentlyOpenedPatients } =
+    useDashboardContext();
 
   return (
     <Table.Root variant="surface">
@@ -28,7 +26,7 @@ export function PatientsTable() {
             <PatientsTableRowSkeleton key={index} />
           ))}
 
-        {!isLoading && !isError && patients.length === 0 && (
+        {!isLoading && !isError && recentlyOpenedPatients.length === 0 && (
           <Table.Row>
             <Table.Cell colSpan={5}>
               <div className="h-40 flex flex-col items-center justify-center gap-2 text-gray-500">
@@ -43,8 +41,8 @@ export function PatientsTable() {
 
         {!isLoading &&
           !isError &&
-          patients.length > 0 &&
-          patients.map((patient) => (
+          recentlyOpenedPatients.length > 0 &&
+          recentlyOpenedPatients.map((patient) => (
             <PatientsTableRow {...patient} key={patient.id} />
           ))}
       </Table.Body>

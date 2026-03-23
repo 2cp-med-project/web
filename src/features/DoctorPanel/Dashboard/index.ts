@@ -1,5 +1,6 @@
-export { OverviewCard } from "./OverviewCard.tsx";
-export { AppointmentCard } from "./AppointmentCard.tsx";
+export { AppointmentGrid } from "./AppointmentGrid/index.tsx";
+export { DashboardContextProvider, useDashboardContext } from "./context.tsx";
+export { DashboardOverview } from "./Overview/index.tsx";
 export { PatientsTable } from "./PatientsTable/index.tsx";
 export { ScanPatientCard } from "./ScanPatientCard.tsx";
-export { QuickAction } from "./QuickAction.tsx";
+export { QuickActionsList } from "./QuickActionsList/index.tsx";

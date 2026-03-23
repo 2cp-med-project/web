@@ -1,51 +1,16 @@
-import { DashboardUI, PatientsUI, PlanningUI } from "@/constants/ui/index.ts";
-import { useAuthContext } from "@/context/index.ts";
+import { useAuthContext } from "@/context/auth.tsx";
 import {
-  AppointmentCard,
-  OverviewCard,
+  AppointmentGrid,
+  DashboardContextProvider,
+  DashboardOverview,
   PatientsTable,
-  QuickAction,
+  QuickActionsList,
   ScanPatientCard,
 } from "@/features/DoctorPanel/Dashboard/index.ts";
-import { Grid } from "@radix-ui/themes";
-import { CalendarDays, File, Paperclip, Search, Send } from "lucide-react";
-import { useMemo } from "react";
+import { CalendarDays, File, Paperclip, Send } from "lucide-react";
 
-export function DashboardPage() {
+function DashbaordPageContent() {
   const { user } = useAuthContext();
-
-  const appointments = PlanningUI.appointments.map((a) => {
-    const { patientId, ...rest } = a;
-    const patient = PatientsUI.patients.find((p) => p.id === patientId)!;
-    return {
-      ...rest,
-      patient,
-    };
-  });
-
-  const quickActions = useMemo(
-    () => [
-      {
-        label: "Rechercher",
-        desc: "Trouvez des médecins spécialisés à proximité",
-        icon: Search,
-        action: () => {},
-      },
-      {
-        label: "Prendre un rendez-vous",
-        desc: "Réservez avec votre médecin",
-        icon: CalendarDays,
-        action: () => {},
-      },
-      {
-        label: "Discussion",
-        desc: "Ouvrir une conversation avec le médecin",
-        icon: Send,
-        action: () => {},
-      },
-    ],
-    [],
-  );
 
   return (
     <section className="px-2 space-y-6">
@@ -82,11 +47,7 @@ export function DashboardPage() {
 
       <section className="w-full flex gap-x-8">
         <section className="flex-3 space-y-4">
-          <Grid columns="3" gap={"2"}>
-            {DashboardUI.overviewCards.map((item) => (
-              <OverviewCard {...item} />
-            ))}
-          </Grid>
+          <DashboardOverview />
 
           <div className="space-y-2">
             <div className="text-foreground flex items-center gap-2">
@@ -103,11 +64,7 @@ export function DashboardPage() {
               <p className="text-lg font-medium">Prochains rendez-vous</p>
             </div>
 
-            <Grid columns={"2"} gapX={"4"} gapY={"4"}>
-              {appointments.map((a) => (
-                <AppointmentCard {...a} />
-              ))}
-            </Grid>
+            <AppointmentGrid />
           </div>
         </section>
 
@@ -116,14 +73,16 @@ export function DashboardPage() {
 
           <div className="space-y-2">
             <p className="text-lg font-medium text-black">Actions rapides</p>
-            <Grid columns={"1"} gapY={"2"}>
-              {quickActions.map((action) => (
-                <QuickAction {...action} />
-              ))}
-            </Grid>
+            <QuickActionsList />
           </div>
         </section>
       </section>
     </section>
   );
 }
+
+export const DashboardPage = () => (
+  <DashboardContextProvider>
+    <DashbaordPageContent />
+  </DashboardContextProvider>
+);

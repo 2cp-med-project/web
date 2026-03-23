@@ -20,6 +20,11 @@ export function PatientsTableRowSkeleton() {
         <Skeleton className="h-3 w-20 rounded-md" />
       </Table.Cell>
 
+      {/* Status */}
+      <Table.Cell>
+        <Skeleton className="h-3 w-16 rounded-md" />
+      </Table.Cell>
+
       {/* Last visit */}
       <Table.Cell>
         <Skeleton className="h-3 w-24 rounded-md" />
@@ -28,7 +33,6 @@ export function PatientsTableRowSkeleton() {
       {/* Actions */}
       <Table.Cell>
         <div className="flex gap-2">
-          <Skeleton className="size-8 rounded-md" />
           <Skeleton className="size-8 rounded-md" />
         </div>
       </Table.Cell>

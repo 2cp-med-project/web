@@ -3,6 +3,7 @@ import type { Patient, PatientDetails } from "@/types/entities.ts";
 import type { Page, PaginationAttributes } from "@/types/pagination.ts";
 import { PatientNotFoundError } from "./errors/PatientNotFoundError.ts";
 
+// GET /patients?page=<page>&limit=<pageSize>&search=<search>
 export const fetchPage = (pagination: PaginationAttributes) => {
   return new Promise<Page<Patient>>((res) => {
     setTimeout(() => {
@@ -31,6 +32,7 @@ export const fetchPage = (pagination: PaginationAttributes) => {
   });
 };
 
+// GET /patients/<id>
 export const fetchOne = (id: string) => {
   return new Promise<PatientDetails | null>((res, rej) =>
     setTimeout(() => {

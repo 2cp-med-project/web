@@ -2,9 +2,9 @@ import type { PopulatedAppointment } from "@/types/entities.ts";
 import { getInitials } from "@/utils/index.ts";
 import { Avatar, Badge } from "@radix-ui/themes";
 
-type AppointmentCardProps = PopulatedAppointment & {};
+type AppointmentCardContentProps = PopulatedAppointment & {};
 
-export function AppointmentCard(props: AppointmentCardProps) {
+export function AppointmentCardContent(props: AppointmentCardContentProps) {
   return (
     <div className="font-archivo border border-black/20 bg-white py-4 px-4 flex justify-between rounded-xl w-full">
       <div className="flex items-center gap-2">
