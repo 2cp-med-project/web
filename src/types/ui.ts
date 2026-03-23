@@ -17,4 +17,5 @@ export type NavigationSection = {
 
 export type SettingsNavigationItem = NavigationItem & {
   desc: string;
+  regex: RegExp;
 };

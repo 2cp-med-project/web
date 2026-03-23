@@ -26,7 +26,7 @@ export function DashboardPage() {
   const quickActions = useMemo(
     () => [
       {
-        label: "Rechercher un médecin / patient",
+        label: "Rechercher",
         desc: "Trouvez des médecins spécialisés à proximité",
         icon: Search,
         action: () => {},

@@ -75,3 +75,44 @@ export const PATIENT_NAVIGATION_MENU: NestedNavigationItem[] = [
     regex: /^\/patients\/[^/]+\/drafts$/,
   },
 ];
+
+import type { SettingsNavigationItem } from "@/types/ui.ts";
+import { Bell, Building2, Palette, Shield, User } from "lucide-react";
+
+export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
+  {
+    label: "Compte",
+    desc: "Gérer votre compte et vos informations publiques",
+    icon: User,
+    to: "/settings/account",
+    regex: /^\/settings\/account/,
+  },
+  {
+    label: "Notifications",
+    desc: "Gérer vos préférences de notification",
+    icon: Bell,
+    to: "/settings/notifications",
+    regex: /^\/settings\/notifications/,
+  },
+  {
+    label: "Informations de la clinique",
+    desc: "Gérer les informations de votre clinique",
+    icon: Building2,
+    to: "/settings/clinic",
+    regex: /^\/settings\/clinic/,
+  },
+  {
+    label: "Sécurité",
+    desc: "Gérer les paramètres de sécurité de votre compte",
+    icon: Shield,
+    to: "/settings/security",
+    regex: /^\/settings\/security/,
+  },
+  {
+    label: "Apparence",
+    desc: "Personnaliser l’apparence de l’application",
+    icon: Palette,
+    to: "/settings/appearance",
+    regex: /^\/settings\/appearance/,
+  },
+];

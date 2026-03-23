@@ -16,9 +16,9 @@ export function QuickAction({ icon, label, desc, action }: QuickActionProps) {
     >
       <div className="flex items-center gap-4">
         <Icon className="text-foreground" size={26} />
-        <div className="flex flex-col justify-center items-start">
-          <p className="font-medium text-black text-base">{label}</p>
-          <p className="text-muted text-xs">{desc}</p>
+        <div className="flex flex-col">
+          <p className="font-medium text-black text-base text-start">{label}</p>
+          <p className="text-muted text-xs text-start">{desc}</p>
         </div>
       </div>
       <ChevronRight className="text-gray-400" size={26} />

@@ -1,6 +1,6 @@
-import { SettingsUI } from "@/constants/ui/index.ts";
+import { SETTINGS_NAVIGATION_ITEMS } from "@/constants/navigation.ts";
 import { Outlet } from "@tanstack/react-router";
-import { SettingsNavigationItem } from "./NavigationItem.tsx";
+import { SettingsNavigationList } from "./NavigationList.tsx";
 
 export function SettingsRoutesLayout() {
   return (
@@ -9,13 +9,7 @@ export function SettingsRoutesLayout() {
         <h1 className="pl-2 text-xl font-archivo text-gray-500">
           Paramètres généraux
         </h1>
-        <ul className="space-y-2">
-          {SettingsUI.navigationItems.map((item) => (
-            <li key={item.label}>
-              <SettingsNavigationItem {...item} />
-            </li>
-          ))}
-        </ul>
+        <SettingsNavigationList menu={SETTINGS_NAVIGATION_ITEMS} />
       </nav>
       <section className="flex-3">
         <Outlet />
