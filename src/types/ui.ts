@@ -6,7 +6,7 @@ export type NavigationItem = {
   to: string;
 };
 
-export type NestedNavigationItem = NavigationItem & {
+export type RegexBasedNavigationItem = NavigationItem & {
   regex: RegExp;
 };
 
@@ -15,7 +15,8 @@ export type NavigationSection = {
   items: NavigationItem[];
 };
 
-export type SettingsNavigationItem = NavigationItem & {
+export type SettingsNavigationItem = RegexBasedNavigationItem & {
   desc: string;
-  regex: RegExp;
 };
+
+export type SidebarNavigationMenu = NavigationSection[];

@@ -1,10 +1,14 @@
 import { cn } from "@/lib/utils.ts";
+import type { SidebarNavigationMenu } from "@/types/ui.ts";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Logo } from "../../components/shared/Logo.tsx";
-import { NAVIGATION_MENU } from "../../constants/navigation.ts";
 
-export function Sidebar() {
+type SidebarProps = {
+  menu: SidebarNavigationMenu;
+};
+
+export function Sidebar({ menu }: SidebarProps) {
   const [active, setActive] = useState<string | null>(null);
   const location = useLocation();
 
@@ -20,7 +24,7 @@ export function Sidebar() {
       </div>
 
       <nav className="mt-4 space-y-6">
-        {NAVIGATION_MENU.map((section) => (
+        {menu.map((section) => (
           <section key={section.label} className="space-y-2">
             <h2 className="ml-4 uppercase text-muted-light font-inter font-medium text-xs">
               {section.label}

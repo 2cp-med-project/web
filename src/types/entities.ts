@@ -45,6 +45,21 @@ export type PopulatedAppointment = Omit<RawAppointment, "patientId"> & {
   patient: Patient;
 };
 
-export type Profile = AuthUser & {
+export type BaseProfile = AuthUser;
+
+export type DoctorProfile = BaseProfile & {
   bio: string;
+};
+
+export type PatientProfile = BaseProfile & {
+  bloodType: BloodType;
+  allergies: string[];
+  chronicConditions: string[];
+};
+
+export type EmergencyContact = {
+  id: string;
+  label: string;
+  fullname: string;
+  phoneNumber: string;
 };

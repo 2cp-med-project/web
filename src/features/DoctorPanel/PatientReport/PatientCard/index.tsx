@@ -1,4 +1,4 @@
-import { usePatients } from "@/hooks/usePatients.ts";
+import { usePatients } from "@/hooks/doctor.hooks/index.ts";
 import { PatientCardContent } from "./Content.tsx";
 import { PatientCardError } from "./Error.tsx";
 import { PatientCardSkeleton } from "./Skeleton.tsx";

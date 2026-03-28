@@ -1,4 +1,4 @@
-import { usePatients } from "@/hooks/usePatients.ts";
+import { usePatients } from "@/hooks/doctor.hooks/index.ts";
 import { Dialog } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import { usePatientsContext } from "../context.tsx";

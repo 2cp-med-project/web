@@ -1,4 +1,4 @@
-import { AuthUI } from "@/constants/ui/index.ts";
+import { AuthData } from "@/constants/ui/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
 import { AuthError } from "./errors/index.ts";
 
@@ -6,7 +6,7 @@ import { AuthError } from "./errors/index.ts";
 export const login = async (email: string, password: string) => {
   return new Promise<AuthUser>((res, rej) => {
     setTimeout(() => {
-      const user = AuthUI.users.find((user) => user.email === email);
+      const user = AuthData.users.find((user) => user.email === email);
       if (user === undefined) {
         return rej(new AuthError("Adresse email incorrecte", 401));
       }

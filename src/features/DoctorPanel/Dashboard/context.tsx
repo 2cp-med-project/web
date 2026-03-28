@@ -1,10 +1,15 @@
-import type { ValuedOverivewCard } from "@/constants/ui/dashboard.ts";
-import { DashboardUI } from "@/constants/ui/index.ts";
 import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.ts";
-import { useDashboard } from "@/hooks/useDashboard.ts";
-import type { QuickAction } from "@/types/dashboard.ts";
+import { useDashboard } from "@/hooks/doctor.hooks/index.ts";
+import type { OverviewCardContent, QuickAction } from "@/types/dashboard.ts";
 import type { Patient, PopulatedAppointment } from "@/types/entities.ts";
-import { CalendarDays, Search, Send } from "lucide-react";
+import {
+  AlertCircle,
+  Calendar,
+  CalendarDays,
+  MessageSquare,
+  Search,
+  Send,
+} from "lucide-react";
 import {
   createContext,
   useContext,
@@ -13,7 +18,7 @@ import {
 } from "react";
 
 type DashboardContext = {
-  overviewCards: ValuedOverivewCard[];
+  overviewCardsContents: OverviewCardContent[];
   quickActions: QuickAction[];
   recentlyOpenedPatients: Patient[];
   nextAppointments: PopulatedAppointment[];
@@ -29,8 +34,7 @@ type DashboardContextProviderProps = PropsWithChildren & {};
 export function DashboardContextProvider({
   children,
 }: DashboardContextProviderProps) {
-  const { fetch } = useDashboard();
-  const { data, isLoading, isError, refetch } = fetch();
+  const { data, isLoading, isError, refetch } = useDashboard();
 
   const quickActions = useMemo(
     () => [
@@ -56,28 +60,35 @@ export function DashboardContextProvider({
     [],
   );
 
-  // Asserting DashboardUI.overviewCards.length === 3
-  if (DashboardUI.overviewCards.length !== 3) {
-    throw new Error("DashboardUI.overviewCards.length must be 3");
-  }
-
-  const overviewCards = [
-    {
-      ...DashboardUI.overviewCards[0],
-      value: data?.todayAppointmentCount || 0,
-    },
-    {
-      ...DashboardUI.overviewCards[1],
-      value: data?.pendingRequestsCount || 0,
-    },
-    {
-      ...DashboardUI.overviewCards[2],
-      value: data?.totalMessagesCount || 0,
-    },
-  ];
+  const overviewCardsContents = useMemo(
+    () => [
+      {
+        icon: Calendar,
+        iconColor: "text-green-500",
+        label: "Rendez-vous Aujourd'hui",
+        desc: "Rendez-vous prévus aujourd'hui",
+        value: data?.todayAppointmentCount || 0,
+      },
+      {
+        icon: AlertCircle,
+        iconColor: "text-red-500",
+        label: "Demandes en attente",
+        desc: "Requêtes à traiter",
+        value: data?.pendingRequestsCount || 0,
+      },
+      {
+        icon: MessageSquare,
+        iconColor: "text-blue-500",
+        label: "Messages reçus",
+        desc: "Messages reçus aujourd'hui",
+        value: data?.totalMessagesCount || 0,
+      },
+    ],
+    [data],
+  );
 
   const value = {
-    overviewCards,
+    overviewCardsContents,
     quickActions,
     recentlyOpenedPatients: data?.recentlyOpenedPatients || [],
     nextAppointments: data?.nextAppointments || [],

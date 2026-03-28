@@ -1,7 +1,11 @@
 import type { LucideIcon } from "lucide-react";
-import type { Patient, PopulatedAppointment } from "./entities.ts";
+import type {
+  EmergencyContact,
+  Patient,
+  PopulatedAppointment,
+} from "./entities.ts";
 
-export type DashboardData = {
+export type DoctorDashboardData = {
   todayAppointmentCount: number;
   pendingRequestsCount: number;
   totalMessagesCount: number;
@@ -9,9 +13,24 @@ export type DashboardData = {
   nextAppointments: PopulatedAppointment[];
 };
 
+export type PatientDashboardData = {
+  emergencyContacts: EmergencyContact[];
+  todayAppointmentsCount: number;
+  pendingRequestsCount: number;
+  newFileEntriesCount: number;
+};
+
 export type QuickAction = {
   label: string;
   desc: string;
   icon: LucideIcon;
   action: () => void;
+};
+
+export type OverviewCardContent = {
+  icon: LucideIcon;
+  iconColor: string;
+  label: string;
+  desc: string;
+  value: number;
 };

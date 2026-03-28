@@ -1,5 +1,5 @@
 import { useAuthContext } from "@/context/auth.tsx";
-import { useProfile } from "@/hooks/useProfile.ts";
+import { useProfile } from "@/hooks/index.ts";
 import { ProfilePopoverContent } from "./Content.tsx";
 import { ProfilePopoverError } from "./Error.tsx";
 import { ProfilePopoverSkeleton } from "./Skeleton.tsx";

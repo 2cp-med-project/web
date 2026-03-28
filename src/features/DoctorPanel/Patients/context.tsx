@@ -1,5 +1,6 @@
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
-import { usePatients } from "@/hooks/index.ts";
+import { usePatients } from "@/hooks/doctor.hooks/index.ts";
+import type { Patient } from "@/types/entities.ts";
 import type { Page } from "@/types/pagination.ts";
 import type { QueryObserverResult } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -10,7 +11,6 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import type { Patient } from "@/types/entities.ts";
 
 export type PatientsContext = {
   patients: Patient[];

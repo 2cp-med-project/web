@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 
 import { GenderMap } from "@/constants/maps.ts";
-import type { Profile } from "@/types/entities.ts";
+import type { BaseProfile } from "@/types/entities.ts";
 import { getInitials } from "@/utils/index.ts";
 import { Avatar, Popover } from "@radix-ui/themes";
 
 type ProfilePopoverContentProps = {
-  profile: Profile;
+  profile: BaseProfile;
   onLogout: () => void;
 };
 
@@ -60,9 +60,6 @@ export function ProfilePopoverContent({
 
             <div className="flex flex-col leading-tight">
               <p className="font-semibold text-[15px]">{profile.fullname}</p>
-              <p className="text-muted text-sm mt-1 line-clamp-2">
-                {profile.bio}
-              </p>
             </div>
           </div>
 

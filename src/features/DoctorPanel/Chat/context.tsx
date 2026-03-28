@@ -1,4 +1,4 @@
-import { ChatUI } from "@/constants/ui/index.ts";
+import { DoctorData } from "@/constants/ui/index.ts";
 import { useAuthContext } from "@/context/auth.tsx";
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import type { Message, BaseUser } from "@/types/entities.ts";
@@ -41,7 +41,7 @@ export function ChatContextProvider({ children }: ChatContextProviderProps) {
 
   useEffect(() => {
     setContacts(
-      ChatUI.contacts.filter(
+      DoctorData.Chat.contacts.filter(
         (contact) =>
           contact.fullname.includes(search) || contact.email.includes(search),
       ),

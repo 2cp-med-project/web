@@ -1,17 +1,15 @@
-import { useAuthContext } from "@/context/auth.tsx";
 import {
   AppointmentGrid,
+  Chatbox,
   DashboardContextProvider,
   DashboardOverview,
   PatientsTable,
   QuickActionsList,
   ScanPatientCard,
 } from "@/features/DoctorPanel/Dashboard/index.ts";
-import { CalendarDays, File, Paperclip, Send } from "lucide-react";
+import { CalendarDays, File } from "lucide-react";
 
-function DashbaordPageContent() {
-  const { user } = useAuthContext();
-
+function DashboardPageContent() {
   return (
     <section className="px-2 space-y-6">
       <div className="flex flex-col w-full">
@@ -23,27 +21,7 @@ function DashbaordPageContent() {
         </p>
       </div>
 
-      <div className="space-y-2 bg-foreground w-full rounded-lg py-4 px-4">
-        <p className="text-white font-archivo font-medium text-lg">
-          Bonjour, {user?.fullname}
-        </p>
-        <div className="py-1 px-2 bg-white flex gap-x-2 rounded-lg">
-          <button type="button" className="bg-white text-gray-400">
-            <Paperclip size={16} />
-          </button>
-          <input
-            type="text"
-            placeholder="Écrire un message..."
-            className="border w-full outline-none border-none text-base"
-          />
-          <button
-            type="button"
-            className="bg-foreground text-white p-2 rounded-full"
-          >
-            <Send size={16} />
-          </button>
-        </div>
-      </div>
+      <Chatbox />
 
       <section className="w-full flex gap-x-8">
         <section className="flex-3 space-y-4">
@@ -83,6 +61,6 @@ function DashbaordPageContent() {
 
 export const DashboardPage = () => (
   <DashboardContextProvider>
-    <DashbaordPageContent />
+    <DashboardPageContent />
   </DashboardContextProvider>
 );

@@ -1,12 +1,17 @@
 import { Logo } from "@/components/shared/Logo.tsx";
-import { NAVIGATION_MENU } from "@/constants/navigation.ts";
 import { cn } from "@/lib/utils.ts";
-import type { NestedNavigationItem } from "@/types/ui.ts";
+import type {
+  NavigationSection,
+  RegexBasedNavigationItem,
+} from "@/types/ui.ts";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 type NestedSidebarProps = {
-  menu: NestedNavigationItem[];
+  menu: {
+    external: NavigationSection[];
+    internal: RegexBasedNavigationItem[];
+  };
   parentRoute: string;
 };
 
@@ -16,7 +21,9 @@ export function NestedSidebar(props: NestedSidebarProps) {
 
   useEffect(() => {
     const path = location.pathname;
-    const activeItem = props.menu.find((item) => item.regex.test(path));
+    const activeItem = props.menu.internal.find((item) =>
+      item.regex.test(path),
+    );
     if (activeItem === undefined) return;
     setActive(activeItem.to);
   }, [location, props.parentRoute]);
@@ -30,7 +37,7 @@ export function NestedSidebar(props: NestedSidebarProps) {
 
       <nav className="mt-4 space-y-6 flex items-start">
         <ul className="px-2 border-r border-r-white">
-          {NAVIGATION_MENU.map((section) => (
+          {props.menu.external.map((section) => (
             <li
               key={section.label}
               className="border-b border-b-white last:border-none pb-2 pt-2 first:pt-0"
@@ -68,7 +75,7 @@ export function NestedSidebar(props: NestedSidebarProps) {
         </ul>
 
         <ul className="space-y-2 px-2">
-          {props.menu.map((item) => {
+          {props.menu.internal.map((item) => {
             const Icon = item.icon;
             const selected = active === item.to;
 

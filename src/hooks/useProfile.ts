@@ -1,5 +1,7 @@
-import { APIError, ProfileAPI } from "@/api/index.ts";
+import { APIError, DoctorAPI, PatientAPI } from "@/api/index.ts";
+import { ROLE } from "@/constants/index.ts";
 import { useAuthContext } from "@/context/auth.tsx";
+import { InvalidUserRoleError } from "@/errors/InvalidUserRoleError.ts";
 import { useQuery } from "@tanstack/react-query";
 
 export const useProfile = () => {
@@ -10,8 +12,10 @@ export const useProfile = () => {
       queryKey: ["my-profile", user?.id],
       queryFn: async () => {
         if (!user?.id) throw new APIError.NotAuthenticatedUserError();
-        const profile = await ProfileAPI.fetch(user?.id);
-        return profile;
+        if (user.role === ROLE.DOCTOR) return DoctorAPI.Profile.fetch(user.id);
+        if (user.role === ROLE.PATIENT)
+          return PatientAPI.Profile.fetch(user.id);
+        throw new InvalidUserRoleError(user.role);
       },
       enabled: !!user?.id,
     });

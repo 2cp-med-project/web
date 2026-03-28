@@ -1,5 +1,5 @@
 import { PatientNotFoundError } from "@/api/errors/PatientNotFoundError.ts";
-import { PatientsAPI } from "@/api/index.ts";
+import { DoctorAPI } from "@/api/index.ts";
 import { DoctorPanelPages } from "@/pages/index.ts";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute(
   "/_protected/_doctor/patients/$patientId/profile",
 )({
   loader: async ({ params }) => {
-    const data = await PatientsAPI.fetchOne(params.patientId);
+    const data = await DoctorAPI.Patients.fetchOne(params.patientId);
     if (!data) throw new PatientNotFoundError(params.patientId);
     return {
       patient: data,

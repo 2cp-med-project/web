@@ -1,5 +1,5 @@
+import { GENDER, ROLE } from "@/constants/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
-import { GENDER, ROLE } from "../index.ts";
 
 export const users: (AuthUser & { password: string })[] = [
   {

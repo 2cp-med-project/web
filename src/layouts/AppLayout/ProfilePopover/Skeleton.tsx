@@ -24,7 +24,6 @@ export function ProfilePopoverSkeleton() {
             {/* Name & Bio */}
             <div className="flex flex-col gap-2 w-full">
               <Skeleton className="w-3/5 h-4 rounded-md" />
-              <Skeleton className="w-4/5 h-3 rounded-md" />
             </div>
           </div>
 

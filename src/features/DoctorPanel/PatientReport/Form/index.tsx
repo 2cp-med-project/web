@@ -1,4 +1,4 @@
-import { PatientsUI } from "@/constants/ui/index.ts";
+import { DoctorData } from "@/constants/ui/index.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { PatientReportFormContextProvider } from "./context.tsx";
@@ -38,7 +38,7 @@ export function PatientRecordForm() {
   return (
     <FormProvider {...context}>
       <PatientReportFormContextProvider
-        steps={PatientsUI.patientReportFormSteps}
+        steps={DoctorData.Patients.patientReportFormSteps}
       >
         <LinearStepper />
         <StepSwitcher />

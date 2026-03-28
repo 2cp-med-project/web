@@ -1,4 +1,4 @@
-import { PatientsUI, PlanningUI } from "@/constants/ui/index.ts";
+import { DoctorData } from "@/constants/ui/index.ts";
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import type { PopulatedAppointment } from "@/types/entities.ts";
 import {
@@ -41,9 +41,11 @@ export function PlanningContextProvider({
 
   useEffect(() => {
     setAppointments(
-      PlanningUI.appointments.map((a) => {
+      DoctorData.Planning.appointments.map((a) => {
         const { patientId, ...rest } = a;
-        const patient = PatientsUI.patients.find((p) => p.id === patientId)!;
+        const patient = DoctorData.Patients.patients.find(
+          (p) => p.id === patientId,
+        )!;
         return {
           ...rest,
           patient,
