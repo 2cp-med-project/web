@@ -1,7 +1,7 @@
 import { Logo } from "@/components/shared/Logo.tsx";
 import { VerticalLinearStepper } from "@/components/VerticalLinearStepper.tsx";
-import { RegisterPatientForm } from "@/features/DoctorPanel/Register/index.ts";
-import { useRegisterPatientStepStore } from "@/features/DoctorPanel/Register/PatientRegistrationForm/store.tsx";
+import { RegisterPatientForm } from "@/features/shared/Register";
+import { useRegisterPatientStepStore } from "@/features/shared/Register/PatientRegistrationForm/store";
 import { Card } from "@radix-ui/themes";
 
 const STEPS: { label: string; desc: string }[] = [

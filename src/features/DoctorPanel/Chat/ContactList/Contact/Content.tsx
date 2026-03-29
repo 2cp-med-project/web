@@ -4,12 +4,16 @@ import { getInitials } from "@/utils/index.ts";
 import { Avatar } from "@radix-ui/themes";
 import { CheckCheck } from "lucide-react";
 
-type ContactProps = BaseUser & {
+type ContactContentProps = BaseUser & {
   selected: boolean;
   onSelect: () => void;
 };
 
-export function Contact({ selected, onSelect, ...contact }: ContactProps) {
+export function ContactContent({
+  selected,
+  onSelect,
+  ...contact
+}: ContactContentProps) {
   return (
     <button
       type="button"

@@ -6,8 +6,8 @@ import { DoctorData } from "./dashboard.api.ts";
 export const fetch = (id: string) => {
   return new Promise<DoctorProfile>((resolve, reject) => {
     setTimeout(() => {
-      const profile = DoctorData.Profile.profile;
-      if (profile.id === id) return resolve(profile);
+      const profile = DoctorData.Profile.profiles.find((p) => p.id === id);
+      if (profile?.id === id) return resolve(profile);
       return reject(new UserNotFoundError(id));
     }, 300);
   });

@@ -1,7 +1,7 @@
+import { RoleCard } from "@/features/shared/Register/RoleCard.tsx";
 import { Stethoscope, UserRound } from "lucide-react";
 import { Logo } from "../components/shared/Logo.tsx";
 import { ROLE } from "../constants/index.ts";
-import { RoleCard } from "@/features/DoctorPanel/Register/RoleCard.tsx";
 
 export function RegisterPage() {
   return (

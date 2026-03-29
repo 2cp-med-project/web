@@ -1,34 +1,54 @@
 import { useAuthContext } from "@/context/auth.tsx";
+import { useChat } from "@/hooks/doctor.hooks/useChat.ts";
 import { cn } from "@/lib/utils.ts";
-import { getInitials } from "@/utils/index.ts";
-import { Avatar } from "@radix-ui/themes";
-import { Ellipsis, Image, SendHorizonal } from "lucide-react";
+import { Image, Loader2, SendHorizonal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useChatContext } from "../context.tsx";
+import { ChatWindowHeader } from "./Header/index.tsx";
 import { Message } from "./Message.tsx";
 import { NoChatSelected } from "./NoChatSelected.tsx";
 
-export function ChatWindow() {
-  const { activeContact, toggleDetailsPanel, sendMessage, messages } =
-    useChatContext();
+const MESSAGES_PAGE_SIZE = 40;
 
+export function ChatWindow() {
   const { user } = useAuthContext();
+  const { activeContactId } = useChatContext();
+
+  const [search, _] = useState("");
+
+  const { fetchMessages, sendMessage } = useChat();
+  const { data, isLoading, isError, refetch } = fetchMessages(
+    activeContactId,
+    {
+      search,
+    },
+    MESSAGES_PAGE_SIZE,
+  );
 
   const [content, setContent] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+  const sendMessageMutation = sendMessage();
+
   const canSendMessage = content.trim().length !== 0;
 
-  const handleMessageSendClick = () => {
-    if (!activeContact?.id) return;
+  const handleMessageSendClick = async () => {
+    if (!activeContactId) return;
     if (!canSendMessage) return;
 
-    sendMessage(activeContact.id, content);
-    setContent("");
+    await sendMessageMutation.mutateAsync({
+      contactId: activeContactId,
+      content,
+      onSuccess: () => {},
+      onError: () => {},
+    });
 
+    setContent("");
     inputRef.current?.focus();
   };
+
+  const messages = data?.pages.flatMap((page) => page.data) || [];
 
   useEffect(() => {
     const container = messagesContainerRef.current;
@@ -37,50 +57,50 @@ export function ChatWindow() {
     }
   }, [messages]);
 
-  if (activeContact === null) return <NoChatSelected />;
+  if (activeContactId === null) return <NoChatSelected />;
 
   return (
     <main className="rounded-xl overflow-y-hidden bg-white w-full h-full space-y-1">
-      <header className="p-2 border-b border-b-gray-300 flex justify-between items-center h-16">
-        <div className="flex items-center gap-2">
-          <Avatar
-            src={activeContact.avatar ?? undefined}
-            fallback={getInitials(activeContact.fullname)}
-            radius="full"
-          />
-          <div className="flex flex-col">
-            <p className="text-lg font-medium text-black/70">
-              {activeContact.fullname}
-            </p>
-            <p className="text-muted text-xs">Actif il y a 35 minutes</p>
-          </div>
-        </div>
-
-        <button
-          className="hover:bg-gray-200 p-1.5 rounded-full"
-          onClick={toggleDetailsPanel}
-        >
-          <Ellipsis
-            className="bg-foreground text-white rounded-full p-1"
-            size={26}
-          />
-        </button>
-      </header>
+      <ChatWindowHeader />
 
       {/* messages */}
       <section
         ref={messagesContainerRef}
         className="my-4 px-3 overflow-y-auto h-[calc(100%-64px-64px-16px-16px)] flex flex-col gap-2"
       >
-        <div className="flex flex-col mt-auto gap-2">
-          {messages?.map((message, index) => (
-            <Message
-              key={index}
-              message={message}
-              isMine={message.senderId === user?.id}
-            />
-          ))}
-        </div>
+        {isError && (
+          <div className="h-full flex flex-col mt-auto items-center justify-center gap-2 text-center">
+            <p className="text-sm text-red-500">
+              Impossible de charger les messages
+            </p>
+
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="flex items-center gap-1 text-sm text-red-500 hover:text-red-600"
+            >
+              Réessayer
+            </button>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="h-full flex items-center justify-center">
+            <Loader2 className="animate-spin text-gray-400" />
+          </div>
+        )}
+
+        {!isLoading && !isError && (
+          <div className="hidden border flex-col mt-auto gap-2">
+            {messages?.map((message, index) => (
+              <Message
+                key={index}
+                message={message}
+                isMine={message.senderId === user?.id}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* input */}

@@ -1,4 +1,8 @@
-export type PaginationAttributes = {
+export type FilterAttributes = {
+  search: string;
+};
+
+export type PaginationAttributes = FilterAttributes & {
   page: number;
   pageSize: number;
   search: string;

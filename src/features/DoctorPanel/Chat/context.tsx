@@ -1,7 +1,6 @@
-import { DoctorData } from "@/constants/ui/index.ts";
-import { useAuthContext } from "@/context/auth.tsx";
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
-import type { Message, BaseUser } from "@/types/entities.ts";
+import { useProfile } from "@/hooks/index.ts";
+import type { BaseUser } from "@/types/entities.ts";
 import {
   createContext,
   useContext,
@@ -11,17 +10,15 @@ import {
 } from "react";
 
 export type ChatContext = {
-  contacts: BaseUser[];
-  activeContact: BaseUser | null;
   activeContactId: string | null;
-  messages: Message[] | null;
-  search: string;
   isDetailsPanelOpen: boolean;
+  activeContact: BaseUser | undefined;
+  isLoadingActiveContactProfile: boolean;
+  isErrorOnFetchActiveContactProfile: boolean;
   selectContact: (contactId: string) => void;
   clearContact: () => void;
-  sendMessage: (to: string, content: string) => void;
-  onSearchChange: (search: string) => void;
   toggleDetailsPanel: () => void;
+  refetchActiveContact: () => void;
 };
 
 export const chatContext = createContext<ChatContext | undefined>(undefined);
@@ -30,61 +27,42 @@ chatContext.displayName = "ChatContext";
 type ChatContextProviderProps = PropsWithChildren & {};
 
 export function ChatContextProvider({ children }: ChatContextProviderProps) {
-  const { user } = useAuthContext();
-
-  const [contacts, setContacts] = useState<BaseUser[]>([]);
-  const [messages, setMessages] = useState<Message[] | null>(null);
-  const [activeContact, setActiveContact] = useState<BaseUser | null>(null);
+  const [activeContactId, setActiveContactId] = useState<string | null>(null);
   const [isDetailsPanelOpen, setIsDetailsPanelOpen] = useState(false);
 
-  const [search, setSearch] = useState("");
+  const { fetchOneMaybe } = useProfile();
+  const {
+    profile: activeContact,
+    isLoading: isLoadingActiveContactProfile,
+    isError: isErrorOnFetchActiveContactProfile,
+    refetch: refetchActiveContact,
+  } = fetchOneMaybe(activeContactId);
 
-  useEffect(() => {
-    setContacts(
-      DoctorData.Chat.contacts.filter(
-        (contact) =>
-          contact.fullname.includes(search) || contact.email.includes(search),
-      ),
-    );
-  }, [search]);
-
-  const selectContact = (contactId: string) =>
-    setActiveContact((prev) => {
-      if (prev?.id === contactId) return prev;
-      setMessages([]);
-      return contacts.find((contact) => contact.id === contactId) ?? null;
-    });
+  const selectContact = (contactId: string) => setActiveContactId(contactId);
 
   const clearContact = () => {
-    setActiveContact(null);
+    setActiveContactId(null);
     setIsDetailsPanelOpen(false);
-    setMessages(null);
-  };
-
-  const sendMessage = (to: string, content: string) => {
-    if (activeContact?.id !== to) return;
-    setMessages((prev) => [
-      ...(prev ?? []),
-      { senderId: user?.id! as string, receiverId: to, content },
-    ]);
   };
 
   const toggleDetailsPanel = () => setIsDetailsPanelOpen((prev) => !prev);
 
+  useEffect(() => {
+    refetchActiveContact();
+  }, [activeContactId]);
+
   return (
     <chatContext.Provider
       value={{
-        contacts,
-        activeContact,
-        activeContactId: activeContact?.id ?? null,
-        messages,
-        search,
+        activeContactId,
         isDetailsPanelOpen,
+        activeContact,
+        isLoadingActiveContactProfile,
+        isErrorOnFetchActiveContactProfile,
         selectContact,
         clearContact,
-        sendMessage,
-        onSearchChange: setSearch,
         toggleDetailsPanel,
+        refetchActiveContact,
       }}
     >
       {children}
