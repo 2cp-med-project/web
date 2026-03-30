@@ -1,11 +1,12 @@
 import {
   AppointmentDetails,
+  PlanningContextProvider,
   Schedule,
   usePlanningContext,
   UtilityPanel,
 } from "@/features/DoctorPanel/Planning/index.ts";
 
-export function PlanningPage() {
+function PlanningPageContent() {
   const { selectedAppointment, clearAppointmentSelection } =
     usePlanningContext();
 
@@ -24,3 +25,9 @@ export function PlanningPage() {
     </div>
   );
 }
+
+export const PlanningPage = () => (
+  <PlanningContextProvider>
+    <PlanningPageContent />
+  </PlanningContextProvider>
+);

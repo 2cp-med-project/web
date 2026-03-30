@@ -172,7 +172,7 @@ export const PATIENT_NAVIGATION: {
           {
             label: "Planning",
             icon: Calendar,
-            to: "/schedule",
+            to: "/planning",
           },
           {
             label: "HealBot",
