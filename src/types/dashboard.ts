@@ -34,3 +34,35 @@ export type OverviewCardContent = {
   desc: string;
   value: number;
 };
+
+export type PendingDoctor = {
+  id: string;
+  fullname: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  nationalId: string;
+  age: number;
+  specialty: string;
+  experience: string;
+  submittedAt: string;
+};
+
+export type RecentUser = {
+  id: string;
+  fullname: string;
+  role: string;
+  joinedDate: string;
+  status: "active" | "pending";
+};
+
+export type AdminDashboardData = {
+  totalPatientsCount: number;
+  totalDoctorsCount: number;
+  totalAppointmentsCount: number;
+  newRegistrationsCount: number;
+  monthlyRegistrations: { month: string; count: number }[];
+  doctorsBySpecialty: { specialty: string; count: number }[];
+  recentUsers: RecentUser[];
+  pendingDoctors: PendingDoctor[];
+};

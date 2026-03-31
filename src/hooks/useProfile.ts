@@ -14,8 +14,8 @@ export const useProfile = () => {
       queryFn: async () => {
         if (!user?.id) throw new APIError.NotAuthenticatedUserError();
         if (user.role === ROLE.DOCTOR) return DoctorAPI.Profile.fetch(user.id);
-        if (user.role === ROLE.PATIENT)
-          return PatientAPI.Profile.fetch(user.id);
+        if (user.role === ROLE.PATIENT) return PatientAPI.Profile.fetch(user.id);
+          if (user.role === ROLE.ADMIN) return user;
         throw new InvalidUserRoleError(user.role);
       },
       enabled: !!user?.id,
@@ -39,7 +39,8 @@ export const useProfile = () => {
 
         if (user.role === ROLE.PATIENT)
           return PatientAPI.Profile.fetch(user.id);
-
+        
+        if (user.role === ROLE.ADMIN) return user; 
         throw new InvalidUserRoleError(user.role);
       },
       enabled: !!user?.id && !!profileId,

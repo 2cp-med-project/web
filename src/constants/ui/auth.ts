@@ -16,7 +16,7 @@ export const users: (AuthUser & { password: string })[] = [
     role: ROLE.DOCTOR,
   },
   {
-    id: "430493-434039-992495-432940",
+    id: "430493-434039-992495-432942",
     fullname: "Mohammed Djaoued BOUHADDA",
     email: "patient@gmail.com",
     avatar: null,
@@ -27,5 +27,18 @@ export const users: (AuthUser & { password: string })[] = [
     gender: GENDER.MALE,
     nationalId: "NID-483920174",
     role: ROLE.PATIENT,
+  },
+  {
+    id: "430493-434039-992495-432941",
+    fullname: "Sara Senoussaoui ",
+    email: "admin@gmail.com",
+    avatar: null,
+    password: "djocoding",
+    phoneNumber: "0698690027",
+    address: "Es-Senia, Oran, Algérie",
+    age: 20,
+    gender: GENDER.MALE,
+    nationalId: "NID-483920174",
+    role: ROLE.ADMIN,
   },
 ];
