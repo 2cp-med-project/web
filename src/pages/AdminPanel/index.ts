@@ -1,4 +1,4 @@
-export { AdminDashboardPage as DashboardPage } from "./Dashboard.tsx";
-export { AdminPatientsPage } from "./Patients.tsx";
-export { AdminDoctorsPage } from "./Doctors.tsx";
-export { AdminAccountSettingsPage as AccountSettingsPage } from "./AccountSettings.tsx";
+export { AccountSettingsPage } from "./AccountSettings.tsx";
+export { DashboardPage } from "./Dashboard.tsx";
+export { DoctorsPage } from "./Doctors.tsx";
+export { PatientsPage } from "./Patients.tsx";

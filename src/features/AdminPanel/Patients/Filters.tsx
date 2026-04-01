@@ -1,9 +1,9 @@
-import { useAdminPatientsContext } from "./context.tsx";
 import { TextField } from "@radix-ui/themes";
 import { Search } from "lucide-react";
+import { usePatientsContext } from "./context.tsx";
 
-export function AdminPatientsFilters() {
-  const { search, onSearchChange } = useAdminPatientsContext();
+export function PatientsFilters() {
+  const { search, onSearchChange } = usePatientsContext();
   return (
     <div className="mt-4">
       <TextField.Root

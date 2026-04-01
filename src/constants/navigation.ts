@@ -207,15 +207,13 @@ export const ADMIN_NAVIGATION: {
         label: "Général",
         items: [
           { label: "Tableau de bord", icon: LayoutDashboard, to: "/" },
-          { label: "Patients", icon: Users, to: "/pat" },
+          { label: "Patients", icon: Users, to: "/patients" },
           { label: "Médecins", icon: UserRound, to: "/doctors" },
         ],
       },
       {
         label: "Configuration",
-        items: [
-          { label: "Paramètres", icon: Settings, to: "/settings" },
-        ],
+        items: [{ label: "Paramètres", icon: Settings, to: "/settings" }],
       },
     ],
   },

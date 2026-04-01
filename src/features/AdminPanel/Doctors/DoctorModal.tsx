@@ -1,9 +1,9 @@
-import { useAdminDoctorsContext } from "./context.tsx";
 import type { DoctorWithMeta } from "@/constants/ui/admin/doctors.ts";
 import { X } from "lucide-react";
+import { useDoctorsContext } from "./context.tsx";
 
-export function AdminDoctorModal() {
-  const { selectedDoctor, clearView } = useAdminDoctorsContext();
+export function DoctorModal() {
+  const { selectedDoctor, clearView } = useDoctorsContext();
   if (!selectedDoctor) return null;
 
   const d = selectedDoctor as DoctorWithMeta;
@@ -23,7 +23,10 @@ export function AdminDoctorModal() {
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 w-[420px] shadow-xl relative">
-        <button onClick={clearView} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <button
+          onClick={clearView}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
           <X size={18} />
         </button>
         <h2 className="font-semibold text-lg mb-4">Profil Médecin</h2>
@@ -33,7 +36,9 @@ export function AdminDoctorModal() {
           </div>
           <p className="font-semibold text-base">{d.fullname}</p>
           <p className="text-sm text-gray-400">{d.specialty}</p>
-          <span className={`mt-1 text-xs px-2 py-0.5 rounded-full font-medium ${statusStyles[d.verificationStatus]}`}>
+          <span
+            className={`mt-1 text-xs px-2 py-0.5 rounded-full font-medium ${statusStyles[d.verificationStatus]}`}
+          >
             {statusLabels[d.verificationStatus]}
           </span>
         </div>
@@ -47,7 +52,10 @@ export function AdminDoctorModal() {
             { label: "Expérience", value: d.experience },
             { label: "Soumis", value: d.submittedAt },
           ].map((item) => (
-            <li key={item.label} className="grid grid-cols-2 border-b border-black/5 pb-2">
+            <li
+              key={item.label}
+              className="grid grid-cols-2 border-b border-black/5 pb-2"
+            >
               <span className="text-gray-400 font-medium">{item.label}</span>
               <span>{item.value}</span>
             </li>

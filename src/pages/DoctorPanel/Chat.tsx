@@ -4,6 +4,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import {
+  ChatContextProvider,
   ChatDetails,
   ChatWindow,
   ContactList,
@@ -11,7 +12,7 @@ import {
 } from "@/features/DoctorPanel/Chat";
 import React from "react";
 
-export function ChatPage() {
+function ChatPageContent() {
   const { isDetailsPanelOpen } = useChatContext();
 
   return (
@@ -45,3 +46,9 @@ export function ChatPage() {
     </section>
   );
 }
+
+export const ChatPage = () => (
+  <ChatContextProvider>
+    <ChatPageContent />
+  </ChatContextProvider>
+);

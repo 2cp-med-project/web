@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useAdminDashboardContext, type DoctorWithStatus } from "./context.tsx";
+import { useDashboardContext, type DoctorWithStatus } from "./context.tsx";
 import { DoctorProfileCard } from "./DoctorProfileCard.tsx";
 
 type VerificationStatus = "pending" | "verified" | "rejected";
 
 export function VerificationTable() {
-  const { doctors, handleAccept, handleReject } = useAdminDashboardContext();
+  const { doctors, handleAccept, handleReject } = useDashboardContext();
   const [tab, setTab] = useState<VerificationStatus>("pending");
-  const [selectedDoctor, setSelectedDoctor] = useState<DoctorWithStatus | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<DoctorWithStatus | null>(
+    null,
+  );
 
   const filtered = doctors.filter((d) => d.status === tab);
   const pendingCount = doctors.filter((d) => d.status === "pending").length;
@@ -73,12 +75,15 @@ export function VerificationTable() {
                 <div>
                   <p className="font-medium text-sm">{doctor.fullname}</p>
                   <p className="text-xs text-gray-400">
-                    {doctor.specialty} • {doctor.experience} exp • soumis {doctor.submittedAt}
+                    {doctor.specialty} • {doctor.experience} exp • soumis{" "}
+                    {doctor.submittedAt}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs px-2 py-0.5 rounded-full ${statusStyles[doctor.status]}`}>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full ${statusStyles[doctor.status]}`}
+                >
                   {statusLabels[doctor.status]}
                 </span>
                 <button
@@ -92,11 +97,15 @@ export function VerificationTable() {
                     <button
                       onClick={() => handleAccept(doctor.id)}
                       className="p-1 rounded-full hover:bg-green-100 text-green-600 transition"
-                    >✓</button>
+                    >
+                      ✓
+                    </button>
                     <button
                       onClick={() => handleReject(doctor.id)}
                       className="p-1 rounded-full hover:bg-red-100 text-red-500 transition"
-                    >✕</button>
+                    >
+                      ✕
+                    </button>
                   </>
                 )}
               </div>
@@ -109,8 +118,14 @@ export function VerificationTable() {
         <DoctorProfileCard
           doctor={selectedDoctor}
           onClose={() => setSelectedDoctor(null)}
-          onAccept={() => { handleAccept(selectedDoctor.id); setSelectedDoctor(null); }}
-          onReject={() => { handleReject(selectedDoctor.id); setSelectedDoctor(null); }}
+          onAccept={() => {
+            handleAccept(selectedDoctor.id);
+            setSelectedDoctor(null);
+          }}
+          onReject={() => {
+            handleReject(selectedDoctor.id);
+            setSelectedDoctor(null);
+          }}
         />
       )}
     </div>

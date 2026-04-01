@@ -1,5 +1,5 @@
-import type { DoctorWithStatus } from "./context.tsx";
 import { X } from "lucide-react";
+import type { DoctorWithStatus } from "./context.tsx";
 
 type DoctorProfileCardProps = {
   doctor: DoctorWithStatus;
@@ -8,11 +8,19 @@ type DoctorProfileCardProps = {
   onReject: () => void;
 };
 
-export function DoctorProfileCard({ doctor, onClose, onAccept, onReject }: DoctorProfileCardProps) {
+export function DoctorProfileCard({
+  doctor,
+  onClose,
+  onAccept,
+  onReject,
+}: DoctorProfileCardProps) {
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 w-[400px] shadow-xl relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
           <X size={18} />
         </button>
         <h2 className="font-semibold text-lg mb-4">Profil du Médecin</h2>
@@ -33,7 +41,10 @@ export function DoctorProfileCard({ doctor, onClose, onAccept, onReject }: Docto
             { label: "Expérience", value: doctor.experience },
             { label: "Soumis", value: doctor.submittedAt },
           ].map((item) => (
-            <li key={item.label} className="grid grid-cols-2 border-b border-black/5 pb-2">
+            <li
+              key={item.label}
+              className="grid grid-cols-2 border-b border-black/5 pb-2"
+            >
               <span className="text-gray-400 font-medium">{item.label}</span>
               <span>{item.value}</span>
             </li>

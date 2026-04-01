@@ -12,7 +12,7 @@ import {
   type PropsWithChildren,
 } from "react";
 
-export type AdminPatientsContext = {
+export type PatientsContext = {
   patients: Patient[];
   isLoading: boolean;
   isError: boolean;
@@ -30,12 +30,12 @@ export type AdminPatientsContext = {
   refetch: () => Promise<QueryObserverResult<Page<Patient>, Error>>;
 };
 
-const adminPatientsContext = createContext<AdminPatientsContext | undefined>(undefined);
-adminPatientsContext.displayName = "AdminPatientsContext";
+const patientsContext = createContext<PatientsContext | undefined>(undefined);
+patientsContext.displayName = "PatientsContext";
 
 const PAGE_SIZE = 6;
 
-export function AdminPatientsContextProvider({ children }: PropsWithChildren) {
+export function PatientsContextProvider({ children }: PropsWithChildren) {
   const { fetchPage } = usePatients();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -52,26 +52,42 @@ export function AdminPatientsContextProvider({ children }: PropsWithChildren) {
   const totalPages = Math.ceil(count / PAGE_SIZE);
   const patients = data?.data || [];
 
-  useEffect(() => { refetch(); }, [page, debouncedSearch]);
+  useEffect(() => {
+    refetch();
+  }, [page, debouncedSearch]);
 
   return (
-    <adminPatientsContext.Provider value={{
-      patients, page, pageSize: PAGE_SIZE, count, totalPages,
-      search, isLoading, isError, onViewPatientId,
-      onNextPage: () => { if (page < totalPages) setPage((p) => p + 1); },
-      onPrevPage: () => { if (page > 1) setPage((p) => p - 1); },
-      onSearchChange: setSearch,
-      view: (id) => setOnViewPatientId(id),
-      clearView: () => setOnViewPatientId(null),
-      refetch,
-    }}>
+    <patientsContext.Provider
+      value={{
+        patients,
+        page,
+        pageSize: PAGE_SIZE,
+        count,
+        totalPages,
+        search,
+        isLoading,
+        isError,
+        onViewPatientId,
+        onNextPage: () => {
+          if (page < totalPages) setPage((p) => p + 1);
+        },
+        onPrevPage: () => {
+          if (page > 1) setPage((p) => p - 1);
+        },
+        onSearchChange: setSearch,
+        view: (id) => setOnViewPatientId(id),
+        clearView: () => setOnViewPatientId(null),
+        refetch,
+      }}
+    >
       {children}
-    </adminPatientsContext.Provider>
+    </patientsContext.Provider>
   );
 }
 
-export const useAdminPatientsContext = () => {
-  const context = useContext(adminPatientsContext);
-  if (context === undefined) throw new HookUsageOutOfProviderError(adminPatientsContext);
+export const usePatientsContext = () => {
+  const context = useContext(patientsContext);
+  if (context === undefined)
+    throw new HookUsageOutOfProviderError(patientsContext);
   return context;
 };

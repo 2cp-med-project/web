@@ -1,13 +1,30 @@
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { useAdminDashboardContext } from "./context.tsx";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { useDashboardContext } from "./context.tsx";
 
-const COLORS = ["#1B9271", "#2563eb", "#f59e0b", "#10b981", "#8b5cf6", "#ef4444"];
+const COLORS = [
+  "#1B9271",
+  "#2563eb",
+  "#f59e0b",
+  "#10b981",
+  "#8b5cf6",
+  "#ef4444",
+];
 
 export function DoctorsBySpecialtyChart() {
-  const { data, isLoading } = useAdminDashboardContext();
+  const { data, isLoading } = useDashboardContext();
 
-if (isLoading || !data) 
-  return <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-52" />;
+  if (isLoading || !data)
+    return (
+      <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-52" />
+    );
 
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm">
@@ -28,9 +45,9 @@ if (isLoading || !data)
             tickLine={false}
           />
           <Tooltip
-  cursor={{ fill: "rgba(0,0,0,0.04)" }}
-  formatter={(v) => [`${v as number}`, ""]}
-/>
+            cursor={{ fill: "rgba(0,0,0,0.04)" }}
+            formatter={(v) => [`${v as number}`, ""]}
+          />
           <Bar dataKey="count" radius={[0, 6, 6, 0]} barSize={12}>
             {(data?.doctorsBySpecialty ?? []).map((_, index) => (
               <Cell key={index} fill={COLORS[index % COLORS.length]} />

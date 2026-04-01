@@ -1,4 +1,5 @@
 import {
+  PatientsContextProvider,
   PatientsTable,
   PatientsTableFilters,
   PatientsTablePagination,
@@ -7,7 +8,7 @@ import {
 import { Flex } from "@radix-ui/themes";
 import React from "react";
 
-export function PatientsPage() {
+function PatientsPageContent() {
   return (
     <React.Fragment>
       <section className="px-2">
@@ -29,3 +30,9 @@ export function PatientsPage() {
     </React.Fragment>
   );
 }
+
+export const PatientsPage = () => (
+  <PatientsContextProvider>
+    <PatientsPageContent />
+  </PatientsContextProvider>
+);

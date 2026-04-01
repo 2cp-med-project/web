@@ -1,8 +1,8 @@
-import { useAdminDoctorsContext } from "./context.tsx";
 import type { DoctorWithMeta } from "@/constants/ui/admin/doctors.ts";
+import { useDoctorsContext } from "./context.tsx";
 
-export function AdminDoctorsGrid() {
-  const { doctors, isLoading, statusFilter, view } = useAdminDoctorsContext();
+export function DoctorsGrid() {
+  const { doctors, isLoading, statusFilter, view } = useDoctorsContext();
 
   const statusStyles: Record<string, string> = {
     pending: "bg-yellow-100 text-yellow-700",
@@ -17,16 +17,20 @@ export function AdminDoctorsGrid() {
   };
 
   const filtered = (doctors as DoctorWithMeta[]).filter((d) =>
-    statusFilter === "all" ? true : d.verificationStatus === statusFilter
+    statusFilter === "all" ? true : d.verificationStatus === statusFilter,
   );
 
-  if (isLoading) return (
-    <div className="grid grid-cols-3 gap-4 mt-6">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="bg-white rounded-2xl p-4 animate-pulse h-48" />
-      ))}
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="grid grid-cols-3 gap-4 mt-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-2xl p-4 animate-pulse h-48"
+          />
+        ))}
+      </div>
+    );
 
   return (
     <div className="grid grid-cols-3 gap-4 mt-6">
@@ -44,7 +48,9 @@ export function AdminDoctorsGrid() {
             <p className="font-semibold text-sm text-center">{d.fullname}</p>
             <p className="text-xs text-gray-400">{d.specialty}</p>
             <div className="flex items-center justify-between w-full mt-2">
-              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusStyles[d.verificationStatus]}`}>
+              <span
+                className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusStyles[d.verificationStatus]}`}
+              >
                 {statusLabels[d.verificationStatus]}
               </span>
               <span className="text-xs text-gray-400">{d.experience} exp</span>

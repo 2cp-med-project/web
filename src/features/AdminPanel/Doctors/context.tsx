@@ -3,10 +3,14 @@ import { useDoctors } from "@/hooks/admin.hooks/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
-  createContext, useContext, useEffect, useState, type PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type PropsWithChildren,
 } from "react";
 
-export type AdminDoctorsContext = {
+export type DoctorsContext = {
   doctors: AuthUser[];
   isLoading: boolean;
   isError: boolean;
@@ -19,10 +23,10 @@ export type AdminDoctorsContext = {
   clearView: () => void;
 };
 
-const adminDoctorsContext = createContext<AdminDoctorsContext | undefined>(undefined);
-adminDoctorsContext.displayName = "AdminDoctorsContext";
+const doctorsContext = createContext<DoctorsContext | undefined>(undefined);
+doctorsContext.displayName = "DoctorsContext";
 
-export function AdminDoctorsContextProvider({ children }: PropsWithChildren) {
+export function DoctorsContextProvider({ children }: PropsWithChildren) {
   const { fetchPage } = useDoctors();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -35,26 +39,35 @@ export function AdminDoctorsContextProvider({ children }: PropsWithChildren) {
     search: debouncedSearch,
   });
 
-  useEffect(() => { refetch(); }, [debouncedSearch]);
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch]);
 
   const doctors = data?.data || [];
 
   return (
-    <adminDoctorsContext.Provider value={{
-      doctors, isLoading, isError, search, statusFilter,
-      selectedDoctor,
-      onSearchChange: setSearch,
-      onStatusFilterChange: setStatusFilter,
-      view: (d) => setSelectedDoctor(d),
-      clearView: () => setSelectedDoctor(null),
-    }}>
+    <doctorsContext.Provider
+      value={{
+        doctors,
+        isLoading,
+        isError,
+        search,
+        statusFilter,
+        selectedDoctor,
+        onSearchChange: setSearch,
+        onStatusFilterChange: setStatusFilter,
+        view: (d) => setSelectedDoctor(d),
+        clearView: () => setSelectedDoctor(null),
+      }}
+    >
       {children}
-    </adminDoctorsContext.Provider>
+    </doctorsContext.Provider>
   );
 }
 
-export const useAdminDoctorsContext = () => {
-  const context = useContext(adminDoctorsContext);
-  if (context === undefined) throw new HookUsageOutOfProviderError(adminDoctorsContext);
+export const useDoctorsContext = () => {
+  const context = useContext(doctorsContext);
+  if (context === undefined)
+    throw new HookUsageOutOfProviderError(doctorsContext);
   return context;
 };

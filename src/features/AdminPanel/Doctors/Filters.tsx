@@ -1,9 +1,11 @@
-import { useAdminDoctorsContext } from "./context.tsx";
-import { TextField, Select } from "@radix-ui/themes";
+import { Select, TextField } from "@radix-ui/themes";
 import { Search } from "lucide-react";
+import { useDoctorsContext } from "./context.tsx";
 
-export function AdminDoctorsFilters() {
-  const { search, onSearchChange, statusFilter, onStatusFilterChange } = useAdminDoctorsContext();
+export function DoctorsFilters() {
+  const { search, onSearchChange, statusFilter, onStatusFilterChange } =
+    useDoctorsContext();
+
   return (
     <div className="flex items-center gap-3 mt-4">
       <TextField.Root
@@ -13,7 +15,9 @@ export function AdminDoctorsFilters() {
         size="2"
         className="flex-1"
       >
-        <TextField.Slot><Search size={14} /></TextField.Slot>
+        <TextField.Slot>
+          <Search size={14} />
+        </TextField.Slot>
       </TextField.Root>
       <Select.Root value={statusFilter} onValueChange={onStatusFilterChange}>
         <Select.Trigger placeholder="Tous les statuts" />

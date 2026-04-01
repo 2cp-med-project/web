@@ -1,4 +1,4 @@
-export function AdminAccountSettingsPage() {
+export function AccountSettingsPage() {
   return (
     <section className="px-2">
       <h1 className="text-foreground font-medium text-2xl">Compte</h1>

@@ -1,5 +1,5 @@
 import { ROLE } from "@/constants/index.ts";
-import { useAdminDashboardContext } from "./context.tsx";
+import { useDashboardContext } from "./context.tsx";
 
 const roleStyles: Record<string, string> = {
   [ROLE.PATIENT]: "bg-blue-100 text-blue-700",
@@ -14,16 +14,20 @@ const roleLabels: Record<string, string> = {
 };
 
 export function RecentUsers() {
-  const { recentUsers, isLoading } = useAdminDashboardContext();
+  const { recentUsers, isLoading } = useDashboardContext();
 
   if (isLoading)
-    return <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-32" />;
+    return (
+      <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-32" />
+    );
 
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-semibold text-base">Utilisateurs récents</h2>
-        <button className="text-xs text-green-600 hover:underline">Voir tout</button>
+        <button className="text-xs text-green-600 hover:underline">
+          Voir tout
+        </button>
       </div>
       <table className="w-full text-sm">
         <thead>
@@ -36,10 +40,15 @@ export function RecentUsers() {
         </thead>
         <tbody>
           {recentUsers.map((user) => (
-            <tr key={user.id} className="border-b border-black/5 last:border-none">
+            <tr
+              key={user.id}
+              className="border-b border-black/5 last:border-none"
+            >
               <td className="py-3 font-medium">{user.fullname}</td>
               <td className="py-3">
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${roleStyles[user.role] ?? "bg-gray-100 text-gray-600"}`}>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${roleStyles[user.role] ?? "bg-gray-100 text-gray-600"}`}
+                >
                   {roleLabels[user.role] ?? user.role}
                 </span>
               </td>

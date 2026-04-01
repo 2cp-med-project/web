@@ -7,13 +7,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useAdminDashboardContext } from "./context.tsx";
+import { useDashboardContext } from "./context.tsx";
 
 export function NewRegistrationsChart() {
-  const { data, isLoading } = useAdminDashboardContext();
+  const { data, isLoading } = useDashboardContext();
 
   if (isLoading || !data)
-    return <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-52" />;
+    return (
+      <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse h-52" />
+    );
 
   const maxCount = Math.max(...data.monthlyRegistrations.map((m) => m.count));
 

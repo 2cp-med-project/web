@@ -1,6 +1,10 @@
 import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.ts";
 import { useDashboard } from "@/hooks/admin.hooks/index.ts";
-import type { AdminDashboardData, OverviewCardContent, RecentUser } from "@/types/dashboard.ts";
+import type {
+  AdminDashboardData,
+  OverviewCardContent,
+  RecentUser,
+} from "@/types/dashboard.ts";
 import { AlertCircle, Stethoscope, UserPlus, Users } from "lucide-react";
 import {
   createContext,
@@ -27,7 +31,7 @@ export type DoctorWithStatus = {
   status: VerificationStatus;
 };
 
-type AdminDashboardContext = {
+type DashboardContext = {
   overviewCardsContents: OverviewCardContent[];
   data: AdminDashboardData | undefined;
   doctors: DoctorWithStatus[];
@@ -39,21 +43,20 @@ type AdminDashboardContext = {
   refetch: () => void;
 };
 
-const dashboardContext = createContext<AdminDashboardContext | undefined>(undefined);
-dashboardContext.displayName = "AdminDashboardContext";
+const dashboardContext = createContext<DashboardContext | undefined>(undefined);
+dashboardContext.displayName = "DashboardContext";
 
-export function AdminDashboardContextProvider({ children }: PropsWithChildren) {
+export function DashboardContextProvider({ children }: PropsWithChildren) {
   const { data, isLoading, isError, refetch } = useDashboard();
   const [doctors, setDoctors] = useState<DoctorWithStatus[]>([]);
-
-  console.log("DATA:", data);
-  console.log("IS LOADING:", isLoading);
-  console.log("IS ERROR:", isError);
 
   useEffect(() => {
     if (data?.pendingDoctors) {
       setDoctors(
-        data.pendingDoctors.map((d) => ({ ...d, status: "pending" as VerificationStatus })),
+        data.pendingDoctors.map((d) => ({
+          ...d,
+          status: "pending" as VerificationStatus,
+        })),
       );
     }
   }, [data]);
@@ -93,12 +96,12 @@ export function AdminDashboardContextProvider({ children }: PropsWithChildren) {
         desc: "Demandes à traiter",
         value: data?.totalAppointmentsCount ?? 0,
       },
-          {
-icon: UserPlus,
-iconColor: "text-purple-500",
-label: "Nouvelles inscriptions",
-desc: "Ce mois-ci",
-value: data?.newRegistrationsCount ?? 0,
+      {
+        icon: UserPlus,
+        iconColor: "text-purple-500",
+        label: "Nouvelles inscriptions",
+        desc: "Ce mois-ci",
+        value: data?.newRegistrationsCount ?? 0,
       },
     ],
     [data],
@@ -123,8 +126,9 @@ value: data?.newRegistrationsCount ?? 0,
   );
 }
 
-export const useAdminDashboardContext = () => {
+export const useDashboardContext = () => {
   const context = useContext(dashboardContext);
-  if (context === undefined) throw new HookUsageOutOfProviderError(dashboardContext);
+  if (context === undefined)
+    throw new HookUsageOutOfProviderError(dashboardContext);
   return context;
 };
