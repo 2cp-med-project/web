@@ -1,4 +1,4 @@
-import { Logo } from "@/components/shared/Logo.tsx";
+import { Logo } from "@/components/shared/Logo";
 import { VerticalLinearStepper } from "@/components/VerticalLinearStepper.tsx";
 import { RegisterPatientForm } from "@/features/shared/Register";
 import { useRegisterPatientStepStore } from "@/features/shared/Register/PatientRegistrationForm/store";

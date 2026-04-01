@@ -1,3 +1,4 @@
+import { GlobalSearch } from "@/components/shared/GlobalSearch.tsx"; // add this
 import { Outlet } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
 import { ProfilePopover } from "../AppLayout/ProfilePopover/index.tsx";
@@ -5,7 +6,8 @@ import { ProfilePopover } from "../AppLayout/ProfilePopover/index.tsx";
 export function MainContent() {
   return (
     <main className="flex-1 flex flex-col">
-      <header className="flex items-center justify-end px-8 py-4 bg-[#E9F7F3] border-b border-b-black/10">
+      <header className="flex items-center justify-between px-8 py-4 bg-[#E9F7F3] border-b border-b-black/10">
+        <GlobalSearch />  {/* ← add this */}
         <nav>
           <ul className="flex items-center gap-2">
             <li>

@@ -1,6 +1,7 @@
 export const ROLE = {
   DOCTOR: "doctor",
   PATIENT: "patient",
+  ADMIN: "admin",
 } as const;
 
 export const GENDER = {

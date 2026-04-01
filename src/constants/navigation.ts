@@ -197,3 +197,42 @@ export const PATIENT_NAVIGATION: {
     settings: [],
   },
 };
+export const ADMIN_NAVIGATION: {
+  external: { default: NavigationSection[] };
+  internal: { settings: SettingsNavigationItem[] };
+} = {
+  external: {
+    default: [
+      {
+        label: "Général",
+        items: [
+          { label: "Tableau de bord", icon: LayoutDashboard, to: "/" },
+          { label: "Patients", icon: Users, to: "/patients" },
+          { label: "Médecins", icon: UserRound, to: "/doctors" },
+        ],
+      },
+      {
+        label: "Configuration",
+        items: [{ label: "Paramètres", icon: Settings, to: "/settings" }],
+      },
+    ],
+  },
+  internal: {
+    settings: [
+      {
+        label: "Compte",
+        desc: "Gérer votre compte et vos informations publiques",
+        icon: User,
+        to: "/settings/account",
+        regex: /^\/settings\/account/,
+      },
+      {
+        label: "Sécurité",
+        desc: "Gérer les paramètres de sécurité de votre compte",
+        icon: Shield,
+        to: "/settings/security",
+        regex: /^\/settings\/security/,
+      },
+    ],
+  },
+};

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils.ts";
 import type { SidebarNavigationMenu } from "@/types/ui.ts";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Logo } from "../../components/shared/Logo.tsx";
+import { Logo } from "../../components/shared/Logo";
 
 type SidebarProps = {
   menu: SidebarNavigationMenu;
