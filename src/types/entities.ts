@@ -56,6 +56,7 @@ export type PatientProfile = BaseProfile & {
   bloodType: BloodType;
   allergies: string[];
   chronicConditions: string[];
+  emergencyContacts: EmergencyContact[];
 };
 
 export type EmergencyContact = {

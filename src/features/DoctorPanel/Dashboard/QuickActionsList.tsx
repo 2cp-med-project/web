@@ -1,4 +1,4 @@
-import { QuickAction } from "@/features/shared/Dashboard/index.ts";
+import { QuickAction } from "@/features/shared/Dashboard/QuickAction.tsx";
 import { Grid } from "@radix-ui/themes";
 import { useDashboardContext } from "./context.tsx";
 

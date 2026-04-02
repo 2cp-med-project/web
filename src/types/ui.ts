@@ -20,3 +20,10 @@ export type SettingsNavigationItem = RegexBasedNavigationItem & {
 };
 
 export type SidebarNavigationMenu = NavigationSection[];
+
+export type QuickAction = {
+  label: string;
+  desc: string;
+  icon: LucideIcon;
+  action: () => void;
+};

@@ -20,13 +20,6 @@ export type PatientDashboardData = {
   newFileEntriesCount: number;
 };
 
-export type QuickAction = {
-  label: string;
-  desc: string;
-  icon: LucideIcon;
-  action: () => void;
-};
-
 export type OverviewCardContent = {
   icon: LucideIcon;
   iconColor: string;

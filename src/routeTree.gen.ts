@@ -24,7 +24,10 @@ import { Route as ProtectedAdminAppRouteRouteImport } from './routes/_protected/
 import { Route as PublicAuthRegisterIndexRouteImport } from './routes/_public/_auth/register/index'
 import { Route as PublicAuthRegisterPatientRouteImport } from './routes/_public/_auth/register/patient'
 import { Route as PublicAuthRegisterDoctorRouteImport } from './routes/_public/_auth/register/doctor'
-import { Route as ProtectedDoctorAppPlanningRouteImport } from './routes/_protected/_doctor/_app/planning'
+import { Route as ProtectedSharedAppPlanningRouteImport } from './routes/_protected/_shared/_app/planning'
+import { Route as ProtectedPatientAppProfileRouteImport } from './routes/_protected/_patient/_app/profile'
+import { Route as ProtectedPatientAppHealbotRouteImport } from './routes/_protected/_patient/_app/healbot'
+import { Route as ProtectedPatientAppFilesRouteImport } from './routes/_protected/_patient/_app/files'
 import { Route as ProtectedDoctorAppChatRouteImport } from './routes/_protected/_doctor/_app/chat'
 import { Route as ProtectedAdminAppDoctorsRouteImport } from './routes/_protected/_admin/_app/doctors'
 import { Route as ProtectedSharedPatientsAppRouteRouteImport } from './routes/_protected/_shared/patients/_app/route'
@@ -281,7 +284,10 @@ export interface FileRoutesById {
   '/_protected/_shared/patients/_app': typeof ProtectedSharedPatientsAppRouteRouteWithChildren
   '/_protected/_admin/_app/doctors': typeof ProtectedAdminAppDoctorsRoute
   '/_protected/_doctor/_app/chat': typeof ProtectedDoctorAppChatRoute
-  '/_protected/_doctor/_app/planning': typeof ProtectedDoctorAppPlanningRoute
+  '/_protected/_patient/_app/files': typeof ProtectedPatientAppFilesRoute
+  '/_protected/_patient/_app/healbot': typeof ProtectedPatientAppHealbotRoute
+  '/_protected/_patient/_app/profile': typeof ProtectedPatientAppProfileRoute
+  '/_protected/_shared/_app/planning': typeof ProtectedSharedAppPlanningRoute
   '/_public/_auth/register/doctor': typeof PublicAuthRegisterDoctorRoute
   '/_public/_auth/register/patient': typeof PublicAuthRegisterPatientRoute
   '/_public/_auth/register/': typeof PublicAuthRegisterIndexRoute
@@ -360,7 +366,10 @@ export interface FileRouteTypes {
     | '/_protected/_shared/patients/_app'
     | '/_protected/_admin/_app/doctors'
     | '/_protected/_doctor/_app/chat'
-    | '/_protected/_doctor/_app/planning'
+    | '/_protected/_patient/_app/files'
+    | '/_protected/_patient/_app/healbot'
+    | '/_protected/_patient/_app/profile'
+    | '/_protected/_shared/_app/planning'
     | '/_public/_auth/register/doctor'
     | '/_public/_auth/register/patient'
     | '/_public/_auth/register/'
@@ -643,13 +652,11 @@ const ProtectedAdminRouteRouteWithChildren =
 
 interface ProtectedDoctorAppRouteRouteChildren {
   ProtectedDoctorAppChatRoute: typeof ProtectedDoctorAppChatRoute
-  ProtectedDoctorAppPlanningRoute: typeof ProtectedDoctorAppPlanningRoute
 }
 
 const ProtectedDoctorAppRouteRouteChildren: ProtectedDoctorAppRouteRouteChildren =
   {
     ProtectedDoctorAppChatRoute: ProtectedDoctorAppChatRoute,
-    ProtectedDoctorAppPlanningRoute: ProtectedDoctorAppPlanningRoute,
   }
 
 const ProtectedDoctorAppRouteRouteWithChildren =

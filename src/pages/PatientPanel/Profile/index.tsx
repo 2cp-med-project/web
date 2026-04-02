@@ -1,3 +1,4 @@
+import { PatientProfileContextProvider } from "@/features/PatientPanel/Profile/context.tsx";
 import { useProfile } from "@/hooks/index.ts";
 import type { PatientProfile } from "@/types/entities.ts";
 import { ProfilePageContent } from "./Content.tsx";
@@ -12,5 +13,9 @@ export function ProfilePage() {
   if (isLoading || !data) return <ProfilePageSkeleton />;
 
   const profile = data as PatientProfile;
-  return <ProfilePageContent profile={profile} />;
+  return (
+    <PatientProfileContextProvider>
+      <ProfilePageContent profile={profile} />
+    </PatientProfileContextProvider>
+  );
 }

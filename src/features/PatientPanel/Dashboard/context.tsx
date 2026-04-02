@@ -1,7 +1,8 @@
 import { HookUsageOutOfProviderError } from "@/errors/HookUsageOutOfProviderError.ts";
 import { useDashboard } from "@/hooks/patients.hooks/index.ts";
-import type { OverviewCardContent, QuickAction } from "@/types/dashboard.ts";
+import type { OverviewCardContent } from "@/types/dashboard.ts";
 import type { EmergencyContact } from "@/types/entities.ts";
+import type { QuickAction } from "@/types/ui.ts";
 import {
   AlertCircle,
   Bell,

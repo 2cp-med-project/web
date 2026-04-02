@@ -1,5 +1,4 @@
-import * as AdminDoctorsApi from "@/api/admin.api/doctors.api.ts";
-import * as AdminPatientsApi from "@/api/admin.api/patients.api.ts";
+import { AdminAPI } from "@/api/index.ts";
 import type { AuthUser, Patient } from "@/types/entities.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
@@ -12,7 +11,10 @@ type Results = {
 
 export function GlobalSearch() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Results>({ doctors: [], patients: [] });
+  const [results, setResults] = useState<Results>({
+    doctors: [],
+    patients: [],
+  });
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -39,8 +41,8 @@ export function GlobalSearch() {
       setLoading(true);
       const pagination = { page: 1, pageSize: 5, search: query };
       const [doctorsPage, patientsPage] = await Promise.all([
-        AdminDoctorsApi.fetchPage(pagination),
-        AdminPatientsApi.fetchPage(pagination),
+        AdminAPI.Doctors.fetchPage(pagination),
+        AdminAPI.Patients.fetchPage(pagination),
       ]);
       setResults({ doctors: doctorsPage.data, patients: patientsPage.data });
       setOpen(true);
@@ -56,7 +58,7 @@ export function GlobalSearch() {
     if (type === "doctor") {
       navigate({ to: "/doctors", search: { search: name } as any });
     } else {
-      navigate({ to: "/pat", search: { search: name } as any });
+      navigate({ to: "/patients", search: { search: name } as any });
     }
   };
 
@@ -95,7 +97,9 @@ export function GlobalSearch() {
                   <div className="w-7 h-7 rounded-full bg-[#1B9271]/20 flex items-center justify-center text-[#1B9271] text-xs font-medium shrink-0">
                     {d.fullname.charAt(0)}
                   </div>
-                  <span className="text-sm text-black/80 truncate">{d.fullname}</span>
+                  <span className="text-sm text-black/80 truncate">
+                    {d.fullname}
+                  </span>
                   <span className="ml-auto text-xs text-white bg-[#1B9271] rounded-full px-2 py-0.5 shrink-0">
                     Médecin
                   </span>
@@ -119,7 +123,9 @@ export function GlobalSearch() {
                   <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 text-xs font-medium shrink-0">
                     {p.fullname.charAt(0)}
                   </div>
-                  <span className="text-sm text-black/80 truncate">{p.fullname}</span>
+                  <span className="text-sm text-black/80 truncate">
+                    {p.fullname}
+                  </span>
                   <span className="ml-auto text-xs text-white bg-blue-400 rounded-full px-2 py-0.5 shrink-0">
                     Patient
                   </span>

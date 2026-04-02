@@ -1,6 +1,10 @@
 import {
+  ClinicalInformationCard,
+  EmergencyContactsSection,
+  FilesCTA,
   GeneralInformationCard,
   PatientProfileCard,
+  QuickActionsSection,
 } from "@/features/PatientPanel/Profile/index.ts";
 import type { PatientProfile } from "@/types/entities.ts";
 
@@ -26,16 +30,20 @@ export function ProfilePageContent({ profile }: ProfilePageContentProps) {
           <PatientProfileCard.Content profile={profile} />
         </div>
 
-        <div className="flex-4">
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <GeneralInformationCard.Content profile={profile} />
-            </div>
-            <div className="flex-1"></div>
+        <div className="flex-5 space-y-4">
+          <div className="grid grid-cols-2 gap-x-2">
+            <GeneralInformationCard.Content profile={profile} />
+            <ClinicalInformationCard.Content profile={profile} />
           </div>
+          <FilesCTA.Content />
         </div>
 
-        <div className="flex-1"></div>
+        <div className="flex-2 space-y-4">
+          <EmergencyContactsSection.Content
+            contacts={profile.emergencyContacts}
+          />
+          <QuickActionsSection.Content />
+        </div>
       </section>
     </section>
   );

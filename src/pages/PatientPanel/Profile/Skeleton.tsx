@@ -1,6 +1,10 @@
 import {
+  ClinicalInformationCard,
+  EmergencyContactsSection,
+  FilesCTA,
   GeneralInformationCard,
   PatientProfileCard,
+  QuickActionsSection,
 } from "@/features/PatientPanel/Profile/index.ts";
 
 export function ProfilePageSkeleton() {
@@ -21,16 +25,18 @@ export function ProfilePageSkeleton() {
           <PatientProfileCard.Skeleton />
         </div>
 
-        <div className="flex-4">
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <GeneralInformationCard.Skeleton />
-            </div>
-            <div className="flex-1"></div>
+        <div className="flex-5 space-y-4">
+          <div className=" grid grid-cols-2 gap-x-2">
+            <GeneralInformationCard.Skeleton />
+            <ClinicalInformationCard.Skeleton />
           </div>
+          <FilesCTA.Skeleton />
         </div>
 
-        <div className="flex-1"></div>
+        <div className="flex-2">
+          <EmergencyContactsSection.Skeleton />
+          <QuickActionsSection.Skeleton />
+        </div>
       </section>
     </section>
   );
