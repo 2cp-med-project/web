@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Scan } from "lucide-react";
 
 export function ScanPatientCard() {
@@ -17,12 +18,12 @@ export function ScanPatientCard() {
       </div>
 
       <div className="flex items-center justify-center w-full mt-6">
-        <button
-          type="button"
+        <Link
+          to="/scan"
           className="px-8 py-2 rounded-xl bg-foreground text-white font-medium text-lg"
         >
-          Launch Scan
-        </button>
+          Scanner
+        </Link>
       </div>
     </div>
   );

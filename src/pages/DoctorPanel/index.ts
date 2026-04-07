@@ -8,3 +8,4 @@ export * as PatientProfilePage from "./PatientProfile/index.ts";
 export { PatientReportPage } from "./PatientReport.tsx";
 export { PatientsPage } from "./Patients.tsx";
 export { PlanningPage } from "./Planning.tsx";
+export { ScanPage } from "./Scan.tsx";
