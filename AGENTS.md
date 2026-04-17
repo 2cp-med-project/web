@@ -13,11 +13,14 @@ The goal is:
 
 # 1. High-Level Structure
 
-```
+```text
 src/
 ├── routes/      # File-based routing (TanStack Router)
-├── pages/       # Route composition layer
-├── features/    # Domain/business logic per panel
+├── pages/       # Route-level composition and state handling
+├── features/    # Domain UI blocks per panel
+├── hooks/       # Data access orchestration
+├── api/         # API layer / mock API layer
+├── constants/   # Static UI content and mock datasets
 ├── context/     # Global shared state only
 └── components/  # Reusable UI primitives
 ```
@@ -28,17 +31,21 @@ src/
 
 Code must follow this strict direction:
 
-```
-routes → pages → features → components
-                    ↓
-              context (global only)
+```text
+routes -> pages -> features -> components
+                 ^
+hooks -> api -> constants
+
+context = global only
 ```
 
 ### Rules:
 
 - No reverse imports allowed
 - Features must NOT depend on pages
-- Pages must NOT contain business logic
+- Pages may depend on hooks and features
+- Hooks may depend on API
+- API may depend on constants for mock data
 - Context must NOT store feature-specific state
 
 ---
@@ -54,75 +61,219 @@ Rules:
 
 - No UI logic
 - No business logic
-- Only connects routes → pages
+- Only connects routes -> pages
 
 ---
 
 # 4. Pages (`pages/`)
 
-Pages are composition layers.
+Pages are the smart route layer.
 
 They:
 
 - assemble features
-- define layout structure
-- orchestrate feature outputs
+- define page layout structure
+- call hooks to collect route data
+- handle loading / error / success states
+- pass resolved data down into features as props
 
 They must NOT:
 
-- fetch data directly
-- implement business logic
-- define reusable components
+- implement raw API calls directly
+- define reusable UI components that belong in `features/` or `components/`
+- contain unrelated business logic
+- store static mock datasets inline
+
+## Page Pattern
+
+For any route-backed screen with remote or mock-backed data, prefer:
+
+```text
+pages/
+└── <Panel>/
+    └── <Page>/
+        ├── Content.tsx
+        ├── Skeleton.tsx
+        ├── Error.tsx
+        └── index.tsx
+```
+
+### Responsibilities
+
+#### `index.tsx`
+
+- Smart page container
+- Calls one or more hooks
+- Handles loading / error / data states
+- Renders `Content.tsx`
+
+#### `Content.tsx`
+
+- Pure page composition
+- Receives all dynamic data via props
+- Composes features
+
+#### `Skeleton.tsx`
+
+- Page loading state
+- Mirrors the page structure
+
+#### `Error.tsx`
+
+- Page failure state
+- Handles retry when needed
 
 Example:
 
-```
-pages/patient/dashboard.tsx
+```text
+pages/PatientPanel/Profile/
+├── Content.tsx
+├── Skeleton.tsx
+├── Error.tsx
+└── index.tsx
 ```
 
 ---
 
 # 5. Features (`features/`)
 
-Features are the core domain layer.
+Features are reusable domain UI blocks scoped to a panel.
 
-A feature represents a business concept (e.g. chat, profile, scan, billing), scoped per panel (doctor, patient, admin).
+A feature represents a business concept such as chat, profile, files, planning, billing, or scan.
 
 ## Structure
 
-```
+```text
 features/
-└── <panel>/
-    └── <feature>/
-        ├── <component>
-        ├── context.tsx  (optional)
-        └── index.ts/index.tsx
+└── <Panel>/
+    └── <Feature>/
+        ├── <SubBlock>/
+        ├── context.tsx   # optional, feature-local only
+        └── index.ts
 ```
-
----
 
 ## Responsibilities
 
 A feature may contain:
 
 - domain-specific UI
-- local state logic
-- feature-level context
-- hooks
-- API placeholders (NOT implementations)
-
----
+- local UI state
+- feature-scoped context
+- reusable feature sections used by pages
+- `Content/Skeleton/Error` files for a reusable block when needed
 
 ## Rules
 
 - Must be self-contained
 - Must not depend on pages
 - Must expose a public API via `index.ts`
-- Must not implement real API calls (only placeholders)
+- Must not implement API calls
+- Must not own route-level loading/error orchestration by default
+- Should receive dynamic data via props from pages
+
+## Feature Pattern
+
+Default expectation:
+
+- pages are smart
+- features are presentational or feature-local
+
+If a feature has reusable sub-blocks, split them into folders:
+
+```text
+features/
+└── PatientPanel/
+    └── Files/
+        ├── TitleBlock/
+        │   └── index.tsx
+        ├── FiltersBar/
+        │   └── index.tsx
+        ├── FilesTable/
+        │   ├── Content.tsx
+        │   ├── Skeleton.tsx
+        │   ├── Error.tsx
+        │   └── index.ts
+        └── index.ts
+```
+
+In this pattern:
+
+- the page fetches data
+- the page owns filters and route states
+- the feature exports reusable UI sections
+- a feature sub-block may expose `Content`, `Skeleton`, and `Error` so the page can compose state-specific layouts
 
 ---
 
-# 6. Components (`components/`)
+# 6. Hooks (`hooks/`)
+
+Hooks are the data access orchestration layer.
+
+They:
+
+- call the API layer
+- connect auth/session context to API requests
+- expose query state to pages
+
+Rules:
+
+- Hooks must not render UI
+- Hooks should be called from pages for route-level data
+- Hooks may be feature-specific if the data belongs to one panel or domain
+
+Example flow:
+
+```text
+useFiles() -> PatientAPI.Files.fetch() -> constants/ui/patient/files.ts
+```
+
+---
+
+# 7. API (`api/`)
+
+API modules are the request layer.
+
+They:
+
+- define fetch functions
+- centralize request behavior
+- provide mock implementations until real APIs exist
+
+Rules:
+
+- API calls must NOT be implemented directly in components
+- API functions belong in `src/api/`
+- Mock-backed responses may read from `src/constants/`
+- Keep the API surface stable even when data is temporary
+
+Temporary mock API implementations are allowed:
+
+```ts
+// FIXME: implement API call here
+```
+
+---
+
+# 8. Constants (`constants/`)
+
+Constants store static UI content and mock datasets.
+
+Use them for:
+
+- placeholder text
+- labels
+- configuration maps
+- temporary mock response data
+
+Do NOT use them for:
+
+- component state
+- request orchestration
+- business logic branching
+
+---
+
+# 9. Components (`components/`)
 
 Shared UI primitives.
 
@@ -142,7 +293,7 @@ Rules:
 
 ---
 
-# 7. Context (`context/`)
+# 10. Context (`context/`)
 
 Global application state only.
 
@@ -159,89 +310,65 @@ Do NOT use for:
 - page state
 - domain-specific logic
 
+Feature-specific shared state belongs inside the feature itself.
+
 ---
 
-# 8. Component Architecture Pattern
+# 11. Component Architecture Pattern
 
-## 8.1 Components with Loading State
+## 11.1 Route Pages with Data
 
-If a component fetches data, structure it like:
+If the route loads data, the page owns the state.
 
+Pattern:
+
+```text
+index.tsx  -> hook call + state branching
+Content.tsx -> feature composition
+Skeleton.tsx -> loading UI
+Error.tsx -> error UI
 ```
-ComponentName/
+
+This is the default for route-backed pages.
+
+## 11.2 Reusable Feature Blocks with State Variants
+
+If a reusable feature block needs its own visual variants, structure it like:
+
+```text
+FeatureBlock/
 ├── Content.tsx
 ├── Skeleton.tsx
-├── Error.tsx     (optional)
-└── index.tsx
+├── Error.tsx
+└── index.ts
 ```
 
-### Responsibilities
+Responsibilities:
 
-#### Content.tsx
+- `Content.tsx`
+  - pure UI
+  - receives data via props
+- `Skeleton.tsx`
+  - loading visual for that block
+- `Error.tsx`
+  - error visual for that block
+- `index.ts`
+  - re-export surface only
 
-- Pure UI
-- Receives data via props
-- No loading/error logic
+Do not default to a smart `index.tsx` container inside `features/` when the route page can own the data flow.
 
-#### Skeleton.tsx
+## 11.3 Static Components
 
-- Loading state UI
-- Mirrors Content layout
+If no loading/error/data variants are needed:
 
-#### Error.tsx (optional)
-
-- Error UI
-- Retry handling when needed
-
-#### index.tsx
-
-- Smart container component
-- Handles loading, error, data states
-- Composes Content/Skeleton/Error
+- keep it as a single file
+- avoid unnecessary abstraction
 
 ---
 
-## 8.2 Static Components
+# 12. Skeleton Utility
 
-If no data fetching is needed:
-
-- single file only
-- no abstraction overhead
-
----
-
-# 9. Feature Context Pattern
-
-If a feature needs shared state:
-
-- use React Context inside the feature
-- keep it scoped to the feature
-- expose a custom hook for access
-
-Rules:
-
-- no global pollution
-- no page-level context
-- always encapsulate logic
-
----
-
-# 10. API Rules
-
-- API calls must NOT be implemented directly in components
-- Only define placeholders:
-
-```ts
-// FIXME: implement API call here
-```
-
-Real API logic should be centralized later (service layer if needed).
-
----
-
-# 11. Skeleton Utility
-
-Use shared skeleton component:
+Use the shared skeleton component:
 
 ```tsx
 import { cn } from "@/lib/utils";
@@ -253,12 +380,21 @@ export function Skeleton({ className = "w-5 h-5" }) {
 
 ---
 
-# 12. Summary Rules
+# 13. Summary Rules
 
-- Pages = composition only
-- Features = business logic
+- Routes = mapping only
+- Pages = smart route composition + state handling
+- Features = reusable domain UI blocks
+- Hooks = data access orchestration
+- API = request layer / mock request layer
+- Constants = static UI content and mock datasets
 - Components = reusable UI only
 - Context = global state only
-- Routes = mapping only
+
+Preferred runtime flow:
+
+```text
+constants -> api -> hooks -> pages -> features -> components
+```
 
 Strict layering ensures scalability and maintainability.

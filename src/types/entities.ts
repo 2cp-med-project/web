@@ -65,3 +65,19 @@ export type EmergencyContact = {
   fullname: string;
   phoneNumber: string;
 };
+
+export type PatientFileType = "consultation" | "analyse" | "ordonnance";
+
+export type PatientFileRecord = {
+  id: string;
+  name: string;
+  type: PatientFileType;
+  modifiedAt: string;
+  modifiedDaysAgo: number;
+  doctor: {
+    key: string;
+    name: string;
+    email: string;
+    shortName: string;
+  };
+};
