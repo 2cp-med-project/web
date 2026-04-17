@@ -1,3 +1,1 @@
-export function PlanningPage() {
-  return <div>planning page</div>;
-}
+export { PlanningPage } from "./Planning/index.tsx";

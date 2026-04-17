@@ -11,9 +11,10 @@ function PlanningPageContent() {
     usePlanningContext();
 
   return (
-    <div className="h-full w-full flex gap-2">
-      <Schedule />
-      <div className="w-125 h-full">
+    <section className="h-full w-full">
+      <div className="grid h-full gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <Schedule />
+        <div className="h-full">
         {!!selectedAppointment && (
           <AppointmentDetails
             {...selectedAppointment}
@@ -21,8 +22,9 @@ function PlanningPageContent() {
           />
         )}
         {!selectedAppointment && <UtilityPanel />}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

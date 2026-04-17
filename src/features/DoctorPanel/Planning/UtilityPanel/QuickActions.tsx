@@ -8,20 +8,22 @@ export function QuickActions({
   onSetReminder,
 }: QuickActionsProps) {
   return (
-    <div className="py-4 px-3 rounded-lg bg-background-dark shadow-sm space-y-2">
-      <p className="text-foreground text-lg font-medium">Quick Actions</p>
-      <div className="flex flex-col gap-1">
+    <div className="rounded-[18px] border border-[#d8efe8] bg-white px-5 py-4 shadow-[0_10px_25px_-18px_rgba(17,78,62,0.35)]">
+      <p className="text-[1.05rem] font-semibold text-[#42bea0]">
+        Actions rapides
+      </p>
+      <div className="mt-3 flex flex-col gap-2">
         <button
-          className="text-start bg-foreground rounded-full px-3 py-1.5 text-white font-medium text-base"
+          className="flex w-full items-center justify-between rounded-full bg-[#54c8a9] px-6 py-3 text-lg font-semibold text-white"
           onClick={onCreateAppointment}
         >
-          New appointment
+          Nouveau rendez-vous
         </button>
         <button
-          className="text-start bg-inherit border border-foreground rounded-full px-3 py-1.5 text-foreground font-medium text-base"
+          className="flex w-full items-center justify-between rounded-full border border-[#6fd1ba] px-6 py-3 text-lg font-semibold text-[#35b899]"
           onClick={onSetReminder}
         >
-          Set Reminder
+          Definir un rappel
         </button>
       </div>
     </div>

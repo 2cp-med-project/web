@@ -11,25 +11,25 @@ export function UtilityPanel() {
 
   const statistics = [
     {
-      title: "Total today",
+      title: "Total du jour",
       value: appointments.length.toString(),
     },
     {
-      title: "Available",
+      title: "Disponible",
       value: "6h",
     },
   ];
 
   return (
     <React.Fragment>
-      <div className="w-full h-full">
+      <div className="w-full h-full space-y-4">
         <QuickActions
           onCreateAppointment={() => setIsCreateDialogOpen(true)}
           onSetReminder={() => {}}
         />
-        <div className="grid grid-cols-2 gap-x-4 mt-5">
+        <div className="grid grid-cols-2 gap-3">
           {statistics.map((statistic) => (
-            <StatisticCard {...statistic} />
+            <StatisticCard key={statistic.title} {...statistic} />
           ))}
         </div>
       </div>

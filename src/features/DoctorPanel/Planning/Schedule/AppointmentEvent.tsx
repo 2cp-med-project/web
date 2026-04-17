@@ -16,13 +16,13 @@ export function AppointmentEvent({ calendarEvent }: AppointmentEventProps) {
     `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 
   return (
-    <div className="cursor-pointer h-full flex flex-col justify-between rounded-md border border-black/20 bg-gray-100 p-1 text-[11px] text-black/60 shadow-sm">
-      <div className="font-semibold leading-tight truncate">
+    <div className="flex h-full cursor-pointer flex-col justify-between rounded-r-sm border-l-[5px] border-[#69d8c0] bg-[#cfeee6] px-3 py-2 text-[11px] text-[#244744] shadow-sm">
+      <div className="truncate font-semibold leading-tight text-[#1e4340]">
         {patient.fullname}
       </div>
 
       {reason && (
-        <div className="text-[10px] opacity-80 truncate">{reason}</div>
+        <div className="truncate text-[10px] opacity-80">{reason}</div>
       )}
 
       <div className="flex justify-between text-[10px] font-medium opacity-80">

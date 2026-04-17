@@ -72,11 +72,13 @@ export function Schedule() {
   }, [appointments, eventsService]);
 
   return (
-    <ScheduleXCalendar
-      calendarApp={calendar}
-      customComponents={{
-        timeGridEvent: AppointmentEvent,
-      }}
-    />
+    <div className="overflow-hidden rounded-[18px] border border-[#d8efe8] bg-white shadow-[0_10px_25px_-18px_rgba(17,78,62,0.35)]">
+      <ScheduleXCalendar
+        calendarApp={calendar}
+        customComponents={{
+          timeGridEvent: AppointmentEvent,
+        }}
+      />
+    </div>
   );
 }

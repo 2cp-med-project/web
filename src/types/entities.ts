@@ -81,3 +81,19 @@ export type PatientFileRecord = {
     shortName: string;
   };
 };
+
+export type PatientPlanningAppointmentStatus = "confirmed" | "pending";
+
+export type PatientPlanningAppointment = {
+  id: string;
+  title: string;
+  doctorName: string;
+  doctorEmail: string;
+  doctorAvatar: string | null;
+  doctorShortName: string;
+  date: string;
+  start: string;
+  end: string;
+  status: PatientPlanningAppointmentStatus;
+  durationLabel: string;
+};

@@ -2,6 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import type {
   EmergencyContact,
   Patient,
+  PatientPlanningAppointment,
   PopulatedAppointment,
 } from "./entities.ts";
 
@@ -18,6 +19,15 @@ export type PatientDashboardData = {
   todayAppointmentsCount: number;
   pendingRequestsCount: number;
   newFileEntriesCount: number;
+};
+
+export type PatientPlanningData = {
+  selectedDate: string;
+  availableHours: number;
+  miniCalendarMonthLabel: string;
+  miniCalendarDays: number[];
+  miniCalendarOffset: number;
+  appointments: PatientPlanningAppointment[];
 };
 
 export type OverviewCardContent = {
