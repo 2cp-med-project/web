@@ -3,7 +3,7 @@ import {
   PatientGeneralInformationSection,
   PatientPersonalSection,
 } from "@/features/DoctorPanel/PatientProfile/index.ts";
-import { Route } from "@/routes/_protected/_doctor/patients/$patientId/profile.tsx";
+import { Route } from "@/routes/d/_protected/patients/$patientId/profile.tsx";
 import { Grid } from "@radix-ui/themes";
 
 export function PatientProfilePageContent() {
