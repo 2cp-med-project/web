@@ -1,6 +1,8 @@
+import { getRoleHomeRoute } from "@/constants/routes.ts";
 import { useAuth } from "@/hooks/useAuth.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, TextField } from "@radix-ui/themes";
+import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Loader2, Phone } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormSchema, type LoginFormData } from "./schema.ts";
@@ -8,6 +10,7 @@ import { LoginFormSchema, type LoginFormData } from "./schema.ts";
 export function LoginForm() {
   const { login } = useAuth();
   const loginMutation = login();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -27,6 +30,12 @@ export function LoginForm() {
   const onSubmit = handleSubmit(async (data) => {
     await loginMutation.mutateAsync({
       ...data,
+      onSuccess: (user) => {
+        navigate({
+          to: getRoleHomeRoute(user.role),
+          replace: true,
+        });
+      },
     });
   });
 

@@ -56,9 +56,9 @@ export function GlobalSearch() {
     setOpen(false);
     setQuery("");
     if (type === "doctor") {
-      navigate({ to: "/doctors", search: { search: name } as any });
+      navigate({ to: "/a/doctors", search: { search: name } as any });
     } else {
-      navigate({ to: "/patients", search: { search: name } as any });
+      navigate({ to: "/a/patients", search: { search: name } as any });
     }
   };
 

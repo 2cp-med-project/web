@@ -35,7 +35,7 @@ export function PatientProfilePageGenericError({
 
         <Link
           className="px-4 py-2 bg-transparent text-foreground border-2 border-foreground flex gap-2 items-center rounded"
-          to="/patients"
+          to="/d/patients"
         >
           Retour aux patients
         </Link>

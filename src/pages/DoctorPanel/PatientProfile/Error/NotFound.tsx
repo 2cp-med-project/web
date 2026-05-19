@@ -18,7 +18,10 @@ export function PatientProfilePageNotFoundError() {
         </p>
       </div>
 
-      <Link to="/patients" className="px-4 py-2 rounded text-white bg-red-500">
+      <Link
+        to="/d/patients"
+        className="px-4 py-2 rounded text-white bg-red-500"
+      >
         Retour à la liste des patients
       </Link>
     </section>

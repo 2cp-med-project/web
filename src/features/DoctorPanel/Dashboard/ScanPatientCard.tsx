@@ -19,7 +19,7 @@ export function ScanPatientCard() {
 
       <div className="flex items-center justify-center w-full mt-6">
         <Link
-          to="/scan"
+          to="/d/scan"
           className="px-8 py-2 rounded-xl bg-foreground text-white font-medium text-lg"
         >
           Scanner

@@ -25,9 +25,7 @@ export const AppRouter = () => {
     loginMutation.mutateAsync({
       email: json.email,
       password: json.password,
-      onSuccess: () => {
-        // toast here : welcome back.
-      },
+      onSuccess: () => {},
     });
   }, []);
 
