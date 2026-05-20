@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils.ts";
+import { rfidService, type RFIDStatus } from "@/services/rfid.ts";
 import {
   ArrowUpLeft,
   BadgeCheck,
@@ -6,6 +8,7 @@ import {
   ScanLine,
   ShieldCheck,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const tips = [
   {
@@ -27,6 +30,16 @@ const tips = [
 ];
 
 export function ScanPage() {
+  const [status, setStatus] = useState<RFIDStatus>(rfidService.getStatus());
+
+  useEffect(() => {
+    rfidService.setStatusChangeHandler((status) => setStatus(status));
+  }, [rfidService]);
+
+  const handleConnect = async () => {
+    await rfidService.connect();
+  };
+
   return (
     <section className="relative min-h-full overflow-hidden rounded-[2rem] bg-[#f5fbf8] px-4 py-6 md:px-8">
       <div className="relative z-10 mx-auto flex w-full flex-col gap-6">
@@ -42,9 +55,38 @@ export function ScanPage() {
               </span>
               <span>Périphérique HS-Scan : actif</span>
             </div>
-            <span className="rounded-full border border-[#dde5df] bg-white px-4 py-1 text-xs font-semibold tracking-wide text-[#4d5961] shadow-sm">
-              MATÉRIEL CONNECTÉ
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleConnect}
+                disabled={status === "connecting" || status === "connected"}
+                className={cn(
+                  "flex items-center gap-2",
+                  "rounded-lg border border-[#d7e7e2]",
+                  "bg-white",
+                  "px-4 py-2",
+                  "text-sm font-medium text-[#31423d]",
+                  "transition-colors",
+                  "hover:bg-[#f6faf8]",
+                  "disabled:cursor-not-allowed",
+                  "disabled:bg-[#f3f5f4]",
+                  "disabled:text-[#8a9591]",
+                )}
+              >
+                <ScanLine size={16} />
+
+                <span>
+                  {status === "connecting"
+                    ? "Connexion..."
+                    : status === "connected"
+                      ? "Scanner connecté"
+                      : "Connecter le scanner"}
+                </span>
+              </button>
+              <span className="rounded-full border border-[#dde5df] bg-white px-4 py-1 text-xs font-semibold tracking-wide text-[#4d5961] shadow-sm">
+                MATÉRIEL {status === "connected" ? "CONNECTÉ" : "DÉCONNECTÉ"}
+              </span>
+            </div>
           </div>
 
           <div className="px-4 py-6 md:px-8 md:py-8">
