@@ -1,4 +1,5 @@
 import type { PatientFileRecord } from "@/types/entities.ts";
+import { Link } from "@tanstack/react-router";
 import { FolderOpen } from "lucide-react";
 
 type FilesTableContentProps = {
@@ -15,7 +16,11 @@ function DoctorAvatar({ shortName }: { shortName: string }) {
 
 function FileRow({ file }: { file: PatientFileRecord }) {
   return (
-    <article className="grid gap-4 border-t border-[#d7ece5] px-6 py-5 text-[#25493f] md:grid-cols-[minmax(0,1.4fr)_180px_minmax(240px,0.9fr)] md:items-center">
+    <Link
+      to="/p/files/$fileId"
+      params={{ fileId: file.id }}
+      className="grid gap-4 border-t border-[#d7ece5] px-6 py-5 text-[#25493f] transition-colors hover:bg-[#f7fcfa] md:grid-cols-[minmax(0,1.4fr)_180px_minmax(240px,0.9fr)] md:items-center"
+    >
       <div className="flex min-w-0 items-center gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#a9dfd1] bg-white text-[#5bc4ab]">
           <FolderOpen size={22} />
@@ -33,7 +38,7 @@ function FileRow({ file }: { file: PatientFileRecord }) {
           <p className="truncate text-xs text-[#8a9d97]">{file.doctor.email}</p>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
