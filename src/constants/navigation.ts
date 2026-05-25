@@ -88,8 +88,8 @@ export const DOCTOR_NAVIGATION: {
       {
         label: "Dossier Médical",
         icon: File,
-        to: "/d/patients/$patientId/file",
-        regex: /^\/d\/patients\/[^/]+\/file$/,
+        to: "/d/patients/$patientId/files",
+        regex: /^\/d\/patients\/[^/]+\/files(?:\/[^/]+)?$/,
       },
       {
         label: "Ajouter Rapport",

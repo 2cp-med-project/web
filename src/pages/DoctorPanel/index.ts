@@ -4,6 +4,8 @@ export { RegisterPatientPage } from "../RegisterPatient.tsx";
 export { AccountSettingsPage } from "./AccountSettings.tsx";
 export { ChatPage } from "./Chat.tsx";
 export { DashboardPage } from "./Dashboard.tsx";
+export { FilePage } from "./File/index.tsx";
+export { FilesPage } from "./Files/index.tsx";
 export * as PatientProfilePage from "./PatientProfile/index.ts";
 export { PatientReportPage } from "./PatientReport.tsx";
 export { PatientsPage } from "./Patients.tsx";

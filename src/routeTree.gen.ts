@@ -52,6 +52,8 @@ import { Route as ProtectedDPatientsPatientIdFileRouteImport } from './routes/_p
 import { Route as ProtectedDPatientsPatientIdDraftsRouteImport } from './routes/_protected/d/patients/$patientId/drafts'
 import { Route as ProtectedDAppSettingsAccountRouteImport } from './routes/_protected/d/_app/settings/account'
 import { Route as ProtectedAAppSettingsAccountRouteImport } from './routes/_protected/a/_app/settings/account'
+import { Route as ProtectedDPatientsPatientIdFilesIndexRouteImport } from './routes/_protected/d/patients/$patientId/files/index'
+import { Route as ProtectedDPatientsPatientIdFilesFileIdRouteImport } from './routes/_protected/d/patients/$patientId/files/$fileId'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -284,6 +286,18 @@ const ProtectedAAppSettingsAccountRoute =
     path: '/account',
     getParentRoute: () => ProtectedAAppSettingsRouteRoute,
   } as any)
+const ProtectedDPatientsPatientIdFilesIndexRoute =
+  ProtectedDPatientsPatientIdFilesIndexRouteImport.update({
+    id: '/files/',
+    path: '/files/',
+    getParentRoute: () => ProtectedDPatientsPatientIdRouteRoute,
+  } as any)
+const ProtectedDPatientsPatientIdFilesFileIdRoute =
+  ProtectedDPatientsPatientIdFilesFileIdRouteImport.update({
+    id: '/files/$fileId',
+    path: '/files/$fileId',
+    getParentRoute: () => ProtectedDPatientsPatientIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
@@ -324,6 +338,8 @@ export interface FileRoutesByFullPath {
   '/p/': typeof ProtectedPAppDashboardIndexRoute
   '/p/files/': typeof ProtectedPAppFilesIndexRoute
   '/p/settings/': typeof ProtectedPAppSettingsIndexRoute
+  '/d/patients/$patientId/files/$fileId': typeof ProtectedDPatientsPatientIdFilesFileIdRoute
+  '/d/patients/$patientId/files/': typeof ProtectedDPatientsPatientIdFilesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
@@ -357,6 +373,8 @@ export interface FileRoutesByTo {
   '/d/patients/$patientId': typeof ProtectedDPatientsPatientIdIndexRoute
   '/p/files': typeof ProtectedPAppFilesIndexRoute
   '/p/settings': typeof ProtectedPAppSettingsIndexRoute
+  '/d/patients/$patientId/files/$fileId': typeof ProtectedDPatientsPatientIdFilesFileIdRoute
+  '/d/patients/$patientId/files': typeof ProtectedDPatientsPatientIdFilesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -403,6 +421,8 @@ export interface FileRoutesById {
   '/_protected/p/_app/_dashboard/': typeof ProtectedPAppDashboardIndexRoute
   '/_protected/p/_app/files/': typeof ProtectedPAppFilesIndexRoute
   '/_protected/p/_app/settings/': typeof ProtectedPAppSettingsIndexRoute
+  '/_protected/d/patients/$patientId/files/$fileId': typeof ProtectedDPatientsPatientIdFilesFileIdRoute
+  '/_protected/d/patients/$patientId/files/': typeof ProtectedDPatientsPatientIdFilesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -445,6 +465,8 @@ export interface FileRouteTypes {
     | '/p/'
     | '/p/files/'
     | '/p/settings/'
+    | '/d/patients/$patientId/files/$fileId'
+    | '/d/patients/$patientId/files/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -478,6 +500,8 @@ export interface FileRouteTypes {
     | '/d/patients/$patientId'
     | '/p/files'
     | '/p/settings'
+    | '/d/patients/$patientId/files/$fileId'
+    | '/d/patients/$patientId/files'
   id:
     | '__root__'
     | '/_public'
@@ -523,6 +547,8 @@ export interface FileRouteTypes {
     | '/_protected/p/_app/_dashboard/'
     | '/_protected/p/_app/files/'
     | '/_protected/p/_app/settings/'
+    | '/_protected/d/patients/$patientId/files/$fileId'
+    | '/_protected/d/patients/$patientId/files/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -837,6 +863,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAAppSettingsAccountRouteImport
       parentRoute: typeof ProtectedAAppSettingsRouteRoute
     }
+    '/_protected/d/patients/$patientId/files/': {
+      id: '/_protected/d/patients/$patientId/files/'
+      path: '/files'
+      fullPath: '/d/patients/$patientId/files/'
+      preLoaderRoute: typeof ProtectedDPatientsPatientIdFilesIndexRouteImport
+      parentRoute: typeof ProtectedDPatientsPatientIdRouteRoute
+    }
+    '/_protected/d/patients/$patientId/files/$fileId': {
+      id: '/_protected/d/patients/$patientId/files/$fileId'
+      path: '/files/$fileId'
+      fullPath: '/d/patients/$patientId/files/$fileId'
+      preLoaderRoute: typeof ProtectedDPatientsPatientIdFilesFileIdRouteImport
+      parentRoute: typeof ProtectedDPatientsPatientIdRouteRoute
+    }
   }
 }
 
@@ -958,6 +998,8 @@ interface ProtectedDPatientsPatientIdRouteRouteChildren {
   ProtectedDPatientsPatientIdProfileRoute: typeof ProtectedDPatientsPatientIdProfileRoute
   ProtectedDPatientsPatientIdReportRoute: typeof ProtectedDPatientsPatientIdReportRoute
   ProtectedDPatientsPatientIdIndexRoute: typeof ProtectedDPatientsPatientIdIndexRoute
+  ProtectedDPatientsPatientIdFilesFileIdRoute: typeof ProtectedDPatientsPatientIdFilesFileIdRoute
+  ProtectedDPatientsPatientIdFilesIndexRoute: typeof ProtectedDPatientsPatientIdFilesIndexRoute
 }
 
 const ProtectedDPatientsPatientIdRouteRouteChildren: ProtectedDPatientsPatientIdRouteRouteChildren =
@@ -971,6 +1013,10 @@ const ProtectedDPatientsPatientIdRouteRouteChildren: ProtectedDPatientsPatientId
       ProtectedDPatientsPatientIdReportRoute,
     ProtectedDPatientsPatientIdIndexRoute:
       ProtectedDPatientsPatientIdIndexRoute,
+    ProtectedDPatientsPatientIdFilesFileIdRoute:
+      ProtectedDPatientsPatientIdFilesFileIdRoute,
+    ProtectedDPatientsPatientIdFilesIndexRoute:
+      ProtectedDPatientsPatientIdFilesIndexRoute,
   }
 
 const ProtectedDPatientsPatientIdRouteRouteWithChildren =
