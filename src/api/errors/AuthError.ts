@@ -9,3 +9,15 @@ export class AuthError extends BaseAPIError {
     this.status = status;
   }
 }
+
+export class InvalidRefreshTokenError extends AuthError {
+  constructor() {
+    super("Invalid refresh token", 401);
+  }
+}
+
+export class InvalidCredentialsError extends AuthError {
+  constructor() {
+    super("Invalid credentials", 401);
+  }
+}

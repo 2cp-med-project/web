@@ -1,7 +1,8 @@
+import { dzPhoneRegex } from "@/constants/regex.ts";
 import z from "zod";
 
 export const LoginFormSchema = z.object({
-  email: z.string().trim().email({ message: "Adresse e-mail invalide." }),
+  phoneNumber: z.string().trim().regex(dzPhoneRegex),
   password: z
     .string()
     .nonempty({ message: "Le mot de passe est obligatoire." })

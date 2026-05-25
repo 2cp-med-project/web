@@ -1,17 +1,88 @@
-import { AuthError } from "@/api/errors/AuthError.ts";
-import { AuthAPI } from "@/api/index.ts";
+import {
+  AuthError,
+  InvalidCredentialsError,
+  InvalidRefreshTokenError,
+} from "@/api/errors/AuthError.ts";
+import { FetchProfileError } from "@/api/errors/FetchProfileError.ts";
+import { AuthAPI, ProfileAPI } from "@/api/index.ts";
+import { apiRequestHadError } from "@/api/types.ts";
+import { storage } from "@/constants/storage.ts";
 import { useAuthContext } from "@/context/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
 import type { MutationCallback } from "@/types/mutation.ts";
 import { useMutation } from "@tanstack/react-query";
 
 type AuthLoginMutationDTO = {
-  email: string;
+  phoneNumber: string;
   password: string;
 };
 
 export const useAuth = () => {
   const authContext = useAuthContext();
+
+  const statelessLogin = () => {
+    const mutation = useMutation<
+      {
+        user: AuthUser;
+        accessToken: string;
+        refreshToken: string;
+      },
+      AuthError,
+      MutationCallback<AuthUser, Error>
+    >({
+      mutationFn: async () => {
+        const refreshToken = localStorage.getItem(storage.keys.refreshToken);
+
+        let accessToken = localStorage.getItem(storage.keys.accessToken);
+        if (accessToken === null) {
+          if (refreshToken === null)
+            throw new AuthError("No tokens found", 401);
+
+          const refreshTokensRes = await AuthAPI.refreshTokens(refreshToken);
+          if (apiRequestHadError(refreshTokensRes)) {
+            throw new InvalidRefreshTokenError();
+          }
+
+          accessToken = refreshTokensRes.data.accessToken;
+        }
+
+        const fetchUserRes = await ProfileAPI.getMyProfile();
+        if (apiRequestHadError(fetchUserRes)) {
+          throw new FetchProfileError();
+        }
+
+        const user = fetchUserRes.data as AuthUser;
+
+        const value = {
+          user,
+          accessToken: accessToken as string,
+          refreshToken: refreshToken as string,
+        };
+
+        return value;
+      },
+
+      onSuccess: (value, vs) => {
+        localStorage.setItem(storage.keys.accessToken, value.accessToken);
+        localStorage.setItem(storage.keys.refreshToken, value.refreshToken);
+
+        authContext.setIsAuthenticating(false);
+        authContext.login(value.user);
+
+        vs.onSuccess?.(value.user);
+      },
+
+      onMutate: () => {
+        authContext.setIsAuthenticating(true);
+      },
+
+      onError: (error, vs) => {
+        vs.onError?.(error);
+      },
+    });
+
+    return mutation;
+  };
 
   const login = () => {
     const mutation = useMutation<
@@ -19,20 +90,40 @@ export const useAuth = () => {
       AuthError,
       AuthLoginMutationDTO & MutationCallback<AuthUser, Error>
     >({
-      mutationFn: async ({ email, password }) => {
-        const user = await AuthAPI.login(email, password);
+      mutationFn: async ({ phoneNumber, password }) => {
+        const loginRes = await AuthAPI.login(phoneNumber, password);
+        if (apiRequestHadError(loginRes)) {
+          throw new InvalidCredentialsError();
+        }
+
+        localStorage.setItem(
+          storage.keys.refreshToken,
+          loginRes.data.refreshToken,
+        );
+
+        const refreshTokensRes = await AuthAPI.refreshTokens(
+          loginRes.data.refreshToken,
+        );
+        if (apiRequestHadError(refreshTokensRes)) {
+          throw new InvalidRefreshTokenError();
+        }
+
+        localStorage.setItem(
+          storage.keys.accessToken,
+          refreshTokensRes.data.accessToken,
+        );
+
+        const fetchUserRes = await ProfileAPI.getMyProfile();
+        if (apiRequestHadError(fetchUserRes)) {
+          throw new FetchProfileError();
+        }
+
+        const user = fetchUserRes.data;
         return user;
       },
       onSuccess: (user, vs) => {
         authContext.setIsAuthenticating(false);
         authContext.login(user);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...user,
-            password: vs.password,
-          }),
-        );
         vs.onSuccess?.(user);
       },
       onError: (e, vs) => {
@@ -49,5 +140,6 @@ export const useAuth = () => {
 
   return {
     login,
+    statelessLogin,
   };
 };

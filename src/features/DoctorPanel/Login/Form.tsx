@@ -20,7 +20,7 @@ export function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
-      email: "",
+      phoneNumber: "",
       password: "",
     },
     mode: "onChange",
@@ -52,16 +52,16 @@ export function LoginForm() {
           <label className="space-y-1">
             <p className="font-inter text-sm">Email</p>
             <Controller
-              name="email"
+              name="phoneNumber"
               control={control}
               render={({ field }) => (
                 <div>
                   <TextField.Root
                     {...field}
                     className="p-2 focus:ring-foreground"
-                    placeholder="Entrez votre email"
+                    placeholder="Entrez votre numéro du téléphone"
                     size="3"
-                    color={!!errors.email ? "red" : "green"}
+                    color={!!errors.phoneNumber ? "red" : "green"}
                     onBlur={() => {
                       field.onBlur();
                       clearErrors();
@@ -72,7 +72,7 @@ export function LoginForm() {
                     </TextField.Slot>
                   </TextField.Root>
                   <p className="text-sm text-red-500 min-h-5">
-                    {errors.email?.message ?? "\u00A0"}
+                    {errors.phoneNumber?.message ?? "\u00A0"}
                   </p>
                 </div>
               )}

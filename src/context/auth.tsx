@@ -1,3 +1,4 @@
+import { storage } from "@/constants/storage.ts";
 import { HookUsageOutOfProviderError } from "@/errors/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
 import {
@@ -29,7 +30,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem(storage.keys.accessToken);
+    localStorage.removeItem(storage.keys.refreshToken);
     setUser(null);
   };
 

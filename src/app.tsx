@@ -8,32 +8,21 @@ import { router } from "./router.tsx";
 
 import { rfidService } from "./services/rfid.ts";
 
-import type { AuthUser } from "./types/entities.ts";
-
 export const AppRouter = () => {
   const auth = useAuthContext();
-
   const queryClient = useQueryClient();
 
-  const { login } = useAuth();
-
-  const loginMutation = login();
+  const { statelessLogin } = useAuth();
+  const loginMutation = statelessLogin();
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-
-    if (user === null) {
-      return;
-    }
-
-    const json = JSON.parse(user) as AuthUser & {
-      password: string;
-    };
-
     loginMutation.mutateAsync({
-      email: json.email,
-      password: json.password,
-      onSuccess: () => {},
+      onError: () => {
+        router.navigate({
+          to: "/login",
+          replace: true,
+        });
+      },
     });
   }, []);
 
@@ -41,9 +30,7 @@ export const AppRouter = () => {
     const bootstrapRFID = async () => {
       try {
         await rfidService.connect();
-
         console.log("RFID service started.");
-
         rfidService.subscribe((tag) => {
           console.log("RFID tag:", tag);
         });

@@ -1,21 +1,40 @@
-import { AuthData } from "@/constants/ui/index.ts";
-import type { AuthUser } from "@/types/entities.ts";
-import { AuthError } from "./errors/index.ts";
+import { ROLE } from "@/constants/index.ts";
+import { api, request } from "./client.ts";
+
+// const auth = api.create({
+//   baseURL: "/auth",
+// });
+
+export type LoginResponseBody = {
+  userId: string;
+  refreshToken: string;
+};
 
 // POST /auth/login
-export const login = async (email: string, password: string) => {
-  return new Promise<AuthUser>((res, rej) => {
-    setTimeout(() => {
-      const user = AuthData.users.find((user) => user.email === email);
-      if (user === undefined) {
-        return rej(new AuthError("Adresse email incorrecte", 401));
-      }
+export const login = async (phone: string, password: string) => {
+  return request(async () => {
+    const res = await api.post<LoginResponseBody>("/auth/login", {
+      phone,
+      password,
+      role: ROLE.PATIENT,
+    });
+    return res.data;
+  });
+};
 
-      if (password !== user.password)
-        return rej(new AuthError("Mot de passe incorrect", 401));
+export type RefreshTokensResponseBody = {
+  accessToken: string;
+  refreshToken: string;
+};
 
-      const { password: _, ...safeUser } = user;
-      return res(safeUser);
-    }, 1000);
+export const refreshTokens = async (refreshToken: string) => {
+  return request(async () => {
+    const res = await api.post<RefreshTokensResponseBody>(
+      "/auth/refresh-token",
+      {
+        refreshToken,
+      },
+    );
+    return res.data;
   });
 };
