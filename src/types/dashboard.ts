@@ -44,7 +44,7 @@ export type PendingDoctor = {
   email: string;
   phoneNumber: string;
   address: string;
-  nationalId: string;
+  nationalId: string | null;
   age: number;
   specialty: string;
   experience: string;

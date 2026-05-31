@@ -6,6 +6,7 @@ import {
 import { FetchProfileError } from "@/api/errors/FetchProfileError.ts";
 import { AuthAPI, ProfileAPI } from "@/api/index.ts";
 import { apiRequestHadError } from "@/api/types.ts";
+import { ROLE } from "@/constants/index.ts";
 import { storage } from "@/constants/storage.ts";
 import { useAuthContext } from "@/context/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
@@ -51,7 +52,25 @@ export const useAuth = () => {
           throw new FetchProfileError();
         }
 
-        const user = fetchUserRes.data as AuthUser;
+        const data = fetchUserRes.data;
+
+        const dateOfBirth = new Date(data.dateOfBirth);
+        const today = new Date();
+
+        let age = today.getFullYear() - dateOfBirth.getFullYear();
+
+        const user = {
+          id: data._id,
+          fullname: data.firstName + " " + data.lastName,
+          address: data.address,
+          age,
+          avatar: null,
+          email: data.email,
+          gender: data.gender,
+          nationalId: null,
+          phoneNumber: data.phone,
+          role: ROLE.PATIENT,
+        } as AuthUser;
 
         const value = {
           user,
@@ -118,7 +137,26 @@ export const useAuth = () => {
           throw new FetchProfileError();
         }
 
-        const user = fetchUserRes.data;
+        const data = fetchUserRes.data;
+
+        const dateOfBirth = new Date(data.dateOfBirth);
+        const today = new Date();
+
+        let age = today.getFullYear() - dateOfBirth.getFullYear();
+
+        const user = {
+          id: data._id,
+          fullname: data.firstName + " " + data.lastName,
+          address: data.address,
+          age,
+          avatar: null,
+          email: data.email,
+          gender: data.gender,
+          nationalId: null,
+          phoneNumber: data.phone,
+          role: ROLE.PATIENT,
+        } as AuthUser;
+
         return user;
       },
       onSuccess: (user, vs) => {

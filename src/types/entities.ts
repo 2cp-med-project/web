@@ -7,7 +7,7 @@ export type BaseUser = {
   phoneNumber: string;
   avatar: string | null;
   address: string | null;
-  nationalId: string;
+  nationalId: string | null;
   age: number;
   gender: Gender;
 };
