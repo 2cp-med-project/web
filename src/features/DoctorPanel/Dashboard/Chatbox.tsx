@@ -23,6 +23,7 @@ export function Chatbox() {
         onMessageChange={setMessage}
         onMessageSend={onMessageSend}
         onFileUpload={onFileUpload}
+        isPending={false}
       />
 
       {/* for files state usage */}

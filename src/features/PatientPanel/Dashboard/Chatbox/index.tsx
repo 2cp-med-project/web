@@ -1,14 +1,32 @@
 import { PatientData } from "@/constants/ui/index.ts";
 import { useAuthContext } from "@/context/index.ts";
 import { ChatboxInput } from "@/features/shared/Dashboard/ChatboxInput.tsx";
+import { useHealbot } from "@/hooks/index.ts";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { QuickOption } from "./QuickOption.tsx";
 
 export function Chatbox() {
+  const navigate = useNavigate();
   const { user } = useAuthContext();
+  const { startConversation } = useHealbot();
+
+  const startConversationMutation = startConversation();
 
   const [message, setMessage] = useState("");
-  const onMessageSend = () => {};
+  const onMessageSend = async () => {
+    await startConversationMutation.mutateAsync({
+      prompt: message,
+      onSuccess: async (_) => {
+        await navigate({
+          to: "/p/healbot",
+        });
+      },
+      onError: (err) => {
+        console.error(err.message);
+      },
+    });
+  };
 
   const [files, setFiles] = useState<File[]>([]);
   const onFileUpload = (file: File) => {
@@ -39,6 +57,7 @@ export function Chatbox() {
         onMessageChange={setMessage}
         onMessageSend={onMessageSend}
         onFileUpload={onFileUpload}
+        isPending={startConversationMutation.isPending}
       />
 
       {/* for files state usage */}

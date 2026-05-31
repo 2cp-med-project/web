@@ -11,6 +11,7 @@ import { storage } from "@/constants/storage.ts";
 import { useAuthContext } from "@/context/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
 import type { MutationCallback } from "@/types/mutation.ts";
+import { getAgeFromISODateString } from "@/utils/index.ts";
 import { useMutation } from "@tanstack/react-query";
 
 type AuthLoginMutationDTO = {
@@ -54,16 +55,11 @@ export const useAuth = () => {
 
         const data = fetchUserRes.data;
 
-        const dateOfBirth = new Date(data.dateOfBirth);
-        const today = new Date();
-
-        let age = today.getFullYear() - dateOfBirth.getFullYear();
-
         const user = {
           id: data._id,
           fullname: data.firstName + " " + data.lastName,
           address: data.address,
-          age,
+          age: getAgeFromISODateString(data.dateOfBirth),
           avatar: null,
           email: data.email,
           gender: data.gender,
@@ -139,16 +135,11 @@ export const useAuth = () => {
 
         const data = fetchUserRes.data;
 
-        const dateOfBirth = new Date(data.dateOfBirth);
-        const today = new Date();
-
-        let age = today.getFullYear() - dateOfBirth.getFullYear();
-
         const user = {
           id: data._id,
           fullname: data.firstName + " " + data.lastName,
           address: data.address,
-          age,
+          age: getAgeFromISODateString(data.dateOfBirth),
           avatar: null,
           email: data.email,
           gender: data.gender,

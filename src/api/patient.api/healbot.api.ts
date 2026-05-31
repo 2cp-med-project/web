@@ -3,6 +3,7 @@ import type {
   HealbotConversation,
   HealbotConversationSummary,
 } from "@/types/healbot.ts";
+import { api, request } from "../client.ts";
 
 const CONVERSATIONS: HealbotConversation[] = [
   {
@@ -156,7 +157,10 @@ export const fetchConversations = (_patientId: string) => {
 };
 
 // GET /healbot/conversations/:conversationId
-export const fetchConversation = (_patientId: string, conversationId: string) => {
+export const fetchConversation = (
+  _patientId: string,
+  conversationId: string,
+) => {
   return new Promise<HealbotConversation>((resolve, reject) => {
     setTimeout(() => {
       const conversation = CONVERSATIONS.find(
@@ -169,5 +173,20 @@ export const fetchConversation = (_patientId: string, conversationId: string) =>
 
       return resolve(conversation);
     }, 300);
+  });
+};
+
+type StartConversationResponseBody = {
+  threadId: string;
+  title: string;
+  response: string;
+};
+
+export const startConversation = (prompt: string) => {
+  return request(async () => {
+    const res = await api.post<StartConversationResponseBody>("/chatbot", {
+      prompt,
+    });
+    return res.data;
   });
 };

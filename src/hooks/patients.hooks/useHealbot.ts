@@ -1,7 +1,10 @@
+import { StartChatbotConversationError } from "@/api/errors/StartChatbotConversationError.ts";
 import { APIError, PatientAPI } from "@/api/index.ts";
+import { apiRequestHadError } from "@/api/types.ts";
 import { useAuthContext } from "@/context/auth.tsx";
 import { InvalidInputError } from "@/errors/index.ts";
-import { useQuery } from "@tanstack/react-query";
+import type { MutationCallback } from "@/types/mutation.ts";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useHealbot = () => {
   const { user } = useAuthContext();
@@ -29,8 +32,40 @@ export const useHealbot = () => {
     });
   };
 
+  const startConversation = () => {
+    const mutation = useMutation<
+      {
+        threadId: string;
+        title: string;
+        response: string;
+      },
+      Error,
+      { prompt: string } & MutationCallback<string>
+    >({
+      mutationFn: async ({ prompt }) => {
+        const res = await PatientAPI.Healbot.startConversation(prompt);
+        if (apiRequestHadError(res)) {
+          throw new StartChatbotConversationError();
+        }
+        const data = res.data;
+        return data;
+      },
+
+      onSuccess: ({ threadId: id }, vs) => {
+        vs?.onSuccess?.(id);
+      },
+
+      onError: (error, vs) => {
+        vs?.onError?.(error);
+      },
+    });
+
+    return mutation;
+  };
+
   return {
     fetchConversations,
     fetchConversation,
+    startConversation,
   };
 };

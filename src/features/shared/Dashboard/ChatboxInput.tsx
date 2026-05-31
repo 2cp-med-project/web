@@ -1,16 +1,18 @@
-import { Paperclip, Send } from "lucide-react";
+import { Loader2, Paperclip, Send } from "lucide-react";
 
 type ChatboxInputProps = {
   message: string;
   onMessageChange: (newMessage: string) => void;
   onMessageSend: () => void;
   onFileUpload: (file: File) => void;
+  isPending: boolean;
 };
 
 export function ChatboxInput({
   message,
   onMessageSend,
   onMessageChange,
+  isPending,
 }: ChatboxInputProps) {
   return (
     <div className="py-1 px-2 bg-white flex gap-x-2 rounded-lg">
@@ -34,9 +36,13 @@ export function ChatboxInput({
         type="button"
         className="bg-foreground text-white p-2 rounded-full"
         onClick={onMessageSend}
-        disabled={message.trim().length === 0}
+        disabled={isPending && message.trim().length === 0}
       >
-        <Send size={16} />
+        {isPending ? (
+          <Loader2 className="animate-spin" size={16} />
+        ) : (
+          <Send size={16} />
+        )}
       </button>
     </div>
   );
