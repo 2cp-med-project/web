@@ -3,7 +3,7 @@ import {
   type FilesModifiedFilter,
 } from "@/features/DoctorPanel/Files/index.ts";
 import { useFiles } from "@/hooks/doctor.hooks/index.ts";
-import { Route } from "@/routes/_protected/d/patients/$patientId/files/index.tsx";
+import { Route } from "@/routes/_protected/d/_rfid/patients/$patientId/files/index.tsx";
 import type { PatientFileType } from "@/types/entities.ts";
 import { useMemo, useState } from "react";
 import { FilesPageContent } from "./Content.tsx";
@@ -14,11 +14,13 @@ export function FilesPage() {
   const { patientId } = Route.useParams();
   const { useFetchFiles } = useFiles();
   const { data, isLoading, isError, refetch } = useFetchFiles(patientId);
-  const [selectedFileType, setSelectedFileType] =
-    useState<PatientFileType | "all">("all");
+  const [selectedFileType, setSelectedFileType] = useState<
+    PatientFileType | "all"
+  >("all");
   const [selectedModifiedRange, setSelectedModifiedRange] =
     useState<FilesModifiedFilter>("all");
-  const [selectedDoctor, setSelectedDoctor] = useState<FilesDoctorFilter>("all");
+  const [selectedDoctor, setSelectedDoctor] =
+    useState<FilesDoctorFilter>("all");
 
   const files = useMemo(() => {
     const source = data || [];

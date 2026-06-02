@@ -6,7 +6,7 @@ import { createFileRoute } from "@tanstack/react-router";
 const Page = DoctorPanelPages.PatientProfilePage;
 
 export const Route = createFileRoute(
-  "/_protected/d/patients/$patientId/profile",
+  "/_protected/d/_rfid/patients/$patientId/profile",
 )({
   loader: async ({ params }) => {
     const data = await DoctorAPI.Patients.fetchOne(params.patientId);

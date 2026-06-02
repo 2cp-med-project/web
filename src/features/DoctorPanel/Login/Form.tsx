@@ -91,7 +91,7 @@ export function LoginForm() {
       <Box className="mt-12 w-full space-y-4">
         <Box className="space-y-2">
           <label className="space-y-1">
-            <p className="font-inter text-sm">Email</p>
+            <p className="font-inter text-sm">Numéro de téléphone</p>
             <Controller
               name="phoneNumber"
               control={control}

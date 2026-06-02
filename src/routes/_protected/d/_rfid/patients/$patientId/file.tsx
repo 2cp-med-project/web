@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_protected/d/patients/$patientId/file")({
+export const Route = createFileRoute("/_protected/d/_rfid/patients/$patientId/file")({
   beforeLoad: ({ params }) => {
     throw redirect({
       to: "/d/patients/$patientId/files",

@@ -2,7 +2,7 @@ import {
   PatientCard,
   PatientRecordForm,
 } from "@/features/DoctorPanel/PatientReport/index.ts";
-import { Route } from "@/routes/_protected/d/patients/$patientId/report";
+import { Route } from "@/routes/_protected/d/_rfid/patients/$patientId/report";
 import { Grid } from "@radix-ui/themes";
 
 export function PatientReportPage() {

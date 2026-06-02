@@ -36,6 +36,10 @@ export function ScanPage() {
     rfidService.setStatusChangeHandler((status) => setStatus(status));
   }, [rfidService]);
 
+  useEffect(() => {
+    console.log(status);
+  }, [status]);
+
   const handleConnect = async () => {
     await rfidService.connect();
   };
@@ -59,7 +63,7 @@ export function ScanPage() {
               <button
                 type="button"
                 onClick={handleConnect}
-                disabled={status === "connecting" || status === "connected"}
+                disabled={status === "connecting" || status === "listening"}
                 className={cn(
                   "flex items-center gap-2",
                   "rounded-lg border border-[#d7e7e2]",
@@ -84,7 +88,7 @@ export function ScanPage() {
                 </span>
               </button>
               <span className="rounded-full border border-[#dde5df] bg-white px-4 py-1 text-xs font-semibold tracking-wide text-[#4d5961] shadow-sm">
-                MATÉRIEL {status === "connected" ? "CONNECTÉ" : "DÉCONNECTÉ"}
+                MATÉRIEL {status === "listening" ? "CONNECTÉ" : "DÉCONNECTÉ"}
               </span>
             </div>
           </div>

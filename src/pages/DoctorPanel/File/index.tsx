@@ -1,5 +1,5 @@
 import { useFiles } from "@/hooks/doctor.hooks/index.ts";
-import { Route } from "@/routes/_protected/d/patients/$patientId/files/$fileId.tsx";
+import { Route } from "@/routes/_protected/d/_rfid/patients/$patientId/files/$fileId.tsx";
 import { FilePageContent } from "./Content.tsx";
 import { FilePageError } from "./Error.tsx";
 import { FilePageSkeleton } from "./Skeleton.tsx";

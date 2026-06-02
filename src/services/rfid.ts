@@ -51,6 +51,8 @@ export class RFIDService {
   }
 
   async connect(baudRate: number = 115200): Promise<void> {
+    if (this.status === "listening") return;
+
     this.setStatus("connecting");
 
     try {
