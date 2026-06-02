@@ -29,7 +29,7 @@ export const fetch = (id: string) => {
 };
 
 // GET /users/me
-export const fetchProfile = () => {
+export const fetchMe = () => {
   return request(async () => {
     const res = await api.get<GetPatientProfileResponseBody>("/users/me");
     return res.data;

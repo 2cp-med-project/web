@@ -1,3 +1,4 @@
+import { ROLE } from "@/constants/index.ts";
 import { dzPhoneRegex } from "@/constants/regex.ts";
 import z from "zod";
 
@@ -9,6 +10,9 @@ export const LoginFormSchema = z.object({
     .min(8, {
       message: "Le mot de passe doit contenir au moins 8 caractères.",
     }),
+  role: z.enum(Object.values(ROLE), {
+    error: "Role invalid",
+  }),
 });
 
 export type LoginFormData = z.infer<typeof LoginFormSchema>;

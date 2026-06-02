@@ -6,10 +6,10 @@ import {
 import { FetchProfileError } from "@/api/errors/FetchProfileError.ts";
 import { AuthAPI, ProfileAPI } from "@/api/index.ts";
 import { apiRequestHadError } from "@/api/types.ts";
-import { ROLE } from "@/constants/index.ts";
 import { storage } from "@/constants/storage.ts";
 import { useAuthContext } from "@/context/index.ts";
 import type { AuthUser } from "@/types/entities.ts";
+import type { Role } from "@/types/index.ts";
 import type { MutationCallback } from "@/types/mutation.ts";
 import { getAgeFromISODateString } from "@/utils/index.ts";
 import { useMutation } from "@tanstack/react-query";
@@ -17,6 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 type AuthLoginMutationDTO = {
   phoneNumber: string;
   password: string;
+  role: Role;
 };
 
 export const useAuth = () => {
@@ -33,8 +34,10 @@ export const useAuth = () => {
       MutationCallback<AuthUser, Error>
     >({
       mutationFn: async () => {
+        const role = localStorage.getItem(storage.keys.role);
+        if (role === null) throw new Error("Failed to stateless login");
+
         const refreshToken = localStorage.getItem(storage.keys.refreshToken);
-        console.log("REF", refreshToken);
 
         let accessToken = localStorage.getItem(storage.keys.accessToken);
         if (accessToken === null) {
@@ -49,15 +52,12 @@ export const useAuth = () => {
           accessToken = refreshTokensRes.data.accessToken;
         }
 
-        console.log("ACCESS", accessToken);
-
         const fetchUserRes = await ProfileAPI.getMyProfile();
         if (apiRequestHadError(fetchUserRes)) {
           throw new FetchProfileError();
         }
 
         const data = fetchUserRes.data;
-        console.log("DATA", data);
 
         const user = {
           id: data._id,
@@ -69,7 +69,7 @@ export const useAuth = () => {
           gender: data.gender,
           nationalId: null,
           phoneNumber: data.phone,
-          role: ROLE.PATIENT,
+          role,
         } as AuthUser;
 
         const value = {
@@ -92,7 +92,6 @@ export const useAuth = () => {
       },
 
       onMutate: () => {
-        console.log("being stateless login");
         authContext.setIsAuthenticating(true);
       },
 
@@ -110,8 +109,8 @@ export const useAuth = () => {
       AuthError,
       AuthLoginMutationDTO & MutationCallback<AuthUser, Error>
     >({
-      mutationFn: async ({ phoneNumber, password }) => {
-        const loginRes = await AuthAPI.login(phoneNumber, password);
+      mutationFn: async ({ phoneNumber, password, role }) => {
+        const loginRes = await AuthAPI.login(phoneNumber, password, role);
         if (apiRequestHadError(loginRes)) {
           throw new InvalidCredentialsError();
         }
@@ -150,9 +149,10 @@ export const useAuth = () => {
           gender: data.gender,
           nationalId: null,
           phoneNumber: data.phone,
-          role: ROLE.PATIENT,
+          role,
         } as AuthUser;
 
+        localStorage.setItem(storage.keys.role, role);
         return user;
       },
       onSuccess: (user, vs) => {

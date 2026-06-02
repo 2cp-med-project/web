@@ -1,3 +1,4 @@
+import { ROLE } from "@/constants/index.ts";
 import { getRoleHomeRoute } from "@/constants/routes.ts";
 import { useAuth } from "@/hooks/useAuth.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,6 +6,7 @@ import { Box, TextField } from "@radix-ui/themes";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Loader2, Phone } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { LoginFormSchema, type LoginFormData } from "./schema.ts";
 
 export function LoginForm() {
@@ -22,6 +24,7 @@ export function LoginForm() {
     defaultValues: {
       phoneNumber: "",
       password: "",
+      role: ROLE.PATIENT,
     },
     mode: "onChange",
     reValidateMode: "onChange",
@@ -36,6 +39,9 @@ export function LoginForm() {
           replace: true,
         });
       },
+      onError: () => {
+        toast.error("Invalid credentials");
+      },
     });
   });
 
@@ -47,6 +53,41 @@ export function LoginForm() {
           Connectez-vous pour accéder à votre espace de gestion de santé.
         </h2>
       </Box>
+
+      <Box className="mt-6">
+        <Controller
+          name="role"
+          control={control}
+          render={({ field }) => (
+            <div className="grid grid-cols-2 rounded-xl bg-foreground p-1">
+              <button
+                type="button"
+                onClick={() => field.onChange(ROLE.PATIENT)}
+                className={`rounded-lg py-2 text-sm font-medium transition ${
+                  field.value === ROLE.PATIENT
+                    ? "bg-white text-foreground"
+                    : "text-white/80"
+                }`}
+              >
+                Patient
+              </button>
+
+              <button
+                type="button"
+                onClick={() => field.onChange(ROLE.DOCTOR)}
+                className={`rounded-lg py-2 text-sm font-medium transition ${
+                  field.value === ROLE.DOCTOR
+                    ? "bg-white text-foreground"
+                    : "text-white/80"
+                }`}
+              >
+                Médecin
+              </button>
+            </div>
+          )}
+        />
+      </Box>
+
       <Box className="mt-12 w-full space-y-4">
         <Box className="space-y-2">
           <label className="space-y-1">

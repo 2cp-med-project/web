@@ -1,4 +1,4 @@
-import { ROLE } from "@/constants/index.ts";
+import type { Role } from "@/types/index.ts";
 import { api, request } from "./client.ts";
 
 // const auth = api.create({
@@ -11,12 +11,12 @@ export type LoginResponseBody = {
 };
 
 // POST /auth/login
-export const login = async (phone: string, password: string) => {
+export const login = async (phone: string, password: string, role: Role) => {
   return request(async () => {
     const res = await api.post<LoginResponseBody>("/auth/login", {
       phone,
       password,
-      role: ROLE.PATIENT,
+      role,
     });
     return res.data;
   });

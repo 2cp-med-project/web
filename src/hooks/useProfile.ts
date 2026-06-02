@@ -1,11 +1,11 @@
 import { FetchProfileError } from "@/api/errors/FetchProfileError.ts";
 import { APIError, DoctorAPI, PatientAPI } from "@/api/index.ts";
 import { apiRequestHadError } from "@/api/types.ts";
-import { ROLE } from "@/constants/index.ts";
+import { GENDER, ROLE } from "@/constants/index.ts";
 import { useAuthContext } from "@/context/auth.tsx";
 import { InvalidInputError } from "@/errors/InvalidInputError.ts";
 import { InvalidUserRoleError } from "@/errors/InvalidUserRoleError.ts";
-import type { PatientProfile } from "@/types/entities.ts";
+import type { DoctorProfile, PatientProfile } from "@/types/entities.ts";
 import { getAgeFromISODateString, parseMedicalInfo } from "@/utils/index.ts";
 import { useQuery } from "@tanstack/react-query";
 
@@ -13,7 +13,7 @@ export const useProfile = () => {
   const { user } = useAuthContext();
 
   const fetchPatientProfile = async () => {
-    const res = await PatientAPI.Profile.fetchProfile();
+    const res = await PatientAPI.Profile.fetchMe();
     if (apiRequestHadError(res)) {
       throw new FetchProfileError();
     }
@@ -41,20 +41,51 @@ export const useProfile = () => {
     return profile;
   };
 
+  const fetchDoctorProfile = async () => {
+    const res = await DoctorAPI.Profile.fetchMe();
+    if (apiRequestHadError(res)) {
+      throw new FetchProfileError();
+    }
+
+    const data = res.data;
+
+    const profile = {
+      id: data._id,
+      fullname: data.firstName + " " + data.lastName,
+      age: 21,
+      avatar: null,
+      email: data.email,
+      gender: GENDER.MALE,
+      nationalId: null,
+      phoneNumber: data.phone,
+      role: ROLE.DOCTOR,
+    } as DoctorProfile;
+
+    return profile;
+  };
+
   const fetchMe = () => {
     const query = useQuery({
       queryKey: ["my-profile", user?.id],
       queryFn: async () => {
         if (!user?.id) throw new APIError.NotAuthenticatedUserError();
 
-        if (user.role === ROLE.PATIENT) {
-          return fetchPatientProfile();
-        }
+        const profileFetcher = {
+          [ROLE.PATIENT]: () => {
+            return fetchPatientProfile();
+          },
+          [ROLE.DOCTOR]: () => {
+            return fetchDoctorProfile();
+          },
+          [ROLE.ADMIN]: async () => {
+            return user;
+          },
+        };
 
-        if (user.role === ROLE.DOCTOR) return DoctorAPI.Profile.fetch(user.id);
-        if (user.role === ROLE.ADMIN) return user;
+        const fetcher = profileFetcher[user.role];
+        const profile = await fetcher();
 
-        throw new InvalidUserRoleError(user.role);
+        return profile;
       },
       enabled: !!user?.id,
     });

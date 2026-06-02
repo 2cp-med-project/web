@@ -12,3 +12,22 @@ export const fetch = (id: string) => {
     }, 300);
   });
 };
+
+import { api, request } from "../client.ts";
+
+type GetDoctorProfileResponseBody = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  createdAt: string;
+};
+
+// GET /users/me
+export const fetchMe = () => {
+  return request(async () => {
+    const res = await api.get<GetDoctorProfileResponseBody>("/users/me");
+    return res.data;
+  });
+};

@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { AppRouter } from "./app.tsx";
+import { Toaster } from "./components/Sonner.tsx";
 import { AuthContextProvider } from "./context";
 import { router } from "./router.tsx";
 import "./styles/globals.css";
@@ -27,5 +28,6 @@ createRoot(document.getElementById("root")!).render(
         <AppRouter />
       </AuthContextProvider>
     </QueryClientProvider>
+    <Toaster />
   </StrictMode>,
 );
