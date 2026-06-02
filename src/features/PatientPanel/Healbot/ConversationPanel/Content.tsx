@@ -4,7 +4,7 @@ import { Edit3, Menu, Search } from "lucide-react";
 
 type ConversationPanelContentProps = {
   activeConversationId: string | null;
-  conversations: HealbotConversationSummary[];
+  conversations: Omit<HealbotConversationSummary, "preview">[];
   search: string;
   onConversationSelect: (conversationId: string) => void;
   onNewDiscussion: () => void;
@@ -67,9 +67,6 @@ export function ConversationPanelContent({
                   <div className="min-w-0 pr-3">
                     <p className="truncate text-[15px] font-medium text-[#3d4b47]">
                       {conversation.title}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-[#89a49d]">
-                      {conversation.preview}
                     </p>
                   </div>
 

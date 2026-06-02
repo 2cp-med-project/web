@@ -23,14 +23,13 @@ const healbotContext = createContext<HealbotContext | undefined>(undefined);
 healbotContext.displayName = "HealbotContext";
 
 export function HealbotContextProvider({ children }: PropsWithChildren) {
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(
-    null,
-  );
+  const [activeConversationId, setActiveConversationId] = useState<
+    string | null
+  >(null);
   const [draft, setDraft] = useState("");
   const [hasInitializedSelection, setHasInitializedSelection] = useState(false);
-  const [localMessagesByConversation, setLocalMessagesByConversation] = useState<
-    Record<string, HealbotMessage[]>
-  >({});
+  const [localMessagesByConversation, setLocalMessagesByConversation] =
+    useState<Record<string, HealbotMessage[]>>({});
 
   const selectConversation = (conversationId: string) => {
     setActiveConversationId(conversationId);
@@ -46,10 +45,8 @@ export function HealbotContextProvider({ children }: PropsWithChildren) {
 
   const appendLocalMessage = (conversationId: string, content: string) => {
     const message: HealbotMessage = {
-      id: `local-${conversationId}-${Date.now()}`,
-      author: "patient",
+      role: "user",
       content,
-      timestamp: "Maintenant",
     };
 
     setLocalMessagesByConversation((previous) => ({

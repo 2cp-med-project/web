@@ -1,9 +1,11 @@
+import { FetchChatbotConversationError } from "@/api/errors/FetchChatbotConversationError.ts";
+import { FetchChatbotConversationsError } from "@/api/errors/FetchChatbotConversationsError.ts";
 import { StartChatbotConversationError } from "@/api/errors/StartChatbotConversationError.ts";
 import { APIError, PatientAPI } from "@/api/index.ts";
 import { apiRequestHadError } from "@/api/types.ts";
 import { useAuthContext } from "@/context/auth.tsx";
 import { InvalidInputError } from "@/errors/index.ts";
-import type { MutationCallback } from "@/types/mutation.ts";
+import type { OptimisticMutationCallback } from "@/types/mutation.ts";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useHealbot = () => {
@@ -14,7 +16,17 @@ export const useHealbot = () => {
       queryKey: ["patient-healbot-conversations", user?.id],
       queryFn: async () => {
         if (!user?.id) throw new APIError.NotAuthenticatedUserError();
-        return PatientAPI.Healbot.fetchConversations(user.id);
+
+        const res = await PatientAPI.Healbot.fetchConversations(user.id);
+        if (apiRequestHadError(res)) {
+          throw new FetchChatbotConversationsError();
+        }
+
+        const data = res.data;
+        return data.chats.map((chat) => ({
+          id: chat._id,
+          title: chat.title,
+        }));
       },
       enabled: !!user?.id,
     });
@@ -26,7 +38,18 @@ export const useHealbot = () => {
       queryFn: async () => {
         if (!user?.id) throw new APIError.NotAuthenticatedUserError();
         if (!conversationId) throw new InvalidInputError("conversationId");
-        return PatientAPI.Healbot.fetchConversation(user.id, conversationId);
+
+        const res = await PatientAPI.Healbot.fetchConversation(conversationId);
+        if (apiRequestHadError(res)) {
+          throw new FetchChatbotConversationError();
+        }
+
+        const data = res.data;
+        return {
+          id: data.threadId,
+          title: data.title,
+          messages: data.history,
+        };
       },
       enabled: !!user?.id && !!conversationId,
     });
@@ -40,7 +63,11 @@ export const useHealbot = () => {
         response: string;
       },
       Error,
-      { prompt: string } & MutationCallback<string>
+      { prompt: string } & OptimisticMutationCallback<{
+        threadId: string;
+        title: string;
+        response: string;
+      }>
     >({
       mutationFn: async ({ prompt }) => {
         const res = await PatientAPI.Healbot.startConversation(prompt);
@@ -51,8 +78,51 @@ export const useHealbot = () => {
         return data;
       },
 
-      onSuccess: ({ threadId: id }, vs) => {
-        vs?.onSuccess?.(id);
+      onMutate: (vs) => {
+        vs?.onMutate?.();
+      },
+
+      onSuccess: (data, vs) => {
+        vs?.onSuccess?.(data);
+      },
+
+      onError: (error, vs) => {
+        vs?.onError?.(error);
+      },
+    });
+
+    return mutation;
+  };
+
+  const sendPrompt = () => {
+    const mutation = useMutation<
+      {
+        threadId: string;
+        title: string;
+        response: string;
+      },
+      Error,
+      { prompt: string; threadId: string } & OptimisticMutationCallback<{
+        threadId: string;
+        title: string;
+        response: string;
+      }>
+    >({
+      mutationFn: async ({ prompt, threadId }) => {
+        const res = await PatientAPI.Healbot.sendPrompt(threadId, prompt);
+        if (apiRequestHadError(res)) {
+          throw new StartChatbotConversationError();
+        }
+        const data = res.data;
+        return data;
+      },
+
+      onMutate: (vs) => {
+        vs?.onMutate?.();
+      },
+
+      onSuccess: (data, vs) => {
+        vs?.onSuccess?.(data);
       },
 
       onError: (error, vs) => {
@@ -67,5 +137,6 @@ export const useHealbot = () => {
     fetchConversations,
     fetchConversation,
     startConversation,
+    sendPrompt,
   };
 };

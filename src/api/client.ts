@@ -44,8 +44,6 @@ api.interceptors.response.use(
       return api(req);
     } catch (err) {
       console.log(err);
-      localStorage.removeItem(storage.keys.accessToken);
-      localStorage.removeItem(storage.keys.refreshToken);
       return Promise.reject(error);
     }
   },

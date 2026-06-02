@@ -1,12 +1,35 @@
-import { Bot, SendHorizontal, Sparkles } from "lucide-react";
+import { useHealbot } from "@/hooks/index.ts";
+import { Bot, Loader2, SendHorizontal, Sparkles } from "lucide-react";
+import { useHealbotContext } from "../context.tsx";
 
 type ChatPanelEmptyProps = {
   draft: string;
   onDraftChange: (value: string) => void;
+  onRefetch: () => Promise<void>;
 };
 
-export function ChatPanelEmpty({ draft, onDraftChange }: ChatPanelEmptyProps) {
-  const onSend = () => {};
+export function ChatPanelEmpty({
+  draft,
+  onDraftChange,
+  onRefetch,
+}: ChatPanelEmptyProps) {
+  const { selectConversation } = useHealbotContext();
+
+  const { startConversation } = useHealbot();
+  const startConversationMutation = startConversation();
+
+  const handleSend = async () => {
+    const message = draft.trim();
+    if (message.length === 0) return;
+
+    await startConversationMutation.mutateAsync({
+      prompt: message,
+      onSuccess: async (data) => {
+        selectConversation(data.threadId);
+        await onRefetch();
+      },
+    });
+  };
 
   return (
     <section className="flex min-w-0 flex-1 flex-col justify-center bg-[#eefdf8] px-8">
@@ -39,11 +62,15 @@ export function ChatPanelEmpty({ draft, onDraftChange }: ChatPanelEmptyProps) {
 
             <button
               type="button"
-              onClick={onSend}
+              onClick={handleSend}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-[#50c8aa] text-white transition-transform hover:scale-[1.02]"
               aria-label="Envoyer le message"
             >
-              <SendHorizontal size={20} />
+              {startConversationMutation.isPending ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                <SendHorizontal size={20} />
+              )}
             </button>
           </div>
         </div>

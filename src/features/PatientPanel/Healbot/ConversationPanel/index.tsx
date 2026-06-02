@@ -36,24 +36,10 @@ export function ConversationPanel() {
     const source = data || [];
     const normalizedSearch = search.trim().toLowerCase();
 
-    const merged = source.map((conversation) => {
-      const localMessages = localMessagesByConversation[conversation.id] || [];
-      const lastLocalMessage = localMessages[localMessages.length - 1];
+    if (!normalizedSearch) return source;
 
-      if (!lastLocalMessage) return conversation;
-
-      return {
-        ...conversation,
-        preview: lastLocalMessage.content,
-      };
-    });
-
-    if (!normalizedSearch) return merged;
-
-    return merged.filter((conversation) =>
-      `${conversation.title} ${conversation.preview}`
-        .toLowerCase()
-        .includes(normalizedSearch),
+    return source.filter((conversation) =>
+      conversation.title.toLowerCase().includes(normalizedSearch),
     );
   }, [data, localMessagesByConversation, search]);
 

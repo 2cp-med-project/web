@@ -34,6 +34,7 @@ export const useAuth = () => {
     >({
       mutationFn: async () => {
         const refreshToken = localStorage.getItem(storage.keys.refreshToken);
+        console.log("REF", refreshToken);
 
         let accessToken = localStorage.getItem(storage.keys.accessToken);
         if (accessToken === null) {
@@ -48,12 +49,15 @@ export const useAuth = () => {
           accessToken = refreshTokensRes.data.accessToken;
         }
 
+        console.log("ACCESS", accessToken);
+
         const fetchUserRes = await ProfileAPI.getMyProfile();
         if (apiRequestHadError(fetchUserRes)) {
           throw new FetchProfileError();
         }
 
         const data = fetchUserRes.data;
+        console.log("DATA", data);
 
         const user = {
           id: data._id,
@@ -88,6 +92,7 @@ export const useAuth = () => {
       },
 
       onMutate: () => {
+        console.log("being stateless login");
         authContext.setIsAuthenticating(true);
       },
 
