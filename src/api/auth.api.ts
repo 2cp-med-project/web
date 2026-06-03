@@ -1,9 +1,10 @@
 import type { Role } from "@/types/index.ts";
-import { api, request } from "./client.ts";
+import axios from "axios";
+import { request } from "./client.ts";
 
-// const auth = api.create({
-//   baseURL: "/auth",
-// });
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+});
 
 export type LoginResponseBody = {
   userId: string;

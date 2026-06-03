@@ -12,15 +12,13 @@ export const PatientRecordFormSchema = z.object({
     .enum(Object.values(CONSULTATION_TYPE))
     .or(z.string().trim().nonempty()),
 
-  specialty: z.string().trim().nonempty(),
-
   reason: z.string().trim().nonempty(),
 
   symptomStart: z.string().trim().nonempty(),
 
-  duration: z.string().trim().nonempty(),
+  gravity: z.enum(Object.keys(GRAVITY)),
 
-  gravity: z.enum(Object.values(GRAVITY)),
+  symptoms: z.string().trim(),
 
   notes: z.string().trim(),
 
@@ -44,9 +42,9 @@ export const PatientRecordFormSchema = z.object({
 
   treatmentDetails: z.string().trim().nonempty(),
 
-  followUpRequired: z.boolean(),
+  diagnosis: z.string().trim(),
 
-  nextAppointmentDate: z.date(),
+  followUpDate: z.date().optional(),
 });
 
 export type PatientRecordFormData = z.infer<typeof PatientRecordFormSchema>;

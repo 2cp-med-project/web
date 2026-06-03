@@ -1,3 +1,4 @@
+import { CreatePatientRecordError } from "@/api/errors/CreatePatientRecordError.ts";
 import { FetchPatientProfileError } from "@/api/errors/FetchPatientProfileError.ts";
 import { NotAuthenticatedUserError } from "@/api/errors/NotAuthenticatedUserError.ts";
 import { RequestAccessError } from "@/api/errors/RequestAccessError.ts";
@@ -5,6 +6,7 @@ import { DoctorAPI } from "@/api/index.ts";
 import { apiRequestHadError } from "@/api/types.ts";
 import { useAuthContext } from "@/context/auth.tsx";
 import { Unreachable } from "@/errors/Unreachable.ts";
+import type { PatientRecordFormData } from "@/features/DoctorPanel/PatientReport/Form/schema.ts";
 import type {
   PartialPatientDetails,
   Patient,
@@ -133,10 +135,42 @@ export const usePatients = () => {
     return mutation;
   };
 
+  const createRecord = () => {
+    const mutation = useMutation<
+      any,
+      Error,
+      { patientId: string } & PatientRecordFormData &
+        MutationCallback<{
+          id: string;
+        }>
+    >({
+      mutationFn: async ({ onSuccess, onError, patientId, ...rest }) => {
+        const res = await DoctorAPI.Patients.createRecord(patientId, rest);
+        if (apiRequestHadError(res)) {
+          throw new CreatePatientRecordError();
+        }
+
+        const data = res.data;
+        return data;
+      },
+
+      onSuccess: (data, vs) => {
+        vs?.onSuccess?.(data);
+      },
+
+      onError: (error, vs) => {
+        vs?.onError?.(error);
+      },
+    });
+
+    return mutation;
+  };
+
   return {
     fetchPage,
     fetchOne,
     requestAccess,
     __fetchOne,
+    createRecord,
   };
 };

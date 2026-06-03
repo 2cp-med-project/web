@@ -1,3 +1,5 @@
+import { GRAVITY_MAP } from "@/constants/index.ts";
+import type { PatientRecordFormData } from "@/features/DoctorPanel/PatientReport/Form/schema.ts";
 import type { Patient, PatientDetails } from "@/types/entities.ts";
 import type { Gender } from "@/types/index.ts";
 import type { Page, PaginationAttributes } from "@/types/pagination.ts";
@@ -85,6 +87,33 @@ export const requestAccess = (id: string) => {
   return request(async () => {
     const res = await api.post<RequestAccessResponseBody>("/access/request", {
       patientId: id,
+    });
+    return res.data;
+  });
+};
+
+// POST /api/records/consultation
+export const createRecord = (id: string, data: PatientRecordFormData) => {
+  return request(async () => {
+    const res = await api.post("/records/consultation", {
+      patientId: id,
+      date: new Date().toISOString(),
+      status: "completed",
+      typeofvisit: data.visitType,
+      motive: data.reason,
+      symptoms: data.symptoms,
+      severity: GRAVITY_MAP[data.gravity as keyof typeof GRAVITY_MAP],
+      followUpDate: data.followUpDate?.toISOString() || undefined,
+      diagnosis: data.diagnosis,
+      treatmentPlan: data.treatmentDetails,
+      notes: data.notes,
+      bloodPressure: data.bloodPressure,
+      heartRate: data.heartRate,
+      respiratoryRate: data.respiratoryRate,
+      temperature: data.temperature,
+      weight: data.weight,
+      systemReview: data.systemExam,
+      additionalTests: data.additionalActions,
     });
     return res.data;
   });

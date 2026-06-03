@@ -1,10 +1,10 @@
 import { GenderMap } from "@/constants/maps.ts";
-import type { PatientDetails } from "@/types/entities.ts";
+import type { PartialPatientDetails } from "@/types/entities.ts";
 import { getInitials } from "@/utils/index.ts";
 import { Avatar, Badge } from "@radix-ui/themes";
 
 type PatientCardContentProps = {
-  patient: PatientDetails;
+  patient: PartialPatientDetails;
 };
 
 export function PatientCardContent({ patient }: PatientCardContentProps) {
@@ -33,9 +33,9 @@ export function PatientCardContent({ patient }: PatientCardContentProps) {
               {patient.status === "active" ? "Actif" : "Inactif"}
             </Badge>
             <Badge color="gray">{patient.bloodType}</Badge>
-            {patient.allergies.length > 0 && (
+            {(patient.allergies?.length || 0) > 0 && (
               <Badge color="yellow">
-                {patient.allergies.slice(0, 3).join(", ")}
+                {patient.allergies?.slice(0, 3).join(", ")}
               </Badge>
             )}
           </div>

@@ -16,7 +16,7 @@ export function PatientReportPage() {
 
       <Grid columns={"5"} gapX={"4"} className="mt-4">
         <div className="col-span-3 space-y-4">
-          <PatientRecordForm />
+          <PatientRecordForm id={patientId} />
         </div>
         <div className="col-span-2 space-y-4">
           <PatientCard id={patientId} />

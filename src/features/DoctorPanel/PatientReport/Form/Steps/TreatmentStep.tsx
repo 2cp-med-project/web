@@ -1,23 +1,57 @@
+import { usePatients } from "@/hooks/doctor.hooks/usePatients.ts";
 import { TextArea, TextField } from "@radix-ui/themes";
+import { useNavigate } from "@tanstack/react-router";
 import { Controller, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 import { usePatientReportFormContext } from "../context.tsx";
 import { InputWrapper } from "../InputWrapper.tsx";
 import type { PatientRecordFormData } from "../schema.ts";
 import { Stepper } from "../Stepper.tsx";
+import { SubmitButton } from "../SubmitButton.tsx";
 
 export function TreatmentStep() {
-  const { control, trigger } = useFormContext<PatientRecordFormData>();
-  const { onPrev, onNext, hasNext, hasPrev } = usePatientReportFormContext();
+  const navigate = useNavigate();
+
+  const { control, trigger, handleSubmit } =
+    useFormContext<PatientRecordFormData>();
+  const { onPrev, onNext, hasNext, hasPrev, patientId } =
+    usePatientReportFormContext();
+
+  const { createRecord } = usePatients();
+  const createdRecordMutation = createRecord();
 
   const handleNext = async () => {
     const isValid = await trigger([
       "treatmentDetails",
-      "followUpRequired",
-      "nextAppointmentDate",
+      "followUpDate",
+      "notes",
     ]);
-
     if (isValid) return onNext();
   };
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      createdRecordMutation.mutateAsync({
+        patientId,
+        ...data,
+        onSuccess: () => {
+          toast.success("Patient record saved successfully");
+          navigate({
+            to: "/d/patients/$patientId",
+            params: {
+              patientId,
+            },
+          });
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
+    },
+    (errors) => {
+      console.log(errors);
+    },
+  );
 
   return (
     <div className="space-y-4">
@@ -40,40 +74,9 @@ export function TreatmentStep() {
       {/* Follow-up required */}
       <Controller
         control={control}
-        name="followUpRequired"
+        name="followUpDate"
         render={({ field }) => (
-          <InputWrapper label="Suivi requis :">
-            <div className="p-2 flex flex-col gap-2">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={field.value === true}
-                  onChange={() => field.onChange(true)}
-                  className="accent-foreground"
-                />
-                Oui
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  checked={field.value === false}
-                  onChange={() => field.onChange(false)}
-                  className="accent-foreground"
-                />
-                Non
-              </label>
-            </div>
-          </InputWrapper>
-        )}
-      />
-
-      {/* Next appointment */}
-      <Controller
-        control={control}
-        name="nextAppointmentDate"
-        render={({ field }) => (
-          <InputWrapper label="Date du prochain rendez-vous">
+          <InputWrapper label="Date de suivi">
             <div className="p-2">
               <TextField.Root
                 type="date"
@@ -82,16 +85,35 @@ export function TreatmentStep() {
                     ? new Date(field.value).toISOString().split("T")[0]
                     : ""
                 }
-                onChange={(e) => field.onChange(new Date(e.target.value))}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value ? new Date(e.target.value) : null,
+                  )
+                }
               />
             </div>
           </InputWrapper>
         )}
       />
+
+      <Controller
+        control={control}
+        name="notes"
+        render={({ field }) => (
+          <InputWrapper label="Information Supplémentaires:">
+            <div className="p-2">
+              <TextArea {...field} placeholder="..." />
+            </div>
+          </InputWrapper>
+        )}
+      />
+
       <Stepper
         onPrev={hasPrev ? onPrev : undefined}
         onNext={hasNext ? handleNext : undefined}
       />
+
+      {!hasNext && <SubmitButton onClick={onSubmit} />}
     </div>
   );
 }

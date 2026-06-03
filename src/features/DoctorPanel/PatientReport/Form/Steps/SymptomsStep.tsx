@@ -15,9 +15,9 @@ export function SymptomsStep() {
   const handleNext = async () => {
     const isValid = await trigger([
       "symptomStart",
-      "duration",
       "gravity",
-      "notes",
+      "symptoms",
+      "diagnosis",
     ]);
 
     if (isValid) return onNext();
@@ -38,19 +38,6 @@ export function SymptomsStep() {
         )}
       />
 
-      {/* Duration */}
-      <Controller
-        control={control}
-        name="duration"
-        render={({ field }) => (
-          <InputWrapper label="Durée:">
-            <div className="p-2">
-              <TextField.Root {...field} placeholder="Ex: 2 heures" />
-            </div>
-          </InputWrapper>
-        )}
-      />
-
       {/* Gravity */}
       <Controller
         control={control}
@@ -58,19 +45,19 @@ export function SymptomsStep() {
         render={({ field }) => (
           <InputWrapper label="Gravité:">
             <div className="p-2 flex flex-col gap-2 mt-1">
-              {Object.values(GRAVITY).map((level) => (
+              {Object.entries(GRAVITY).map((entry) => (
                 <label
-                  key={level}
+                  key={entry[0]}
                   className="flex items-center gap-2 cursor-pointer select-none"
                 >
                   <input
                     type="radio"
-                    value={level}
-                    checked={field.value === level}
-                    onChange={() => field.onChange(level)}
+                    value={entry[0]}
+                    checked={field.value === entry[0]}
+                    onChange={() => field.onChange(entry[0])}
                     className="accent-foreground"
                   />
-                  <span className="capitalize">{level}</span>
+                  <span className="capitalize">{entry[1]}</span>
                 </label>
               ))}
             </div>
@@ -78,17 +65,28 @@ export function SymptomsStep() {
         )}
       />
 
-      {/* Additional Notes */}
+      {/* Symptoms */}
       <Controller
         control={control}
-        name="notes"
+        name="symptoms"
         render={({ field }) => (
-          <InputWrapper label="Notes supplémentaires:">
+          <InputWrapper label="Symptômes:">
             <div className="p-2">
-              <TextArea
-                {...field}
-                placeholder="Informations complémentaires..."
-              />
+              <TextArea {...field} placeholder="..." />
+            </div>
+          </InputWrapper>
+        )}
+      />
+
+      {/* Diagnosis */}
+      {/* Duration */}
+      <Controller
+        control={control}
+        name="diagnosis"
+        render={({ field }) => (
+          <InputWrapper label="Diagnostic:">
+            <div className="p-2">
+              <TextField.Root {...field} placeholder="Ex: Diabétes" />
             </div>
           </InputWrapper>
         )}

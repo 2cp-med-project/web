@@ -11,6 +11,7 @@ type Step = {
 };
 
 type PatientReportFormContext = {
+  patientId: string;
   step: number;
   steps: Step[];
   hasNext: boolean;
@@ -25,10 +26,12 @@ export const patientReportFormContext = createContext<
 patientReportFormContext.displayName = "PatientReportFormContext";
 
 type PatientReportFormContextProviderProps = PropsWithChildren & {
+  patientId: string;
   steps: Step[];
 };
 
 export function PatientReportFormContextProvider({
+  patientId,
   steps,
   children,
 }: PatientReportFormContextProviderProps) {
@@ -48,6 +51,7 @@ export function PatientReportFormContextProvider({
   return (
     <patientReportFormContext.Provider
       value={{
+        patientId,
         step,
         steps,
         onNext,

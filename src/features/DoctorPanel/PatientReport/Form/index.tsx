@@ -9,18 +9,20 @@ import {
 } from "./schema.ts";
 import { StepSwitcher } from "./StepSwitcher.tsx";
 
-export function PatientRecordForm() {
+type PatientRecordFormProps = {
+  id: string;
+};
+
+export function PatientRecordForm({ id }: PatientRecordFormProps) {
   const context = useForm<PatientRecordFormData>({
     resolver: zodResolver(PatientRecordFormSchema),
     mode: "onBlur",
     defaultValues: {
       visitType: "",
-      specialty: "",
       reason: "",
       symptomStart: "",
-      duration: "",
       gravity: undefined,
-      notes: "",
+      symptoms: "",
       bloodPressure: "",
       heartRate: "",
       temperature: "",
@@ -30,14 +32,16 @@ export function PatientRecordForm() {
       systemExam: "",
       additionalActions: "",
       treatmentDetails: "",
-      followUpRequired: false,
-      nextAppointmentDate: undefined,
+      notes: "",
+      followUpDate: undefined,
+      diagnosis: "",
     },
   });
 
   return (
     <FormProvider {...context}>
       <PatientReportFormContextProvider
+        patientId={id}
         steps={DoctorData.Patients.patientReportFormSteps}
       >
         <LinearStepper />

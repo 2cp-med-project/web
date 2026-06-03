@@ -33,6 +33,12 @@ export const GRAVITY = {
   SEVERE: "Sévère",
 } as const;
 
+export const GRAVITY_MAP = {
+  MILD: "mild",
+  MODERATE: "moderate",
+  SEVERE: "severe",
+} as const;
+
 export const GENERAL_PATIENT_STATE = {
   CRITICAL: "Critique",
   STABLE: "Stable",

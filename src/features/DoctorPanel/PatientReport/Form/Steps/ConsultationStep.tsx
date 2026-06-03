@@ -13,7 +13,7 @@ export function ConsultationStep() {
   const { onNext, onPrev, hasNext, hasPrev } = usePatientReportFormContext();
 
   const handleNext = async () => {
-    const isValid = await trigger(["visitType", "specialty", "reason"]);
+    const isValid = await trigger(["visitType", "reason"]);
     if (isValid) return onNext();
   };
 
@@ -42,19 +42,6 @@ export function ConsultationStep() {
                   <span>{type}</span>
                 </label>
               ))}
-            </div>
-          </InputWrapper>
-        )}
-      />
-
-      {/* Specialty */}
-      <Controller
-        control={control}
-        name="specialty"
-        render={({ field }) => (
-          <InputWrapper label="Spécialité:">
-            <div className="p-2">
-              <TextField.Root {...field} placeholder="Ex: Cardiologie" />
             </div>
           </InputWrapper>
         )}

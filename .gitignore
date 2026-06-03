@@ -26,3 +26,6 @@ dist-ssr
 Temp
 .tanstack
 codex
+
+.env
+router-tmp

@@ -8,3 +8,4 @@ export { StartChatbotConversationError } from "./StartChatbotConversationError.t
 export { UserNotFoundError } from "./UserNotFoundError.ts";
 export { RequestAccessError } from "./RequestAccessError.ts";
 export { FetchPatientProfileError } from "./FetchPatientProfileError.ts";
+export { CreatePatientRecordError } from "./CreatePatientRecordError.ts";

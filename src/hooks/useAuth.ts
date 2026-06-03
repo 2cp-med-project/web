@@ -50,6 +50,7 @@ export const useAuth = () => {
           }
 
           accessToken = refreshTokensRes.data.accessToken;
+          localStorage.setItem(storage.keys.accessToken, accessToken);
         }
 
         const fetchUserRes = await ProfileAPI.getMyProfile();
