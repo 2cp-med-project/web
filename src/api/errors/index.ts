@@ -6,3 +6,5 @@ export { NotAuthenticatedUserError } from "./NotAuthenticatedUserError.ts";
 export { PatientNotFoundError } from "./PatientNotFoundError.ts";
 export { StartChatbotConversationError } from "./StartChatbotConversationError.ts";
 export { UserNotFoundError } from "./UserNotFoundError.ts";
+export { RequestAccessError } from "./RequestAccessError.ts";
+export { FetchPatientProfileError } from "./FetchPatientProfileError.ts";

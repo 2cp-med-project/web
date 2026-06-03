@@ -6,7 +6,7 @@ export { ChatPage } from "./Chat.tsx";
 export { DashboardPage } from "./Dashboard.tsx";
 export { FilePage } from "./File/index.tsx";
 export { FilesPage } from "./Files/index.tsx";
-export * as PatientProfilePage from "./PatientProfile/index.ts";
+export { PatientProfilePage } from "./PatientProfile/index.tsx";
 export { PatientReportPage } from "./PatientReport.tsx";
 export { PatientsPage } from "./Patients.tsx";
 export { PlanningPage } from "./Planning.tsx";

@@ -1,5 +1,7 @@
 import type { Patient, PatientDetails } from "@/types/entities.ts";
+import type { Gender } from "@/types/index.ts";
 import type { Page, PaginationAttributes } from "@/types/pagination.ts";
+import { api, request } from "../client.ts";
 import { PatientNotFoundError } from "../errors/PatientNotFoundError.ts";
 import { DoctorData } from "./dashboard.api.ts";
 
@@ -43,4 +45,47 @@ export const fetchOne = (id: string) => {
       return res(patient);
     }, 1000),
   );
+};
+
+type FetchOneResponseBody = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  gender: Gender;
+  placeOfBirth: string;
+  dateOfBirth: string;
+  allergies?: string[];
+  chronicDiseases?: string[];
+  medicalResume?: string;
+};
+
+// GET /users/patient/:id
+export const __fetchOne = (id: string) => {
+  return request(async () => {
+    const route = `/users/patient/${id}`;
+    const res = await api.get<FetchOneResponseBody>(route);
+    return res.data;
+  });
+};
+
+type RequestAccessResponseBody = {
+  _id: string;
+  doctor: string;
+  patient: string;
+  status: "pending" | "active" | "rejected" | "expired";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+// POST /access/request
+export const requestAccess = (id: string) => {
+  return request(async () => {
+    const res = await api.post<RequestAccessResponseBody>("/access/request", {
+      patientId: id,
+    });
+    return res.data;
+  });
 };

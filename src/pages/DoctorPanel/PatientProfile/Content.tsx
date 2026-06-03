@@ -3,11 +3,16 @@ import {
   PatientGeneralInformationSection,
   PatientPersonalSection,
 } from "@/features/DoctorPanel/PatientProfile/index.ts";
-import { Route } from "@/routes/_protected/d/_rfid/patients/$patientId/profile";
+import type { PartialPatientDetails } from "@/types/entities.ts";
 import { Grid } from "@radix-ui/themes";
 
-export function PatientProfilePageContent() {
-  const { patient } = Route.useLoaderData();
+type PatientProfilePageContentProps = {
+  patient: PartialPatientDetails;
+};
+
+export function PatientProfilePageContent({
+  patient,
+}: PatientProfilePageContentProps) {
   return (
     <section className="px-2">
       <h1 className="text-foreground font-medium text-2xl">

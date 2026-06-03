@@ -1,7 +1,7 @@
 import type { PopulatedAppointment } from "@/types/entities.ts";
 import { getInitials } from "@/utils/index.ts";
 import { Avatar } from "@radix-ui/themes";
-import { Activity, Calendar, Clock, FileText, X } from "lucide-react";
+import { Calendar, Clock, FileText, X } from "lucide-react";
 
 type AppointmentDetailsProps = PopulatedAppointment & {
   onClose: () => void;
@@ -71,28 +71,6 @@ export function AppointmentDetails(props: AppointmentDetailsProps) {
               {props.reason ?? "Aucune raison specifiee"}
             </p>
           </div>
-        </div>
-
-        {props.patient.lastVisit && (
-          <div className="flex items-center gap-3">
-            <Activity size={16} className="text-gray-500" />
-            <span>
-              Derniere visite : {props.patient.lastVisit.toLocaleDateString("fr-FR")}
-            </span>
-          </div>
-        )}
-
-        <div className="flex items-center gap-3">
-          <span className="text-gray-500">Statut :</span>
-          <span
-            className={`rounded px-2 py-0.5 text-xs font-medium ${
-              props.patient.status === "active"
-                ? "bg-green-100 text-green-700"
-                : "bg-gray-200 text-gray-600"
-            }`}
-          >
-            {props.patient.status === "active" ? "Actif" : "Inactif"}
-          </span>
         </div>
       </div>
 

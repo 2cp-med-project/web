@@ -17,14 +17,23 @@ export type AuthUser = BaseUser & {
 };
 
 export type Patient = BaseUser & {
-  lastVisit: Date;
   status: "active" | "inactive";
+  lastVisit: Date;
 };
 
 export type PatientDetails = Patient & {
   bloodType: BloodType;
   allergies: string[];
   chronicConditions: string[];
+};
+
+export type PartialPatientDetails = Omit<
+  PatientDetails,
+  "bloodType" | "allergies" | "chronicConditions"
+> & {
+  bloodType?: BloodType;
+  allergies?: string[];
+  chronicConditions?: string[];
 };
 
 export type Message = {
