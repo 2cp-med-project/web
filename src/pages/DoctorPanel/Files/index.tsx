@@ -2,7 +2,7 @@ import {
   type FilesDoctorFilter,
   type FilesModifiedFilter,
 } from "@/features/DoctorPanel/Files/index.ts";
-import { useFiles } from "@/hooks/doctor.hooks/index.ts";
+import { usePatients } from "@/hooks/doctor.hooks/index.ts";
 import { Route } from "@/routes/_protected/d/_rfid/patients/$patientId/files/index.tsx";
 import type { PatientFileType } from "@/types/entities.ts";
 import { useMemo, useState } from "react";
@@ -12,8 +12,9 @@ import { FilesPageSkeleton } from "./Skeleton.tsx";
 
 export function FilesPage() {
   const { patientId } = Route.useParams();
-  const { useFetchFiles } = useFiles();
-  const { data, isLoading, isError, refetch } = useFetchFiles(patientId);
+
+  const { getRecords } = usePatients();
+  const { data, isLoading, isError, refetch } = getRecords(patientId);
   const [selectedFileType, setSelectedFileType] = useState<
     PatientFileType | "all"
   >("all");
@@ -24,26 +25,7 @@ export function FilesPage() {
 
   const files = useMemo(() => {
     const source = data || [];
-
-    return source.filter((file) => {
-      if (selectedFileType !== "all" && file.type !== selectedFileType) {
-        return false;
-      }
-
-      if (selectedDoctor !== "all" && file.doctor.key !== selectedDoctor) {
-        return false;
-      }
-
-      if (selectedModifiedRange === "recent" && file.modifiedDaysAgo > 7) {
-        return false;
-      }
-
-      if (selectedModifiedRange === "month" && file.modifiedDaysAgo > 30) {
-        return false;
-      }
-
-      return true;
-    });
+    return source;
   }, [data, selectedDoctor, selectedFileType, selectedModifiedRange]);
 
   if (isError) {

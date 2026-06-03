@@ -52,3 +52,11 @@ export function parseMedicalInfo(text: string): MedicalInfo {
     medications: sections["Médicaments"],
   };
 }
+
+export function formatDate(date: string | Date): string {
+  return new Intl.DateTimeFormat("fr-DZ", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(date));
+}

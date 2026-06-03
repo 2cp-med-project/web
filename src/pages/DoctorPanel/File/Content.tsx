@@ -1,15 +1,10 @@
 import * as FileViewer from "@/features/DoctorPanel/FileViewer/index.ts";
-import type { PatientFileRecord } from "@/types/entities.ts";
+import type { PatientFileRecordWithDoctor } from "@/types/entities.ts";
+import { formatDate } from "@/utils/index.ts";
 
 type FilePageContentProps = {
-  file: PatientFileRecord;
+  file: PatientFileRecordWithDoctor;
 };
-
-const fileTypeLabelMap = {
-  consultation: "Consultation",
-  analyse: "Analyse",
-  ordonnance: "Ordonnance",
-} as const;
 
 export function FilePageContent({ file }: FilePageContentProps) {
   return (
@@ -17,10 +12,11 @@ export function FilePageContent({ file }: FilePageContentProps) {
       <div className="flex flex-col gap-2">
         <p className="text-[#37b89d] text-lg font-semibold">Dossier medical</p>
         <h1 className="text-foreground font-medium text-[2rem] leading-tight">
-          {file.name}
+          {file.reason}
         </h1>
         <p className="text-muted text-sm font-normal">
-          {fileTypeLabelMap[file.type]} - {file.modifiedAt} - {file.doctor.name}
+          {formatDate(file.modifiedAt)} -
+          {file.doctor?.fullname ?? file.doctorId}
         </p>
       </div>
 

@@ -106,3 +106,40 @@ export type PatientPlanningAppointment = {
   status: PatientPlanningAppointmentStatus;
   durationLabel: string;
 };
+
+export type __PatientFileRecord = {
+  id: string;
+  doctorId: string;
+  patientId: string;
+  visitType: string;
+  reason: string;
+  gravity: string;
+  symptoms: string;
+  notes: string;
+  bloodPressure: string;
+  heartRate: string;
+  temperature: string;
+  respiratoryRate: string;
+  weight: string;
+  generalState: "Critique" | "Stable" | "Moyen";
+  systemExam: string;
+  additionalActions: string;
+  treatmentDetails: string;
+  diagnosis: string;
+  followUpDate?: Date | undefined;
+  modifiedAt: string;
+};
+
+export type PatientFileRecordWithDoctor = __PatientFileRecord & {
+  doctor:
+    | {
+        id: string;
+        fullname: string;
+        firstName: string;
+        lastName: string;
+        phone: string;
+        email: string;
+        createdAt: string;
+      }
+    | undefined;
+};

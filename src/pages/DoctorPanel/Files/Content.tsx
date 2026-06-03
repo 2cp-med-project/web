@@ -1,15 +1,14 @@
 import {
-  FilesFiltersBar,
   FilesTable,
   FilesTitleBlock,
   type FilesDoctorFilter,
   type FilesModifiedFilter,
 } from "@/features/DoctorPanel/Files/index.ts";
-import type { PatientFileRecord, PatientFileType } from "@/types/entities.ts";
+import type { __PatientFileRecord, PatientFileType } from "@/types/entities.ts";
 
 type FilesPageContentProps = {
   patientId: string;
-  files: PatientFileRecord[];
+  files: __PatientFileRecord[];
   selectedFileType: PatientFileType | "all";
   selectedModifiedRange: FilesModifiedFilter;
   selectedDoctor: FilesDoctorFilter;
@@ -18,29 +17,20 @@ type FilesPageContentProps = {
   onDoctorChange: (value: FilesDoctorFilter) => void;
 };
 
-export function FilesPageContent({
-  patientId,
-  files,
-  selectedFileType,
-  selectedModifiedRange,
-  selectedDoctor,
-  onFileTypeChange,
-  onModifiedRangeChange,
-  onDoctorChange,
-}: FilesPageContentProps) {
+export function FilesPageContent({ patientId, files }: FilesPageContentProps) {
   return (
     <section className="space-y-6 px-2">
       <FilesTitleBlock />
 
       <section className="space-y-4 rounded-[28px] bg-[#f5fcf9]">
-        <FilesFiltersBar
+        {/* <FilesFiltersBar
           selectedFileType={selectedFileType}
           selectedModifiedRange={selectedModifiedRange}
           selectedDoctor={selectedDoctor}
           onFileTypeChange={onFileTypeChange}
           onModifiedRangeChange={onModifiedRangeChange}
           onDoctorChange={onDoctorChange}
-        />
+        /> */}
 
         <FilesTable.Content patientId={patientId} files={files} />
       </section>

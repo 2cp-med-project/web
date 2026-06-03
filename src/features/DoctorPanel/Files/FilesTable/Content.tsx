@@ -1,26 +1,27 @@
-import type { PatientFileRecord } from "@/types/entities.ts";
+import type { __PatientFileRecord } from "@/types/entities.ts";
+import { formatDate } from "@/utils/index.ts";
 import { Link } from "@tanstack/react-router";
 import { FolderOpen } from "lucide-react";
 
 type FilesTableContentProps = {
   patientId: string;
-  files: PatientFileRecord[];
+  files: __PatientFileRecord[];
 };
 
-function DoctorAvatar({ shortName }: { shortName: string }) {
-  return (
-    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2f8b73] text-xs font-semibold text-white">
-      {shortName}
-    </div>
-  );
-}
+// function DoctorAvatar({ shortName }: { shortName: string }) {
+//   return (
+//     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2f8b73] text-xs font-semibold text-white">
+//       {shortName}
+//     </div>
+//   );
+// }
 
 function FileRow({
   patientId,
   file,
 }: {
   patientId: string;
-  file: PatientFileRecord;
+  file: __PatientFileRecord;
 }) {
   return (
     <Link
@@ -32,19 +33,19 @@ function FileRow({
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#a9dfd1] bg-white text-[#5bc4ab]">
           <FolderOpen size={22} />
         </div>
-        <p className="truncate text-base font-medium">{file.name}</p>
+        <p className="truncate text-base font-medium">{file.reason}</p>
       </div>
 
-      <p className="text-sm">{file.modifiedAt}</p>
+      <p className="text-sm">{formatDate(file.modifiedAt)}</p>
 
-      <div className="flex items-center gap-3">
-        <DoctorAvatar shortName={file.doctor.shortName} />
+      {/* <div className="flex items-center gap-3">
+        <DoctorAvatar shortName={file.doctor} />
 
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{file.doctor.name}</p>
           <p className="truncate text-xs text-[#8a9d97]">{file.doctor.email}</p>
         </div>
-      </div>
+      </div> */}
     </Link>
   );
 }
@@ -58,7 +59,7 @@ export function FilesTableContent({
       <header className="hidden grid-cols-[minmax(0,1.4fr)_180px_minmax(240px,0.9fr)] items-center gap-4 bg-[#eef8f5] px-6 py-4 text-sm font-medium text-[#23473d] md:grid">
         <span>Nom</span>
         <span>Derniere modification</span>
-        <span>Medecin</span>
+        {/* <span>Medecin</span> */}
       </header>
 
       {files.length > 0 ? (

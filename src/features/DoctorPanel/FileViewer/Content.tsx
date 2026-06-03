@@ -1,8 +1,11 @@
-import type { PatientFileRecord } from "@/types/entities.ts";
+import { usePatients } from "@/hooks/doctor.hooks/usePatients.ts";
+import type { PatientFileRecordWithDoctor } from "@/types/entities.ts";
+import { formatDate } from "@/utils/index.ts";
 import {
   CircleCheck,
   Download,
   EllipsisVertical,
+  Loader2,
   NotebookText,
   ScanSearch,
   Sparkles,
@@ -10,16 +13,31 @@ import {
   ZoomOut,
 } from "lucide-react";
 import type { PropsWithChildren, ReactNode } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
+
+function ReportSection({
+  title,
+  content,
+}: {
+  title: string;
+  content?: string;
+}) {
+  if (!content) return null;
+
+  return (
+    <section>
+      <h3 className="text-xl font-bold text-[#1d2f2a]">{title}</h3>
+      <p className="mt-2 whitespace-pre-wrap text-lg leading-relaxed text-[#384b46]">
+        {content}
+      </p>
+    </section>
+  );
+}
 
 type FileViewerContentProps = {
-  file: PatientFileRecord;
+  file: PatientFileRecordWithDoctor;
 };
-
-const fileTypeLabelMap = {
-  consultation: "Consultation",
-  analyse: "Analyse",
-  ordonnance: "Ordonnance",
-} as const;
 
 function ViewerSidebarCard({
   title,
@@ -43,8 +61,32 @@ function ViewerSidebarCard({
 }
 
 export function FileViewerContent({ file }: FileViewerContentProps) {
-  const sizeLabel = file.type === "analyse" ? "2.5 MB" : "1.8 MB";
-  const statusLabel = file.modifiedDaysAgo <= 7 ? "Opened" : "Archived";
+  const [summary, setSummary] = useState<string | null>(null);
+
+  const { generateSummary } = usePatients();
+  const generateSummaryMutation = generateSummary();
+
+  const handleGenerateSummary = async () => {
+    await generateSummaryMutation.mutateAsync({
+      id: file.id,
+      onSuccess: ({ resume }) => {
+        setSummary(resume);
+        toast.success("Résumé généré avec succès.");
+      },
+      onError: (error) => {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Impossible de générer le résumé.",
+        );
+      },
+    });
+  };
+
+  const summaryError =
+    generateSummaryMutation.error instanceof Error
+      ? generateSummaryMutation.error.message
+      : null;
 
   return (
     <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
@@ -83,14 +125,12 @@ export function FileViewerContent({ file }: FileViewerContentProps) {
             <div className="mx-auto w-full max-w-[720px] rounded-[28px] border border-[#dcefe9] bg-white px-8 py-8 shadow-[0_20px_60px_rgba(43,99,83,0.08)]">
               <div className="flex items-start justify-between gap-4 border-b border-[#ebf5f2] pb-6">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#90b2a8]">
-                    {fileTypeLabelMap[file.type]}
-                  </p>
                   <h2 className="mt-3 text-2xl font-semibold text-[#23453c]">
-                    {file.name}
+                    {file.reason}
                   </h2>
                   <p className="mt-2 text-sm text-[#8aa09a]">
-                    Ajoute le {file.modifiedAt} par {file.doctor.name}
+                    Ajoute le {file.modifiedAt} par{" "}
+                    {file.doctor?.fullname ?? file.doctorId}
                   </p>
                 </div>
 
@@ -99,56 +139,159 @@ export function FileViewerContent({ file }: FileViewerContentProps) {
                 </div>
               </div>
 
-              <div className="mt-8 space-y-6">
+              <div className="mt-8 space-y-8">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="rounded-2xl bg-[#f7fcfa] p-5">
                     <p className="text-xs uppercase tracking-[0.24em] text-[#92afa7]">
-                      Medecin
+                      Médecin
                     </p>
                     <p className="mt-3 text-lg font-semibold text-[#23453c]">
-                      {file.doctor.name}
+                      {file.doctor?.fullname ?? file.doctorId}
                     </p>
-                    <p className="mt-1 text-sm text-[#8aa09a]">
-                      {file.doctor.email}
+                    <p className="mt-1 text-sm text-[#8aa09a']">
+                      {file.doctor?.email}
                     </p>
                   </div>
 
                   <div className="rounded-2xl bg-[#f7fcfa] p-5">
                     <p className="text-xs uppercase tracking-[0.24em] text-[#92afa7]">
-                      Derniere mise a jour
+                      Dernière mise à jour
                     </p>
                     <p className="mt-3 text-lg font-semibold text-[#23453c]">
-                      {file.modifiedAt}
+                      {formatDate(file.modifiedAt)}
                     </p>
                     <p className="mt-1 text-sm text-[#8aa09a]">
-                      Reference: {file.id}
+                      Référence: {file.id}
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  {[
-                    "Cette zone represente le contenu principal du fichier selectionne.",
-                    "Tu pourras la remplacer plus tard par le rendu reel du document.",
-                    "La mise en page reste en une seule page avec des donnees mockables.",
-                  ].map((line) => (
-                    <div key={line} className="space-y-2">
-                      <div className="h-3 w-full rounded-full bg-[#edf6f3]" />
-                      <div className="h-3 w-5/6 rounded-full bg-[#f3faf8]" />
-                      <p className="text-sm text-[#5f7f76]">{line}</p>
-                    </div>
-                  ))}
+                <div className="space-y-8">
+                  <ReportSection
+                    title="Motif de consultation"
+                    content={file.reason}
+                  />
+
+                  <ReportSection title="Symptômes" content={file.symptoms} />
+
+                  <ReportSection title="Diagnostic" content={file.diagnosis} />
+
+                  <ReportSection
+                    title="Traitement"
+                    content={file.treatmentDetails}
+                  />
+
+                  <ReportSection
+                    title="Notes du médecin"
+                    content={file.notes}
+                  />
                 </div>
 
-                <div className="rounded-[24px] border border-dashed border-[#c9e9df] bg-[#fbfefd] p-6">
-                  <p className="text-sm font-medium text-[#2f8b73]">
-                    Zone reservee au rendu du fichier
-                  </p>
-                  <div className="mt-4 space-y-4">
-                    <div className="h-56 rounded-2xl bg-[#edf7f4]" />
-                    <div className="h-40 rounded-2xl bg-[#f3faf8]" />
+                <div className="border-t border-[#dcefe9] pt-8">
+                  <h3 className="text-center text-3xl font-bold uppercase text-[#1d2f2a]">
+                    Signes vitaux
+                  </h3>
+
+                  <div className="mt-8 grid gap-4 md:grid-cols-2">
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">
+                        Tension artérielle
+                      </p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.bloodPressure || "-"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">
+                        Fréquence cardiaque
+                      </p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.heartRate ? `${file.heartRate} bpm` : "-"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">
+                        Température
+                      </p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.temperature ? `${file.temperature} °C` : "-"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">
+                        Fréquence respiratoire
+                      </p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.respiratoryRate
+                          ? `${file.respiratoryRate} rpm`
+                          : "-"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">Poids</p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.weight ? `${file.weight} kg` : "-"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                      <p className="font-semibold text-[#35584f]">
+                        État général
+                      </p>
+                      <p className="mt-2 text-xl font-bold text-[#23453c]">
+                        {file.generalState}
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                <ReportSection
+                  title="Examen clinique"
+                  content={file.systemExam}
+                />
+
+                <ReportSection
+                  title="Actions complémentaires"
+                  content={file.additionalActions}
+                />
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#92afa7]">
+                      Type de visite
+                    </p>
+
+                    <p className="mt-3 text-lg font-semibold text-[#23453c]">
+                      {file.visitType}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-[#f7fcfa] p-5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#92afa7]">
+                      Gravité
+                    </p>
+
+                    <p className="mt-3 text-lg font-semibold text-[#23453c]">
+                      {file.gravity}
+                    </p>
+                  </div>
+                </div>
+
+                {file.followUpDate && (
+                  <div className="rounded-2xl border border-[#dcefe9] bg-[#f7fcfa] p-5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#92afa7]">
+                      Date de suivi
+                    </p>
+
+                    <p className="mt-3 text-lg font-semibold text-[#23453c]">
+                      {formatDate(file.followUpDate)}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -165,17 +308,59 @@ export function FileViewerContent({ file }: FileViewerContentProps) {
           </button>
           <button
             type="button"
-            className="flex-1 rounded-full bg-[#5bc4ab] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#4db69d]"
+            onClick={handleGenerateSummary}
+            disabled={generateSummaryMutation.isPending}
+            className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#5bc4ab] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#4db69d] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Generate Summary
-          </button>
+            {generateSummaryMutation.isPending ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                Génération...
+              </>
+            ) : (
+              "Generate Summary"
+            )}
+          </button>{" "}
         </div>
 
-        <ViewerSidebarCard title="Summary" icon={<Sparkles size={16} />}>
-          <p className="text-sm text-[#79948d]">
-            Placeholder summary for {file.name}. Replace this block with AI or
-            backend data later.
-          </p>
+        <ViewerSidebarCard title="Résumé" icon={<Sparkles size={16} />}>
+          {generateSummaryMutation.isPending ? (
+            <div className="space-y-3">
+              <div className="h-3 w-full animate-pulse rounded bg-[#edf6f3]" />
+              <div className="h-3 w-5/6 animate-pulse rounded bg-[#edf6f3]" />
+              <div className="h-3 w-4/6 animate-pulse rounded bg-[#edf6f3]" />
+            </div>
+          ) : summaryError ? (
+            <p className="text-sm text-red-500">{summaryError}</p>
+          ) : summary ? (
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#67867d]">
+              {summary}
+            </p>
+          ) : (
+            <div className="space-y-3 text-sm text-[#67867d]">
+              <p>
+                Cliquez sur <strong>Generate Summary</strong> pour obtenir un
+                résumé IA du dossier médical.
+              </p>
+
+              <div>
+                <span className="font-semibold text-[#23453c]">Diagnostic</span>
+                <p>{file.diagnosis || "Non renseigné"}</p>
+              </div>
+
+              <div>
+                <span className="font-semibold text-[#23453c]">Gravité</span>
+                <p>{file.gravity}</p>
+              </div>
+
+              <div>
+                <span className="font-semibold text-[#23453c]">
+                  État général
+                </span>
+                <p>{file.generalState}</p>
+              </div>
+            </div>
+          )}
         </ViewerSidebarCard>
 
         <ViewerSidebarCard
@@ -205,24 +390,22 @@ export function FileViewerContent({ file }: FileViewerContentProps) {
           <div className="space-y-3 text-sm text-[#67867d]">
             <div className="flex items-center justify-between gap-4">
               <span>Type</span>
-              <span className="font-medium text-[#23453c]">
-                {fileTypeLabelMap[file.type]}
-              </span>
+              <span className="font-medium text-[#23453c]">PDF</span>
             </div>
             <div className="flex items-center justify-between gap-4">
               <span>File size</span>
-              <span className="font-medium text-[#23453c]">{sizeLabel}</span>
+              <span className="font-medium text-[#23453c]">1 KB</span>
             </div>
             <div className="flex items-center justify-between gap-4">
               <span>Added by</span>
               <span className="font-medium text-[#23453c]">
-                {file.doctor.name}
+                {file.doctor?.fullname ?? file.doctorId}
               </span>
             </div>
             <div className="flex items-center justify-between gap-4">
               <span>Status</span>
               <span className="rounded-full bg-[#eef9f5] px-3 py-1 text-xs font-semibold text-[#4eb298]">
-                {statusLabel}
+                Complet
               </span>
             </div>
           </div>
@@ -230,10 +413,11 @@ export function FileViewerContent({ file }: FileViewerContentProps) {
 
         <ViewerSidebarCard title="Notes" icon={<NotebookText size={16} />}>
           <p className="text-sm font-medium text-[#23453c]">
-            {file.doctor.name}
+            {file.doctor?.fullname ?? file.doctorId}
           </p>
-          <p className="mt-2 text-sm text-[#79948d]">
-            Notes et proprietes du fichier a injecter ici plus tard.
+
+          <p className="mt-3 whitespace-pre-wrap text-sm text-[#79948d]">
+            {file.notes || "Aucune note disponible."}
           </p>
         </ViewerSidebarCard>
       </div>

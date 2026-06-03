@@ -92,7 +92,7 @@ export const requestAccess = (id: string) => {
   });
 };
 
-// POST /api/records/consultation
+// POST /records/consultation
 export const createRecord = (id: string, data: PatientRecordFormData) => {
   return request(async () => {
     const res = await api.post("/records/consultation", {
@@ -115,6 +115,93 @@ export const createRecord = (id: string, data: PatientRecordFormData) => {
       systemReview: data.systemExam,
       additionalTests: data.additionalActions,
     });
+    return res.data;
+  });
+};
+
+type GetPatientRecordsResponseBody = {
+  _id: string;
+  doctorId: string;
+  patientId: string;
+  date: string;
+  status: "completed" | string;
+  typeofvisit: string;
+  bloodPressure: string;
+  heartRate: string;
+  respiratoryRate: string;
+  temperature: string;
+  weight: string;
+  motive: string;
+  symptoms: string;
+  severity: "mild" | "moderate" | "severe" | string;
+  systemReview: string;
+  diagnosis: string;
+  treatmentPlan: string;
+  additionalTests: string;
+  notes: string;
+  attachments: unknown[];
+  resume: string | null;
+  followUpDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}[];
+
+// GET /records/:id
+export const getRecords = (id: string) => {
+  return request(async () => {
+    const route = `/records/${id}`;
+    const res = await api.get<GetPatientRecordsResponseBody>(route);
+    return res.data;
+  });
+};
+
+type GetPatientSingleRecordResponseBody = {
+  _id: string;
+  doctorId: string;
+  patientId: string;
+  date: string;
+  status: "completed" | string;
+  typeofvisit: string;
+  bloodPressure: string;
+  heartRate: string;
+  respiratoryRate: string;
+  temperature: string;
+  weight: string;
+  motive: string;
+  symptoms: string;
+  severity: "mild" | "moderate" | "severe" | string;
+  systemReview: string;
+  diagnosis: string;
+  treatmentPlan: string;
+  additionalTests: string;
+  notes: string;
+  attachments: unknown[];
+  resume: string | null;
+  followUpDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+// GET /records/consultation/:id
+export const getSingleRecord = (id: string) => {
+  return request(async () => {
+    const route = `/records/consultation/${id}`;
+    const res = await api.get<GetPatientSingleRecordResponseBody>(route);
+    return res.data;
+  });
+};
+
+type GenerateSummaryResponseBody = {
+  resume: string;
+};
+
+// POST /summary/:id
+export const generateSummary = (id: string) => {
+  return request(async () => {
+    const route = `/summary/${id}`;
+    const res = await api.post<GenerateSummaryResponseBody>(route);
     return res.data;
   });
 };
