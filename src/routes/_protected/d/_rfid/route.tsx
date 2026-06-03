@@ -1,6 +1,6 @@
 import { rfidService } from "@/services/rfid.ts";
 import { rfidTagSchema, type RFIDTag } from "@/zod/rfid.ts";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import type z from "zod";
@@ -15,6 +15,8 @@ type RFIDListenerOptions = {
 };
 
 function RouteComponent() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const initializeRFID = async ({ onTag, onError }: RFIDListenerOptions) => {
       try {
@@ -45,8 +47,14 @@ function RouteComponent() {
     };
 
     const cleanup = initializeRFID({
-      onTag: (tag) => {
-        console.log(tag.userId);
+      onTag: async (tag) => {
+        await navigate({
+          to: "/d/patients/$patientId",
+          params: {
+            patientId: tag.userId,
+          },
+        });
+        toast.success("Patient detected");
       },
       onError: () => {
         toast.error("Failed to read RFID data");

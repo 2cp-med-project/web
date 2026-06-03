@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 type PatientPersonalSectionContentProps = {
   patient: Patient;
+  showRequestAccessButton: boolean;
 };
 
 export function PatientPersonalSectionContent(
@@ -46,26 +47,28 @@ export function PatientPersonalSectionContent(
         <p className="text-muted text-base">{props.patient.email}</p>
       </div>
 
-      <div className="mt-8 px-6">
-        <p className="text-center text-sm text-muted">
-          Besoin d&apos;acc&eacute;der aux fichiers du patient ?
-        </p>
-        <button
-          type="button"
-          className="group mt-3 bg-foreground text-white w-full flex items-center justify-center gap-2 py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
-          onClick={handleAccessRequest}
-          disabled={requestAccessMutation.isPending}
-        >
-          {requestAccessMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Link className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-          )}
-          <span className="text-base font-medium">
-            Demander l&apos;acc&egrave;s au dossier
-          </span>
-        </button>
-      </div>
+      {props.showRequestAccessButton && (
+        <div className="mt-8 px-6">
+          <p className="text-center text-sm text-muted">
+            Besoin d&apos;acc&eacute;der aux fichiers du patient ?
+          </p>
+          <button
+            type="button"
+            className="group mt-3 bg-foreground text-white w-full flex items-center justify-center gap-2 py-2 rounded-xl transition-colors duration-200 hover:bg-foreground/90"
+            onClick={handleAccessRequest}
+            disabled={requestAccessMutation.isPending}
+          >
+            {requestAccessMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Link className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+            )}
+            <span className="text-base font-medium">
+              Demander l&apos;acc&egrave;s au dossier
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
