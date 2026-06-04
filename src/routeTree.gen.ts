@@ -16,7 +16,9 @@ import { Route as PublicAuthRouteRouteImport } from './routes/_public/_auth/rout
 import { Route as ProtectedPRouteRouteImport } from './routes/_protected/p/route'
 import { Route as ProtectedDRouteRouteImport } from './routes/_protected/d/route'
 import { Route as ProtectedARouteRouteImport } from './routes/_protected/a/route'
+import { Route as GuestPRouteRouteImport } from './routes/_guest/p/route'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/_auth/login'
+import { Route as GuestPPatientIdRouteImport } from './routes/_guest/p/$patientId'
 import { Route as ProtectedPAppRouteRouteImport } from './routes/_protected/p/_app/route'
 import { Route as ProtectedDRfidRouteRouteImport } from './routes/_protected/d/_rfid/route'
 import { Route as ProtectedAAppRouteRouteImport } from './routes/_protected/a/_app/route'
@@ -89,10 +91,20 @@ const ProtectedARouteRoute = ProtectedARouteRouteImport.update({
   path: '/a',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuestPRouteRoute = GuestPRouteRouteImport.update({
+  id: '/_guest/p',
+  path: '/p',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => PublicAuthRouteRoute,
+} as any)
+const GuestPPatientIdRoute = GuestPPatientIdRouteImport.update({
+  id: '/$patientId',
+  path: '/$patientId',
+  getParentRoute: () => GuestPRouteRoute,
 } as any)
 const ProtectedPAppRouteRoute = ProtectedPAppRouteRouteImport.update({
   id: '/_app',
@@ -309,9 +321,10 @@ const ProtectedDRfidPatientsPatientIdFilesFileIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/p': typeof ProtectedPAppRouteRouteWithChildren
   '/a': typeof ProtectedAAppRouteRouteWithChildren
   '/d': typeof ProtectedDRfidAppRouteRouteWithChildren
-  '/p': typeof ProtectedPAppRouteRouteWithChildren
+  '/p/$patientId': typeof GuestPPatientIdRoute
   '/login': typeof PublicAuthLoginRoute
   '/a/settings': typeof ProtectedAAppSettingsRouteRouteWithChildren
   '/p/settings': typeof ProtectedPAppSettingsRouteRouteWithChildren
@@ -351,9 +364,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/p': typeof ProtectedPAppDashboardIndexRoute
   '/a': typeof ProtectedAAppDashboardIndexRoute
   '/d': typeof ProtectedDRfidAppDashboardIndexRoute
-  '/p': typeof ProtectedPAppDashboardIndexRoute
+  '/p/$patientId': typeof GuestPPatientIdRoute
   '/login': typeof PublicAuthLoginRoute
   '/a/doctors': typeof ProtectedAAppDoctorsRoute
   '/a/patients': typeof ProtectedAAppPatientsRoute
@@ -387,6 +401,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteRouteWithChildren
   '/unauthorized': typeof UnauthorizedRoute
+  '/_guest/p': typeof GuestPRouteRouteWithChildren
   '/_protected/a': typeof ProtectedARouteRouteWithChildren
   '/_protected/d': typeof ProtectedDRouteRouteWithChildren
   '/_protected/p': typeof ProtectedPRouteRouteWithChildren
@@ -395,6 +410,7 @@ export interface FileRoutesById {
   '/_protected/a/_app': typeof ProtectedAAppRouteRouteWithChildren
   '/_protected/d/_rfid': typeof ProtectedDRfidRouteRouteWithChildren
   '/_protected/p/_app': typeof ProtectedPAppRouteRouteWithChildren
+  '/_guest/p/$patientId': typeof GuestPPatientIdRoute
   '/_public/_auth/login': typeof PublicAuthLoginRoute
   '/_protected/a/_app/settings': typeof ProtectedAAppSettingsRouteRouteWithChildren
   '/_protected/d/_rfid/_app': typeof ProtectedDRfidAppRouteRouteWithChildren
@@ -437,9 +453,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/unauthorized'
+    | '/p'
     | '/a'
     | '/d'
-    | '/p'
+    | '/p/$patientId'
     | '/login'
     | '/a/settings'
     | '/p/settings'
@@ -479,9 +496,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/unauthorized'
+    | '/p'
     | '/a'
     | '/d'
-    | '/p'
+    | '/p/$patientId'
     | '/login'
     | '/a/doctors'
     | '/a/patients'
@@ -514,6 +532,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_public'
     | '/unauthorized'
+    | '/_guest/p'
     | '/_protected/a'
     | '/_protected/d'
     | '/_protected/p'
@@ -522,6 +541,7 @@ export interface FileRouteTypes {
     | '/_protected/a/_app'
     | '/_protected/d/_rfid'
     | '/_protected/p/_app'
+    | '/_guest/p/$patientId'
     | '/_public/_auth/login'
     | '/_protected/a/_app/settings'
     | '/_protected/d/_rfid/_app'
@@ -563,6 +583,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   PublicRouteRoute: typeof PublicRouteRouteWithChildren
   UnauthorizedRoute: typeof UnauthorizedRoute
+  GuestPRouteRoute: typeof GuestPRouteRouteWithChildren
   ProtectedARouteRoute: typeof ProtectedARouteRouteWithChildren
   ProtectedDRouteRoute: typeof ProtectedDRouteRouteWithChildren
   ProtectedPRouteRoute: typeof ProtectedPRouteRouteWithChildren
@@ -620,12 +641,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedARouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_guest/p': {
+      id: '/_guest/p'
+      path: '/p'
+      fullPath: '/p'
+      preLoaderRoute: typeof GuestPRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_public/_auth/login': {
       id: '/_public/_auth/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicAuthRouteRoute
+    }
+    '/_guest/p/$patientId': {
+      id: '/_guest/p/$patientId'
+      path: '/$patientId'
+      fullPath: '/p/$patientId'
+      preLoaderRoute: typeof GuestPPatientIdRouteImport
+      parentRoute: typeof GuestPRouteRoute
     }
     '/_protected/p/_app': {
       id: '/_protected/p/_app'
@@ -926,6 +961,18 @@ const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
   PublicRouteRouteChildren,
 )
 
+interface GuestPRouteRouteChildren {
+  GuestPPatientIdRoute: typeof GuestPPatientIdRoute
+}
+
+const GuestPRouteRouteChildren: GuestPRouteRouteChildren = {
+  GuestPPatientIdRoute: GuestPPatientIdRoute,
+}
+
+const GuestPRouteRouteWithChildren = GuestPRouteRoute._addFileChildren(
+  GuestPRouteRouteChildren,
+)
+
 interface ProtectedAAppSettingsRouteRouteChildren {
   ProtectedAAppSettingsAccountRoute: typeof ProtectedAAppSettingsAccountRoute
   ProtectedAAppSettingsIndexRoute: typeof ProtectedAAppSettingsIndexRoute
@@ -1126,6 +1173,7 @@ const ProtectedPRouteRouteWithChildren = ProtectedPRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   PublicRouteRoute: PublicRouteRouteWithChildren,
   UnauthorizedRoute: UnauthorizedRoute,
+  GuestPRouteRoute: GuestPRouteRouteWithChildren,
   ProtectedARouteRoute: ProtectedARouteRouteWithChildren,
   ProtectedDRouteRoute: ProtectedDRouteRouteWithChildren,
   ProtectedPRouteRoute: ProtectedPRouteRouteWithChildren,
