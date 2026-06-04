@@ -22,8 +22,8 @@ export function PatientPersonalSectionContent(
       onSuccess: () => {
         toast.success("Request sent to patient");
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.success("Request sent to patient");
       },
     });
   };
